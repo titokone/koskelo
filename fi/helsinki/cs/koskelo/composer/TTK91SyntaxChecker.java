@@ -139,7 +139,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqFileOutput = this.req.getParameter(
 				"fileOutput"
 				).trim();
-		
+
 
 		// TODO checking of session, but no need for new one
 
@@ -296,14 +296,29 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		try { // memoryCriteria
-
+			if(validParam(reqMemoryCriteria) {
+				memoryCriteria = parseCriteriaString(
+					reqMemoryCriteria
+					);
+				taskOptions.setMemoryCriteria(
+					memoryCriteria
+					);
+			}
+			
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
 		}
 
 		try { // registerCriteria
-
+			if(validParam(reqRegisterCriteria) {
+				registerCriteria = parseCriteriaString(
+					reqRegisterCriteria
+					);
+				taskOptions.setRegisterCriteria(
+					registerCriteria
+					);
+			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -371,9 +386,30 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			return retInput;
 
+
 		} // parseInputString
 
 
+	private int[][] parseOutputString(String output) 
+		throws Exception{
+
+		String[] splitted1 = output.split(";");
+		String[][] splitted2 = new String[splitted1.length][2];
+		int[][] outPutTable = new int[splitted1.length][2];
+		
+		for(int i = 0; i < splitted1.length; i++) {
+			splitted1[i] = splitted1[i].replaceAll("(","");
+			splitted1[i] = splitted1[i].replaceAll(")","");
+			splitted1[i].trim();
+			splitted2[i] = splitted1[i].split(",");
+			splitted2[i][0].trim();
+			splitted2[i][1].trim();
+			outPutTable[i][0] = parsePostInt(splitted2[i][0]);
+			outPutTable[i][1] = parsePostInt(splitted2[i][1]);
+		}
+
+	}
+	
 	private String[] validTTK91Commands(
 			String commandString
 			) throws Exception {
@@ -402,9 +438,24 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	}// validTTK91Commands
 
 
+	private TTK91Criteria[] parseCriteriaString(String criteriaString) 
+		throws InvalidTTK91CriteriaException{
+
+		String[] tmp = criteriaString.split(";");
+		
+		TTK91Critria[] criterias = new TTK91Criteria[tmp.length];
+		
+		for(int i = 0; i < tmp.length; i++) {
+			criterias[i] = new TTK91Criteria(tmp[i]);
+		} // for
+		
+		return criterias;
+
+	}//parseCriteriaString
+	
 	private boolean validParam(String s){
 		return (s != null && !s.equals(""));
-	}
+	}//validParam
 
 	private String feedbackForm() {
 
@@ -439,7 +490,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"../../eAssari/taskDefinition/controller"+
 				"\">\n"
 				);
-		
+
 		// hidden input. Yuk.
 		page = page.concat(
 				" <input name=\"event\""+
@@ -448,7 +499,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				Events.STATIC_TTK91_SUBMIT+
 				"\" />"
 				);
-			// hidden input. Yuk.
+		// hidden input. Yuk.
 		page = page.concat(
 				" <input name=\"taskid\""+
 				" type=\"hidden\" id=\"taskid\""+
@@ -456,7 +507,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				req.getParameter("taskid")+
 				"\" />"
 				);
-		
+
 		page = page.concat(
 				" <input name=\"taskname\""+
 				" type=\"hidden\" id=\"taskname\""+
@@ -464,7 +515,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				req.getParameter("taskname")+
 				"\" />"
 				);
-		
+
 		page = page.concat(
 				"  <table width=\"450\" border=\"0\">"+
 				"   <tr>"+
@@ -574,19 +625,5 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		return ((new Integer(s)).intValue());
 
 	}// parsePostInt
-
-	/** Servletin oma sisäinen apumetodi. Tätä hyödynnetään
-	 * doPostin parsiessa kriteereitä erilleen saamastaan
-	 * HttpRequestista.
-	 */
-
-	private String[] parsePostText(String s) {
-
-		String[] foo = new String[2];
-		foo[0] = "bar";
-
-		return foo;
-	}//parsePostText
-
 
 } //class
