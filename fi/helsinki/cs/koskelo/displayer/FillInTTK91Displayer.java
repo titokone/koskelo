@@ -9,6 +9,19 @@ import fi.hy.eassari.showtask.trainer.CacheException;
  */
 
 public class FillInTTK91Displayer extends CommonDisplayer{
+
+	/**
+	 * Konstruktori, kutsuu yläluokan CommonDisplayerin
+	 * konstruktoria.
+	 */
+
+	public FillInTTK91Displayer(){
+		super();
+	}
+
+	final int ROWS = 12;    // vastauslaatikon korkeus 
+	final int COLS = 50;    // vastauslaatikon leveys
+	final String TARGETSERVLET = "Answer2.do2"; // käynnistettävä servletti
     
 	/**
 	 * Tekee tehtävän tiedoista html-koodia ja palauttaa 
@@ -32,9 +45,6 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		String input;           // syöte
 		String inputHeader;     // syötteen otsikko
 		String exampleCode;     // malliratkaisu
-		final int ROWS = 12;    // vastauslaatikon korkeus 
-		final int COLS = 50;    // vastauslaatikon leveys
-		final String TARGETSERVLET = "Answer2.do2"; // käynnistettävä servletti
 		StringBuffer setting = new StringBuffer();  // kerätään html-sivu
 	   
 		hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
@@ -113,7 +123,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 	 */  
 	private String getHTMLElementBeforeEmpty(String exampleCode, int cols){
 		
-		String beginSeparator = "[[";
+		String beginSeparator = "[";
 		StringBuffer result = new StringBuffer();
 
 		result.append("<textarea cols =\"" +cols +"\" readonly>");
@@ -133,7 +143,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 	 */  
 	private String getHTMLElementAfterEmpty(String exampleCode, int cols){
 
-		String endSeparator = "]]";
+		String endSeparator = "]";
 		StringBuffer result = new StringBuffer();
 
 		result.append("<textarea cols =\"" +cols +"\" readonly>");

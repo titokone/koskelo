@@ -18,6 +18,10 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		super();
 	}//StaticTTK91Displayer 
     
+	final int COLS = 50;    // vastauslaatikon leveys
+	final int ROWS = 20;    // vastauslaatiokon korkeus
+	final String TARGETSERVLET = "Answer2.do2"; // kohdeservletin nimi 
+
 	/**
 	 * Tekee tehtävän tiedoista html-koodia ja palauttaa 
 	 * html-koodin String-oliona. Kutsutaan DisplayerServlet2- ja
@@ -39,9 +43,6 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		String taskDescription; // tehtävänanto
 		String input;           // syötteet
 		String inputHeader;     // syötteen otsikko
-		final int COLS = 50;    // vastauslaatikon leveys
-		final int ROWS = 20;    // vastauslaatiokon korkeus
-    final String TARGETSERVLET = "Answer2.do2"; // kohdeservletin nimi 
     StringBuffer setting = new StringBuffer();  // kerätään palautettava sivu
 
 		/*
