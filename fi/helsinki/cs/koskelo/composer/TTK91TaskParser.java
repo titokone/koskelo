@@ -105,10 +105,10 @@ public class TTK91TaskParser {
   newTask.set( TASK_DESCRIPTION, taskdesc );
 
   int[] publicinput = options.getPublicInput();
-  newTask.set( PUBLIC_INPUT, publicinput );
+  newTask.set( PUBLIC_INPUT, concatInput(publicinput) );
 
   int[] hiddeninput = options.getHiddenInput();
-  newTask.set( HIDDEN_INPUT, hiddeninput );
+  newTask.set( HIDDEN_INPUT, concatInput(hiddeninput) );
 
   int compmethod = options.getCompareMethod();
   newTask.set( COMPARE_METHOD, ("" + compmethod ) );
@@ -136,7 +136,7 @@ public class TTK91TaskParser {
   if(forbcomm != null) {
    newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
   }//if
-
+  
   newTask.set( REGISTER_FEEDBACK_POSITIVE,
 	       post.getStringParameter(REGISTER_FEEDBACK_POSITIVE) );
   newTask.set( REGISTER_FEEDBACK_NEGATIVE,
@@ -243,5 +243,23 @@ public class TTK91TaskParser {
   return commandString;
 
  }//concatCriterias
+
+ private static String concatInput(int[] input){
+
+  String inputString = "";
+
+  if(input == null) {return inputString;}
+
+  inputString = "" + input[0];
+
+  for(int i = 1; i < input.length; ++i) {
+
+      inputString += "," + input[i];
+
+  }//for
+
+  return inputString;
+ 
+ }//concatInput
 
 }//class
