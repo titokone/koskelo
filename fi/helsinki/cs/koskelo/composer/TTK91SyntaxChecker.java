@@ -559,7 +559,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// title
 
 		page = page.concat(
-				"<h1>Opiskelijalle annettavat palautteet</h1>"
+				"<h1>"+
+				cache.getAttribute(
+					"D",
+					"ttk91syntaxchecker",
+					"feedbacktitle", 
+					lang
+					) +
+				"</h1>"
 				);
 
 		// form
@@ -614,6 +621,16 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					"D",
 					"ttk91syntaxchecker",
 					"criterianotfilledtitle", 
+					lang
+					) +
+				"</div>" +
+				"</td>" +
+				"<td>" +
+				"       <div align=\"center\">" +
+				cache.getAttribute(
+					"D",
+					"ttk91syntaxchecker",
+					"criteriaqualitytitle", 
 					lang
 					) +
 				"</div>" +
