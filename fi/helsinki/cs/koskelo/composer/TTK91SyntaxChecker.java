@@ -736,6 +736,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private void returnError(String target, String error) 
 		throws ServletException, java.io.IOException{
 
+			this.req.setAttribute("fi.hy.eassari.showtask.trainer.TaskBase", cache);
 			this.session.setAttribute("TTK91ERROR", error);
 			this.req.getRequestDispatcher(target).
 				forward(this.req, this.res);
