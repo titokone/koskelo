@@ -58,7 +58,7 @@ public class TTK91TaskOptions {
     this.screenoutput = null;
     this.fileoutput = null;
     this.comparemethod = 0;
-    this.maxcommands = TTK91Constant.MAX_COMMANDS; // FIXME: kai t‰m‰ oletus m‰‰ritell‰‰n jossain muualla? -- TTK91Constant / Lauri
+    this.maxcommands = TTK91Constant.MAX_COMMANDS;
     this.acceptedsize = 0;
     this.optimalsize = 0;
     this.memrefcriteria = null;
