@@ -424,7 +424,7 @@ public class TTK91AnalyseData{
 	public String getAnswer() {
 		return this.answer;
 	}
-	
+
 	public TTK91Application getStudentAppPublic() {
 		return this.studentApplicationPublic;
 	}
@@ -532,22 +532,28 @@ public class TTK91AnalyseData{
 		return this.dataSegmentSize;
 	}
 
+	public int analyseSwitcher(){
 
-	boolean compareToHidden = this.taskData.compareToHidden();
-	boolean compareToStatic = (compareMethod == TTK91Constant.COMPARE_TO_STATIC);
-	int compareCase = -1;
+		boolean compareToHidden = compareToHidden();
+		boolean compareToStatic = 
+			(compareMethod == TTK91Constant.COMPARE_TO_STATIC);
+		int compareCase = -1;
 
-	if ( compareToStatic && compareToHidden ) {
-	    compareCase = TTK91Constant.COMPARE_TO_STATIC_HIDDEN;
-	}
-	else if ( compareToStatic && (!compareToHidden) ) {
-	    compareCase = TTK91Constant.COMPARE_TO_STATIC_PUBLIC;
-	}
-	else if ( (!compareToStatic) && compareToHidden ) {
-	    compareCase = TTK91Constant.COMPARE_TO_SIMULATED_HIDDEN;
-	}
-	else if ( (!compareToStatic) && (!compareToHidden) ) {
-	    compareCase = TTK91Constant.COMPARE_TO_SIMULATED_PUBLIC;
+		if ( compareToStatic && compareToHidden ) {
+			compareCase = TTK91Constant.COMPARE_TO_STATIC_HIDDEN;
+		}
+		else if ( compareToStatic && (!compareToHidden) ) {
+			compareCase = TTK91Constant.COMPARE_TO_STATIC_PUBLIC;
+		}
+		else if ( (!compareToStatic) && compareToHidden ) {
+			compareCase = TTK91Constant.COMPARE_TO_SIMULATED_HIDDEN;
+		}
+		else if ( (!compareToStatic) && (!compareToHidden) ) {
+			compareCase = TTK91Constant.COMPARE_TO_SIMULATED_PUBLIC;
+		}
+	
+		return compareCase;
+	
 	}
 
 
