@@ -1,71 +1,75 @@
+package fi.helsinki.cs.koskelo.analyser;
+
+import fi.hu.cs.ttk91.TTK91CompileSource;
+import fi.hu.cs.ttk91.TTK91Cpu;
+import fi.hu.cs.ttk91.TTK91Memory;
+import fi.hu.cs.ttk91.TTK91Exception;
+import fi.hu.cs.ttk91.TTK91Application;
+import fi.hu.cs.ttk91.TTK91Core;
+
+
 import fi.hu.cs.titokone.Source;
 import fi.hu.cs.titokone.Control;
 import fi.hu.cs.titokone.Processor;
 import fi.hu.cs.titokone.RandomAccessMemory;
 import fi.hu.cs.titokone.MemoryLine;
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
+import fi.helsinki.cs.koskelo.common.TTK91Constant;
 
-
-public class TTK91AnalyserData{
+public class TTK91AnalyseData{
 
 
 	// Controllit joilta saadaan dataa:
 
-	private TTK91Core controlCompiler;    
+	private TTK91Core controlCompiler = null;    
 	// kääntäjä -> saadaan mahdolliset käännösvirheet nätimmin (kunhan ajetaan malli ensin... 
 	// Jos se ei käänny, ei varmaan ole tarvetta kääntää opiskelijankaan ratkaisua...
-	private TTK91Core controlPublicInputStudent;
+	private TTK91Core controlPublicInputStudent = null;
 	// publicinputeilla tai ilman unputteja opiskelijan vastaus
-	private TTK91Core controlPublicInputTeacher; 
+	private TTK91Core controlPublicInputTeacher = null; 
 	// publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on määritelty simuloitavaksi
-	private TTK91Core controlHiddenInputStudent;
+	private TTK91Core controlHiddenInputStudent = null;
 	// hiddeninputeilla jos ovat määritelty opiskelijan vastaus
-	private TTK91Core controlHiddenInputTeacher;
+	private TTK91Core controlHiddenInputTeacher = null;
 	// hiddeninputeilla jos ovat määritelty malliratkaisu jos vertailu on määritelty simuloitavaksi
 
 	// Tehtävänmäärittelydata
-	private TTK91TaskOptions taskOptions;        // taskoptions
+	private TTK91TaskOptions taskOptions = null;        // taskoptions
 
 	// Malliratkaisu
 
-	private String exampleCode;                // haetaan taskoptionsista - malliratkaisun koodi
-	private String[] answer;
+	private String exampleCode = null;                // haetaan taskoptionsista - malliratkaisun koodi
+	private String[] answer = null;
+
+	// Virheilmoitukset
 	
-	
+	private String studentCompileError = null;
+	private String teacherCompileError = null;
+	private String studentRunError = null;
+	private String teacherRunError = null;
+
 	// Käännetyt koodit
-	private TTK91Application studentApplication; // opiskelijan vastaus
-	private TTK91Application teacherApplication; // malliratkaisu
+	private TTK91Application studentApplication = null; // opiskelijan vastaus
+	private TTK91Application teacherApplication = null; // malliratkaisu
 
 	// Analysointitapa
-	private int analyseMethod;
+	private int compareMethod = -1;
 
 
-	private String publicInput;
-	private String hiddenInput;
+	// Optionsin muuttujia:
 
-
-	// Opiskelijan ja opettajan ohjelmien näyttötulosteet
-	
-	private String studentPublicScreenOut;
-	private String studentHiddenScreenOut;
-	private String teacherPublicScreenOut;
-	private String teacherHiddenScreenOut;
-
-	//Opiskelijan ja opettajan tiedostotulosteet
-	
-	private String studentPublicFileOut;
-	private String studentHiddenFileOut;
-	private String teacherPublicFileOut;
-	private String teacherHiddenFileOut;
+	private int steps = 0;
+	private String publicInput = null;
+	private String hiddenInput = null;
 
 
 	// Titokoneiden muistit:
 
-	private    RandomAccessMemory studentPublicMemory; 
-	private    RandomAccessMemory teacherPublicMemory; 
-	private    RandomAccessMemory studentHiddenMemory; 
-	private    RandomAccessMemory teacherHiddenMemory;
-	
+	private    RandomAccessMemory studentPublicMemory = null; 
+	private    RandomAccessMemory teacherPublicMemory = null; 
+	private    RandomAccessMemory studentHiddenMemory = null; 
+	private    RandomAccessMemory teacherHiddenMemory = null;
+
 
 	public TTK91AnalyseData(
 			String[] answer, 
@@ -75,18 +79,93 @@ public class TTK91AnalyserData{
 		this.taskOptions = taskOptions;
 		this.answer = answer;
 
-		getApplications;
+		compileTeacherApplication();
+		compileStudentApplication();
 		getTaskData();
 		run();
-		setOutput();
 	}
 
-	private void getApplications() {
+
+	
+	private void compileTeacherApplication() {
+
+
+		// compile teacherapp
+		
+		TTK91CompileSource src = null;
+		
+		if(exampleCode == null) {
+			return; // FIXME: virheenkäsittely
+		}
+		
+		
+		src = (TTK91CompileSource) new Source(exampleCode);
+
+		if (src == null) {
+			this.teacherCompileError = "Malliratkaisua ei pystytty"+
+					" muuntamaan TTK91CompileSource-muotoon";
+		}//if
+
+
+		TTK91Application app = null;
+
+		if (controlCompiler == null) {
+			controlCompiler = new Control(null, null);
+		}
+
+		try {
+			app = controlCompiler.compile(src);
+		} catch (TTK91Exception e) {
+			this.teacherCompileError = e.getMessage();
+			return;
+		}//catch
+
+		this.teacherApplication = app;
 
 
 		// get the student app and the
 		// teacher app and make them into applications
+
+	}
+	private void compileStudentApplication() {
+
+
+		// compile studentapp
 		
+		TTK91CompileSource src = null;
+
+		if (this.answer != null) {
+			String ans = this.answer[0];
+			ans = ans + "\n SVC SP, =HALT";
+			src = (TTK91CompileSource) new Source(ans);
+			// FIXME: toimiiko tosiaan näin helposti?
+		}
+
+		if (src == null) {
+			this.studentCompileError = "Ratkaisua ei pystytty"+
+					" muuntamaan TTK91CompileSource-muotoon";
+		}//if
+
+
+		TTK91Application app = null;
+
+		if (controlCompiler == null) {
+			controlCompiler = new Control(null, null);
+		}
+
+		try {
+			app = controlCompiler.compile(src);
+		} catch (TTK91Exception e) {
+			this.studentCompileError = e.getMessage();
+			return;
+		}//catch
+
+		this.studentApplication = app;
+
+
+		// get the student app and the
+		// teacher app and make them into applications
+
 	}
 
 	private void getTaskData() {
@@ -98,29 +177,104 @@ public class TTK91AnalyserData{
 				);
 
 		this.steps = taskOptions.getMaxCommands();
-		
-	}
-	
 
-	
+		this.compareMethod = taskOptions.getCompareMethod();
+	}
+
+
+
 	private void run() {
-	
+
+
+		/* Koska titokoneesta metodilla .getCPU() saadaan
+		 * vain viite controlin sisäiseen prosessiin käytetään
+		 * yhteensä maksissaan neljää controlia, kuitenkin
+		 * siten, että kullekin simulointikierrokselle
+		 * luodaan oma controlinsa.
+		 */
+
+		if(publicInput != null) {
+
+			this.studentApplication.setKbd(publicInput);
+			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
+				this.teacherApplication.setKbd(publicInput);
+			}
+		}
+
+		this.controlPublicInputStudent = new Control(null, null);
+
+		try {
+			this.controlPublicInputStudent.run(this.studentApplication, steps);
+			// 1. simulointi
+		} catch (TTK91Exception e) {
+			this.studentRunError = e.getMessage();
+			return;
+		}
+
+		if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+			// 1. simulointi malliratkaisua
+			this.controlPublicInputTeacher = new Control(null, null);
+			try {
+				this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+			} catch (TTK91Exception e) {
+				this.teacherRunError =  e.getMessage();
+				return;
+			}
+		}
+
+
+		if (hiddenInput != null) {
+			// mahdollinen 2. simulointi opiskelijan ratkaisusta
+
+			this.controlHiddenInputStudent = new Control(null, null); // luodaan control vain jos hiddeninput määritelty --> "optimointia"
+			this.studentApplication.setKbd(hiddenInput);
+
+			try {
+				this.controlHiddenInputStudent.run(this.studentApplication, steps);
+			} catch (TTK91Exception e) {
+				this.studentRunError = e.getMessage();
+				return;
+			}
+
+			if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+				// simuloidaa malliratkaisu
+				// 2. simulointi malliratkaisua
+
+				this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput määritelty --> "optimointia"
+				this.teacherApplication.setKbd(hiddenInput);
+				try {
+					this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
+				} catch (TTK91Exception e) {
+					teacherRunError = e.getMessage();
+					return;
+				}
+			}
+		} 
+
+
 
 		// Aja ohjelmat.
 		// Aseta muisti,
 		// Aseta rekisterit,
 		// Aseta tulosteet.
-	
+
 	}
 
 	private String parseInputString(int[] inputTable) {
 
 		String input = "";
 
+		for(int i = 0; i < inputTable.length; i++) {
+			input = input + inputTable[i];
+		}
 
-		return input;
+		if(input.equals("")){
+			return null;
+		} else {
+			return input;
+		}
 	}
 
 	/* Tarvitaan vielä: sopivat getterit */
-	
+
 }// class
