@@ -239,7 +239,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
    * @param answer
    */
 
-  private void getTeacherApplication(String[] answer) {
+  private Feedback getTeacherApplication(String[] answer) {
 
 
     TTK91CompileSource src = parseSourceFromAnswer(answer);
