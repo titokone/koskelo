@@ -156,7 +156,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	protected void doPost(
 			HttpServletRequest req,
 			HttpServletResponse res
-			) throws ServletException, java.io.IOException {
+			) throws ServletException, java.io.IOException{
 		// TODO kunnollinen javadoc n‰ist‰ muuttujista
 
 		this.req = req;
@@ -323,6 +323,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
+		try { // catch CacheException kun haetaan virheilmotusta tietokannasta
+		
 		try {
 			// maxCommands ei voi olla null, sill‰
 			// maxCommandsia k‰ytet‰‰n looppiin juuttumisen
@@ -357,8 +359,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
 
+			exampleCode = reqExampleCode;
+		
 			if(validParam(reqExampleCode)){
-				exampleCode = reqExampleCode;
 				if(fillIn) {
 					fillInValidate(exampleCode);	
 				}
@@ -452,32 +455,32 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			if(validParam(reqCompareMethod)) {
 				compareMethod = parsePostInt(reqCompareMethod);
 
-				if(compareMethod == 0 && !validParam(exampleCode) {
+				if(compareMethod == 0 && !validParam(exampleCode)) {
 
 					returnError(this.staticResponse,
-						cache.getAttribute(
-							"D",
-							"ttk91syntaxchecker",
-							"ttk91missingexamplecodeerror",
-							lang
-							)
-						);
+							cache.getAttribute(
+								"D",
+								"ttk91syntaxchecker",
+								"ttk91missingexamplecodeerror",
+								lang
+								)
+						   );
 					return;
 				}
 
-				}
+			}	
 
-				} catch (Exception e) {
-					returnError(this.staticResponse, 
-						cache.getAttribute(
-							"D",
-							"ttk91syntaxchecker",
-							"ttk91comparemethodsyntaxerror", 
-							lang
-							)
-						);
-					return;
-				}
+		} catch (Exception e) {
+			returnError(this.staticResponse, 
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91comparemethodsyntaxerror", 
+						lang
+						)
+				   );
+			return;
+		}
 
 		try { //  acceptedSize eli maksimipituus ohjelmalle,
 			// joka viel‰ kuitenkin hyv‰ksyt‰‰n
@@ -689,6 +692,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}
 
+		} catch (CacheException ce) {
+			returnError(this.staticResponse,
+					"Error while retrieving error message");
+		}
+		
 		// Asetetaan taskOptions sessioon, jotta
 		// taskdefinitioncontrollerissa se saadaan annettua
 		// eteenp‰in TTK91TaskParserille. TaskParser muokkaa
