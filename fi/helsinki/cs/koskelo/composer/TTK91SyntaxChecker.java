@@ -9,7 +9,7 @@ import fi.helsinki.cs.koskelo.common.*;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
-	private Static String staticResponse = "../../StaticTTK91Composer.jsp";
+	private String staticResponse = "../../StaticTTK91Composer.jsp";
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 	private HttpSession session;
@@ -339,7 +339,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	} // doPost
 
 
-	private void returnError(String target, String error) {
+	private void returnError(String target, String error) 
+	throws ServletException, java.io.IOException{
 	
 		this.session.setAttribute("ERROR", error);
 		this.req.getRequestDispatcher(target).
