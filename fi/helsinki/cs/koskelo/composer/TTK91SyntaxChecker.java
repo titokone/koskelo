@@ -169,9 +169,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
 
+		if(reqExampleCode != null){
 			exampleCode = reqExampleCode;
 			taskOptions.setExampleCode(exampleCode);
-
+			}
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
 			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -199,8 +200,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // publicInput
 
 			if(reqPublicInput != null) {
-				publicInput = parseInputString(reqPublicInput);
-				taskOptions.setPublicInput(publicInput);
+	//			publicInput = parseInputString(reqPublicInput);
+	//			taskOptions.setPublicInput(publicInput);
 			}
 
 		} catch (Exception e) {
@@ -214,8 +215,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // hiddenInput
 
 			if(reqHiddenInput != null) {
-				hiddenInput = parseInputString(reqHiddenInput);
-				taskOptions.setHiddenInput(hiddenInput);
+	//			hiddenInput = parseInputString(reqHiddenInput);
+	//			taskOptions.setHiddenInput(hiddenInput);
 			}
 
 		} catch (Exception e) {
@@ -315,7 +316,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
 
-		 	this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
+			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(this.req, this.res);
 
 			return;
@@ -379,43 +380,30 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 	private int[] parseInputString(String input)
-					throws ServletException, IOException {
+		throws ServletException, IOException {
 
 
-		StringTokenizer st = new StringTokenizer(
-				input, ","
-				);
+			StringTokenizer st = new StringTokenizer(
+					input, ","
+					);
 
-		Vector tmp = new Vector();
-		int[] retInput;
+			Vector tmp = new Vector();
+			int[] retInput;
 
-		while(st.hasMoreTokens()){
+			while(st.hasMoreTokens()){
 
-			tmp.add(st.nextToken());
-		}// while
+				tmp.add(st.nextToken());
+			}// while
 
-		retInput = new int[tmp.size()];
-
-
-		try {
+			retInput = new int[tmp.size()];
 
 			for(int i = 0; i < tmp.size(); i++) {
 				retInput[i] = parsePostInt( (String)tmp.get(i) );
 			} // for
 
-		} catch(Exception e) {
+			return retInput;
 
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-			//FIXME: Antaako t‰st‰ vain valua returniin?
-			//Vai jotain muuta? [HT]
-
-		}//catch
-
-		return retInput;
-
-	} // parseInputString
+		} // parseInputString
 
 
 	private String[] validTTK91Commands(
@@ -458,18 +446,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"<meta http-equiv=\"Content-Type\" "+
 				"content=\"text/html; charset=iso-8859-1\">"+
 				"</head>"
-			   );
+				);
 		// body
 
 		page = page.concat(
 				"<body bgcolor=\"#FFFFFF\">"
 
-			   );
+				);
 		// title
 
 		page = page.concat(
 				"<h1>Opiskelijalle annettavat palautteet</h1>"
-			   );
+				);
 
 		// form
 		// FIXME assuming eassari in ../eassari
@@ -477,7 +465,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"<form method=\"post\" action=\""+
 				"../eassari/taskdefinition/TaskDefintionController"+
 				"\">\n"
-			   );
+				);
 
 		page = page.concat(
 				"  <table width=\"450\" border=\"0\">"+
@@ -494,55 +482,55 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"</td>" +
 				"</tr>" +
 				"</table>\n"
-			   );
+				);
 
 		page = page.concat(
 				"  <p>Hyv&auml;ksytt&auml;v&auml;n"+
 				" ratkaisun k&auml;skyjen " +
 				"maksimim&auml;&auml;r&auml;  </p>\n"+
 				feedbackBox("acceptedSize")
-			   );
+				);
 
 		page = page.concat(
 				"  <p>Ihannekoko  </p>\n"+
 				feedbackBox("optimalSize")
-			   );
+				);
 
 		page = page.concat(
 				"  <p>Ohjelmassa vaaditut k&auml;skyt  </p>\n"+
 				feedbackBox("requiredCommands")
-			   );
+				);
 
 		page = page.concat(
 				"<p>Ohjelmassa kielletyt k&auml;skyt</p>\n" +
 				feedbackBox("forbiddenCommands")
-			   );
+				);
 
 		page = page.concat(
 				"<p>Rekisterien sis&auml;lt&ouml;</p>" +
 				feedbackBox("register")
-			   );
+				);
 
 		page = page.concat(
 				"  <p>Muistipaikkojen ja muuttujien"+
 				"sis&auml;lt&ouml;</p>" +
 				feedbackBox("memory")
-			   );
+				);
 
 		page = page.concat(
 				"<p>Muistiviitteiden m&auml;&auml;r&auml;</p>" +
 				feedbackBox("memoryReferences")
-			   );
+				);
 
 		page = page.concat(
 				"<p>Tulosteet n&auml;yt&ouml;lle</p>" +
 				feedbackBox("screenOutput")
-			   );
+				);
 
 		page = page.concat(
 				"  <p>Tulosteet tiedostoon</p>" +
 				feedbackBox("fileOutput")
-			   );
+				);
 
 		page = page.concat(
 				"  <p>"+
@@ -550,7 +538,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				" name=\"Submit\""+
 				"value=\"Luo teht&auml;v&auml;\">"+
 				"</p>"
-			   );
+				);
 
 		page = page.concat("</form></body></html>");
 
