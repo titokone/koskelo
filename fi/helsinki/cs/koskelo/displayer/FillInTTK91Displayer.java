@@ -132,11 +132,16 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		
 		String beginSeparator = "[";
 		StringBuffer result = new StringBuffer();
+		String temp = "";
 
-		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
 		int index = exampleCode.indexOf(beginSeparator);
-		result.append(exampleCode.substring(0,index));
+		temp = exampleCode.substring(0,index);
+		
+		if(!temp.equals("")){
+		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
+		result.append(temp);
 		result.append("</textarea><br>");
+		}
 
 		return new String(result);
 	}//getHTMLElementBeforeEmpty
@@ -152,13 +157,18 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 
 		String endSeparator = "]";
 		StringBuffer result = new StringBuffer();
-
-		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
+		String temp = "";
+		
 		int index = exampleCode.indexOf(endSeparator);
-		result.append(exampleCode.substring(index+1));
-		result.append("</textarea><br>");
+		temp = exampleCode.substring(index+1);
 
-		return new String(result);
-	}//getHTMLElementAfterEmpty
+		if (!temp.equals("")) { //  Testataan tuleeko aukon jälkeen koodia.
+			result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
+			result.append(temp);
+			result.append("</textarea><br>");
+		}
 
-}//class
+				return new String(result);
+				}//getHTMLElementAfterEmpty
+
+	}//class
