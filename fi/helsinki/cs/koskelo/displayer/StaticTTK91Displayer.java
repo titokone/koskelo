@@ -44,7 +44,7 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 				// Haetaan tehtävänanto, syötteet ja kieliriippuvainen syöteteksti.
 	
 				String taskDescription = 
-						cache.getAttribute("T", taskid, "tasDescription", language);
+						cache.getAttribute("T", taskid, "taskDescription", language);
 				String input = 
 						cache.getAttribute("T", taskid, "publicInput", language);
 
