@@ -441,13 +441,13 @@ public class StaticTTK91Analyser extends CommonAnalyser {
         if (needle.length > 1) {
           qualityCritFound = true;
           if (requiredQualityCommandFound) { // jos false, on jo rikki
-            requiredQualityCommandFound = isCommandFound(answer, needle[1]);
+            requiredQualityCommandFound = isCommandFound(answer[0], needle[1]); // Laatukriteerissä komento taulukon toisessa alkiossa
           }
         }
         else {
           requiredCritFound = true;
           if (requiredCommandFound) { // jos false, on jo rikki
-            requiredCommandFound = isCommandFound(answer, needle[0]);
+            requiredCommandFound = isCommandFound(answer[0], needle[0]); // Oikeellisuuskriteerissä komento taulukon ensimmäisessä alkiossa
           }
         }
         if (!requiredCommandFound && !requiredQualityCommandFound) {
@@ -478,13 +478,13 @@ public class StaticTTK91Analyser extends CommonAnalyser {
         if (needle.length > 1) {
           qualityCritFound = true;
           if (!forbiddenQualityCommandFound) { // jos true, on jo rikki
-            forbiddenQualityCommandFound = !isCommandFound(answer, needle[1]);
+            forbiddenQualityCommandFound = isCommandFound(answer[0], needle[1]); // Laatukriteerissä komento taulukon toisessa alkiossa
           }
         }
         else {
           forbiddenCritFound = true;
           if (!forbiddenCommandFound) { // jos true, on jo rikki
-            forbiddenCommandFound = !isCommandFound(answer, needle[0]);
+            forbiddenCommandFound = isCommandFound(answer[0], needle[0]); // Oikeellisuuskriteerissä komento taulukon ensimmäisessä alkiossa
           }
         }
         if (forbiddenCommandFound && forbiddenQualityCommandFound) {
@@ -495,7 +495,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
           results.setForbiddenCommands(!forbiddenCommandFound);
         }
         if (qualityCritFound) {
-          results.setForbiddenCommandsQuality(!forbiddenQualityCommandFound);
+          results.setForbiddenCommandsQuality(!forbiddenQualityCommandFound); 
         }
         results.setForbiddenCommands(!forbiddenCommandFound);
       }
@@ -694,43 +694,35 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param answer
      * @param cmd
      */
-  private boolean isCommandFound(String[] answer, String cmd) {
+  private boolean isCommandFound(String answer, String cmd) {
 
-    //     boolean value = false;
-    //     if ((answer != null) && (answer[0] != null) && (cmds != null)) {
-    // 	    String src = answer[0].toLowerCase();
-    // 	    for (int i=0; i < cmds.length; ++i) {
-    //         String tempstring = cmds[i];
-    //         tempstring = tempstring.replaceAll("\\(",""); // FIXMEFIXME: TÄHÄN JÄÄTIIN: pitäisi palauttaa true, jos kaikki cmds-taulukon käskyt löytyvät
-    //         tempstring = tempstring.replaceAll("\\)","");
-    //         tempstring = tempstring.replaceAll(";","");
-    //         String pat = "\\s*"+tempstring.toLowerCase()+"\\s*";
-    //         if ( Pattern.matches(pat, src) ) {
-    //           // sisältääkö src merkkijonoa "whitespace+komento+whitespace" ?
-    //           return true;
-    //         }
-    // 	    }
-    //    }
     System.err.println("Saavuttiin isCommandFound()iin");
-    if ((answer != null) && (answer[0] != null) && (cmd != null)) {
+
+    if ((answer != null) && (cmd != null)) {
       System.err.println("Päästiin sisään varsinaiseen isCommandFound()iin, eli alkuehdot kunnossa");
-      String haystack = answer[0].toLowerCase();
+      
+      String haystack = answer.toLowerCase();
       String needle = cmd.toLowerCase();
-      System.err.println("needle: "+needle);
-      String pat = 
-        "(.*|\\n*|\\r*|\\f*|\\s*)*\\s*"+
-        needle+
-        "\\s*(.*|\\n*|\\r*|\\f*|\\s*)*";
-      System.err.println("pat: "+pat);
-      // Eli '.' mikä tahansa merkki, '\\n', '\\r', '\\f'
-      // rivinvaihtoja, \\s whitespace ja '*' tarkoittaa [0..n] kertaa
-      // toistettuna
+      
+      needle = needle.substring(needle.indexOf("(")+1); // jos avaava sulje löytyy, poistetaan
+      int temp = needle.indexOf(")");
+      if (temp > 0) {
+        needle = needle.substring(0, temp); // poistetaan mahdollinen loppusulje
+      }
+      temp = needle.indexOf(";");
+      if (temp > 0) {
+        needle = needle.substring(0, temp); // poistetaan mahdollinen ';'
+      }
+
+      System.err.println("needle: |"+needle+"|");
       System.err.println("valmiina ajamaan matchays...");
-      return Pattern.matches(pat, haystack); 
+      
+      temp = answer.indexOf(needle);
+      System.err.println("matchayksen tulos (intinä), eli palautetaan (temp >= 0): "+temp);
+      return (temp >= 0);
     }
     System.err.println("isCommandFound: answer != null: "+
-                       (answer != null)+", answer[0] != null: "+
-                       (answer[0] != null)+", cmd != null: "+(cmd != null));
+                       (answer != null)+", cmd != null: "+(cmd != null));
     return false; // jotain meni pieleen, mutta ei nyt osata kertoa sitä tarkemmin...
   } // isCommandFound
 
