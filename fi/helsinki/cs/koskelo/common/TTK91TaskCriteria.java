@@ -1,4 +1,7 @@
-//TODO: Kommentit ym. sössö
+/**
+* @author       Harri Tuomikoski, Koskelo-projekti.
+* @version      0.1
+*/
 
 package fi.helsinki.cs.koskelo.common;
 
@@ -22,10 +25,11 @@ public class TTK91TaskCriteria{
  private String secondComparable; //Toinen vertailtava
  private boolean quality; //True = kriteeri on laadullinen
 
+ /**
+ * Alustaa kriteerin muuttujat.
+ */
 
-
- public TTK91TaskCriteria()
-		throws InvalidTTK91CriteriaException {
+ public TTK91TaskCriteria() {
 
   this.comparator = this.INVALID;
   this.firstComparable = null;
@@ -34,7 +38,12 @@ public class TTK91TaskCriteria{
 
  }//TTK91TaskCriteria()
 
-
+ /**
+ * Alustaa tyhjän kriteerin.
+ * @throws InvalidTTK91CriteriaException
+ * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
+ * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
+ */
 
  public TTK91TaskCriteria(String criteria)
 		throws InvalidTTK91CriteriaException {
@@ -43,7 +52,13 @@ public class TTK91TaskCriteria{
 
  }// TTK91TaskCriteria(String criteria)
 
-
+ /**
+ * Alustaa kriteerin annetuilla parametreilla.
+ * @throws InvalidTTK91CriteriaException
+ * @param firstComparable TTK91-tehtävän ensimmäinen vertailtava.
+ * @param comparator 
+ * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
+ */
 
  public TTK91TaskCriteria(
 		String firstComparable,
