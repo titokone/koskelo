@@ -139,7 +139,7 @@ public class TTK91AnalyserUtils {
 
 	String temp = cache.getAttribute("T", this.taskid, 
 					 name, this.language);
-	if (temp.equals("null"))
+	if (temp.equals("null") || temp == null) // lisätty tännekin == null / Tom
 	    return null;
 
 	String[] result = temp.split(",");
@@ -172,7 +172,7 @@ public class TTK91AnalyserUtils {
 
 	// Jos saadaan "null" palautetaan "".
 
-	if (temp.equals("null"))
+	if (temp.equals("null") || temp == null) // lisätty temp == null / Tom
 	    return null;
 
 	String[] result = temp.split(";");
