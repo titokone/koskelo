@@ -32,10 +32,10 @@ public class TTK91TaskOptions {
    */
 
   public TTK91TaskOptions() {
-    this.regcrits = null;
-    this.memcrits = null;
-    this.screencrits = null;
-    this.filecrits = null;
+    this.regcrits = new Vector();
+    this.memcrits = new Vector();
+    this.screencrits = new Vector();
+    this.filecrits = new Vector();
     this.examplecode = null;
     this.taskdescription = null;
     //    this.publicinput[] = new int[MAX_INPUT];
@@ -54,9 +54,6 @@ public class TTK91TaskOptions {
 
   private static void addCriterias(TTK91TaskCriteria[] crit, Vector critcollection) {
     if (crit != null) {
-      if (critcollection == null) {
-        critcollection = new Vector();
-      }
       for (int i=0; i<crit.length; ++i) {
         critcollection.add(crit[i]);
       }
@@ -68,9 +65,6 @@ public class TTK91TaskOptions {
    */
   public void addRegisterCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
-      if (this.regcrits == null) {
-        this.regcrits = new Vector();
-      }
       this.regcrits.add(crit);
     }
   } // addRegisterCriteria
@@ -89,9 +83,6 @@ public class TTK91TaskOptions {
    */
   public void addMemoryCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
-      if (this.memcrits == null) {
-        this.memcrits = new Vector();
-      }
       this.memcrits.add(crit);
     }
   } // addMemoryCriteria
@@ -110,9 +101,6 @@ public class TTK91TaskOptions {
    */
   public void addScreenOutputCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
-      if (this.screencrits == null) {
-        this.screencrits = new Vector();
-      }
       this.screencrits.add(crit);
     }
   } // addScreenOutputCriteria
@@ -131,9 +119,6 @@ public class TTK91TaskOptions {
    */
   public void addFileOutputCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
-      if (this.filecrits == null) {
-        this.filecrits = new Vector();
-      }
       this.filecrits.add(crit);
     }
   } // addFileOutputCriteria
@@ -338,5 +323,131 @@ public class TTK91TaskOptions {
     return this.forbiddencmds;
   } // getForbiddenCommands
 
+  /**
+   * Luo ja palauttaa uuden TTK91TaskOptions-olion 
+   * @param taskstr muoto kuten toString() palauttaa
+   */
+  public TTK91TaskOptions parseFromString(String taskstr) {
+    TTK91TaskOptions ret = new TTK91TaskOptions();
+    String[] tasktokens = taskstr.split(":",-1);
+    // TODO: varsinainen toiminnallisuus
+  }  
+
+  /**
+   * Palauttaa merkkijonoesityksen TTK91TaskOptions-oliosta
+   */
+  public String toString() {
+    StringBuffer strbf = new StringBuffer();
+
+    strbf.add(":");
+
+    //    getRegisterCriterias()
+    TTK91TaskCriteria[] regs = this.getRegisterCriterias();
+    for (int i = 0; i < regs.length; ++i) {
+      strbf.add(regs[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+
+    //    getMemoryCriterias()
+    TTK91TaskCriteria[] mems = this.getMemoryCriterias();
+    for (int i = 0; i < mems.length; ++i) {
+      strbf.add(mems[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+
+    //    getScreenOutputCriterias()
+    TTK91TaskCriteria[] screens = this.getScreenOutputCriterias();
+    for (int i = 0; i < screens.length; ++i) {
+      strbf.add(screens[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+
+    //    getFileOutputCriterias()
+    TTK91TaskCriteria[] files = this.getFileOutputCriterias();
+    for (int i = 0; i < files.length; ++i) {
+      strbf.add(files[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+    
+
+    //    getExampleCode()
+    strbf.add(getExampleCode());
+    strbf.add(":");
+    
+
+    //    getTaskDescription()
+
+    strbf.add(getTaskDescription());
+    strbf.add(":");
+
+
+    //    getPublicInput()
+
+    int[] pubinput = getPublicInput();
+    for (int i = 0; i < pubinput.length; ++i) {
+      strbf.add(pubinput[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+
+
+    //    getHiddenInput()
+
+    int[] hiddeninput = getHiddenInput();
+    for (int i = 0; i < hiddeninput.length; ++i) {
+      strbf.add(hiddeninput[i]);
+      strbf.add("|");
+    }
+    strbf.add(":");
+
+
+    //    getCompareMethod()
+
+    strbf.add(getCompareMethod());
+    strbf.add(":");
+
+
+    //    getMaxCommands()
+
+    strbf.add(getMaxCommands());
+    strbf.add(":");
+    
+
+    //    getAcceptedSize()  
+
+    strbf.add(getAcceptedSize());
+    strbf.add(":");
+
+
+    //    getOptimalSize()
+
+    strbf.add(getOptimalSize());
+    strbf.add(":");
+
+
+    //    getRequiredCommands()
+
+    String[] req = getRequiredCommands();
+    for (int i = 0; i < req.length; ++i) {
+      strbf.add(req[i]);
+      strbf.add("|");
+    }    
+    strbf.add(":");
+
+
+    //    getForbiddenCommands()
+
+    String[] fbd = getForbiddenCommands();
+    for (int i = 0; i < fbd.length; ++i) {
+      strbf.add(fbd[i]);
+      strbf.add("|");
+    }    
+    strbf.add(":");
+
+  } // toString()
 
 } // public class TTK91TaskOptions
