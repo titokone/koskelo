@@ -383,4 +383,8 @@ public class TTK91AnalyseData{
 			return null;
 		}
 	}
+
+	public TTK91TaskOptions getTaskOptions() {
+		return taskOptions;
+	}
 }// class
