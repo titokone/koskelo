@@ -28,7 +28,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     private String taskID;
     private String language;
     private ParameterString initP;
-    private TTK91Core core;
+    private Control control1;
+    private Control control2;
+    private Control control3;
+    private Control control4;
+    private TTK91Core core; 
     private TTK91TaskOptions taskOptions;
     private TTK91Application application;
     private TTK91AnalyseResults results; //Uusi luokka.
@@ -191,6 +195,51 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     private void run() {
 
+	    int[] publicInput = taskOptions.getPublicInput();
+	    int[] hiddenInput = taskOptions.getHiddenInput();
+	    int compareMethod = taskOptions.getCompareMethod();
+
+	    
+	    /* Koska titokoneesta metodilla .getCPU() saadaan
+	     * vain viite controlin sisäiseen prosessiin käytetään
+	     * yhteensä maksissaan neljää controlia, kuitenkin
+	     * siten, että kullekin simulointikierrokselle
+	     * luodaan oma controlinsa.
+	     */
+
+	    if(publicInput != null) {
+
+		    // 1. simulointi
+		    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
+			    // simuloidaa malliratkaisu
+			    // 1. simulointi malliratkaisua
+
+		    }
+
+	    } else {
+
+		    // JOS titokoneelle erikoisesti pitää antaa syötteet
+		    // tämä else on tarpeellinen
+		    // 1.simulointi
+	    }
+
+	    if(hiddenInput != null {
+
+		    // 2. simulointi
+		    /* FIXME näinkö? mihin verrataan jos on kahdet syötteet
+		     * määritelty?
+		     */
+		    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
+			    // simuloidaa malliratkaisu
+
+		    	// 2. simulointi malliratkaisusta. FIXME, entä jos static?
+		    }
+
+	    } 
+	    // ei elseä sillä malliratkaisulle ei tarvita toista
+	    // simulaatiota jos ei ole piilotettuja syötteitä
+
+	    
 	//suorita simulointi 1-4 kertaa.
 
     }//run
