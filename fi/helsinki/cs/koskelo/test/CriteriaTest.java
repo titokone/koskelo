@@ -1,14 +1,11 @@
 package fi.helsinki.cs.koskelo.test;
 
 import java.util.*;
-//import junit.framework.*;
+import junit.framework.*;
 import fi.helsinki.cs.koskelo.common.*;
 import fi.helsinki.cs.koskelo.composer.*;
 
-public class CriteriaTest// extends TestCase {
-{
-
-
+public class CriteriaTest extends TestCase {
 	private TTK91TaskCriteria a;
 	private TTK91TaskCriteria b;
 	private TTK91TaskCriteria c;
@@ -18,42 +15,105 @@ public class CriteriaTest// extends TestCase {
 	private TTK91TaskCriteria g;
 	
 	public void setUp() throws InvalidTTK91CriteriaException{
-		TTK91TaskCriteria a = new TTK91TaskCriteria("(A < B);");
-		TTK91TaskCriteria b = new TTK91TaskCriteria("(L, A < B);");
-		TTK91TaskCriteria c = new TTK91TaskCriteria("(A <= B);");
-		TTK91TaskCriteria d = new TTK91TaskCriteria("(L, A <= B);");
-		TTK91TaskCriteria e = new TTK91TaskCriteria();
-		e.setFirstComparable("A");
-		e.setSecondComparable("B");
-		e.setComparator(e.LESS);
+		a = new TTK91TaskCriteria("(A < B);");
+		b = new TTK91TaskCriteria("(A > B);");
+		c = new TTK91TaskCriteria("(A <= B);");
+		d = new TTK91TaskCriteria("(A >= B);");
+		e = new TTK91TaskCriteria("(A != B);");
+		f = new TTK91TaskCriteria("(A == B);");
+		g = new TTK91TaskCriteria();
 	}
 	
-/*	public void testLessContructors() {
+	public void testLessContructors() {
 
 		Assert.assertTrue(
-				(e.getFirstComparable())
+				(b.getFirstComparable())
 				.equals(
 					a.getFirstComparable()
 					)
 				);
 		Assert.assertTrue(
-				(e.getSecondComparable())
+				(b.getSecondComparable())
 				.equals(
 					a.getSecondComparable()
 					)
 				);
+		Assert.assertFalse(
+				(b.getComparator())== a.getComparator()
+				);
 	
-		Assert.assertTrue(!
-				(e.getSecondComparable())
+	}
+
+
+	public void testSetTests() throws Exception{
+	System.out.println("Foo");	
+		g.setComparator(e.LESS);
+		g.setFirstComparable("A");
+		g.setSecondComparable("B");
+
+		try {
+			g.setFirstComparable("");
+			fail("Ei tyhj‰‰ merkkijonoa)");
+		} catch (Exception e) {
+			// t‰nne ei tulla
+		}
+			try {
+			g.setFirstComparable(null);
+			fail("Ei tyhj‰‰ merkkijonoa)");
+		} catch (Exception e) {
+			// t‰nne ei tulla
+		}
+			try {
+			g.setFirstComparable("(((");
+			fail("Ei tyhj‰‰ merkkijonoa)");
+		} catch (Exception e) {
+			// t‰nne ei tulla
+		}
+		g.setComparator(e.LESS);
+		g.setFirstComparable("A");
+		g.setSecondComparable("B");
+	
+		Assert.assertTrue(
+				(g.getFirstComparable())
 				.equals(
 					a.getFirstComparable()
 					)
 				);
-
+		Assert.assertTrue(
+				(g.getSecondComparable())
+				.equals(
+					a.getSecondComparable()
+					)
+				);
+		Assert.assertTrue(
+				(g.getComparator())== a.getComparator()
+				);
 
 	}
-*/
-	public static void main(String args[]) throws Exception{
+
+
+	public void testComparatorTests() {
+	
+		Assert.assertFalse(a.getComparator() == b.getComparator());
+		Assert.assertFalse(a.getComparator() == c.getComparator());
+		Assert.assertFalse(a.getComparator() == d.getComparator());
+		Assert.assertFalse(a.getComparator() == e.getComparator());
+		Assert.assertFalse(a.getComparator() == f.getComparator());
+		Assert.assertFalse(b.getComparator() == c.getComparator());
+		Assert.assertFalse(b.getComparator() == d.getComparator());
+		Assert.assertFalse(b.getComparator() == e.getComparator());
+		Assert.assertFalse(b.getComparator() == f.getComparator());
+		Assert.assertFalse(c.getComparator() == d.getComparator());
+		Assert.assertFalse(c.getComparator() == e.getComparator());
+		Assert.assertFalse(c.getComparator() == f.getComparator());
+		Assert.assertFalse(d.getComparator() == e.getComparator());
+		Assert.assertFalse(d.getComparator() == f.getComparator());
+		Assert.assertFalse(e.getComparator() == f.getComparator());
+	}
+
+/*	public static void main(String args[]) throws Exception{
 		new TTK91TaskCriteria("Foo;");
 	}
+*/
+	
 }
