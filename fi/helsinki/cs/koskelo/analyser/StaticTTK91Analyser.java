@@ -102,10 +102,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 
 	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
-	//GeneralAnalysis() a.k.a. "hilut"
-	//AnalyseMemory() Lauri
-	//AnalyseRegisters()
-	//AnalyseOutput()
+
+	//generalAnalysis() a.k.a. "hilut"
+	//analyseMemory() Lauri
+	//analyseRegisters()
+	//analyseOutput()
 
 	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
 
@@ -113,7 +114,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    feedback = TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
 	}
 	catch (CacheException e) {
-	    // FIXME: mit‰ tehd‰‰n
+	    feedback = TTK91FeedbackComposer.formFeedback("Error while retrieving error message :( "+e.getMessage() );
 	}
 	
 	return feedback;
