@@ -138,7 +138,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 
 			for(int i = 0; i < tmp.length(); i++) {
-				hiddenInput[i] = (tmp.get(i)).intValue();
+				hiddenInput[i] = ((Integer)(tmp.get(i))).intValue();
 
 			}
 
