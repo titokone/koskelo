@@ -32,15 +32,19 @@ public class TTK91AnalyserData{
 	private int analyseMethod;
 
 
+	private String publicInput;
+	private String hiddenInput;
 
 
 	// Opiskelijan ja opettajan ohjelmien näyttötulosteet
+	
 	private String studentPublicScreenOut;
 	private String studentHiddenScreenOut;
 	private String teacherPublicScreenOut;
 	private String teacherHiddenScreenOut;
 
 	//Opiskelijan ja opettajan tiedostotulosteet
+	
 	private String studentPublicFileOut;
 	private String studentHiddenFileOut;
 	private String teacherPublicFileOut;
@@ -49,8 +53,11 @@ public class TTK91AnalyserData{
 
 	// Titokoneiden muistit:
 
-	private    RandomAccessMemory studentMemory; // = (RandomAccessMemory) controlPublicInputStudent.getMemory();
-	private    RandomAccessMemory teacherMemory; // = null;
+	private    RandomAccessMemory studentPublicMemory; 
+	private    RandomAccessMemory teacherPublicMemory; 
+	private    RandomAccessMemory studentHiddenMemory; 
+	private    RandomAccessMemory teacherHiddenMemory;
+	
 	//		    if (controlPublicInputTeacher != null) {
 	//			                teacherMemory = (RandomAccessMemory) controlPublicInputTeacher.getMemory();
 	//					    }
@@ -61,18 +68,54 @@ public class TTK91AnalyserData{
 	/* public String getStudentScreenOut */
 	
 
-	public TTK91AnalyserData(
+	public TTK91AnalyseData(
 			String studentapp, 
 			String teacherapp, 
-			int[] publicInput, 
-			int[] hiddenInput
+			TTK91TaskOptions taskOptions
 			) {
 
-
-		// run();
-		// setMemories();
-		// setOutput();
-		// setRegisters();
+		this.taskOptions = taskOptions;
+				this.studentApplication = studentapp;
+		this.teacherApplication = teacherapp;
+	
+		getTaskData();
+		run();
+		setOutput();
 	}
 
+
+	private void getTaskData() {
+		this.publicInput = parseInputString(
+				this.taskOptions.getPublicInput()
+				);
+		this.hiddenInput = parseInputString(
+				this.taskOptions.getHiddenInput()
+				);
+
+		this.steps = taskOptions.getMaxCommands();
+		
+	}
+	
+
+	
+	private void run() {
+	
+
+		// Aja ohjelmat.
+		// Aseta muisti,
+		// Aseta rekisterit,
+		// Aseta tulosteet.
+	
+	}
+
+	private String parseInputString(int[] inputTable) {
+
+		String input = "";
+
+
+		return input;
+	}
+
+	/* Tarvitaan vielä: sopivat getterit */
+	
 }// class
