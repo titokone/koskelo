@@ -203,14 +203,6 @@ public class TTK91TaskCriteria{
 
   String[] parameters;
 
-  parameters = cleanCriteria.split("<");
-  if(parameters.length == 2) {
-   setFirstComparable(parameters[0]);
-   setSecondComparable(parameters[1]);
-   setComparator(this.LESS);
-   return;
-  }//if
-
   parameters = cleanCriteria.split("<=");
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
@@ -227,14 +219,14 @@ public class TTK91TaskCriteria{
    return;
   }//if
 
-  parameters = cleanCriteria.split(">");
+   parameters = cleanCriteria.split("<");
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.GREATER);
+   setComparator(this.LESS);
    return;
   }//if
-
+ 
   parameters = cleanCriteria.split(">=");
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
@@ -251,11 +243,11 @@ public class TTK91TaskCriteria{
    return;
   }//if
 
-  parameters = cleanCriteria.split("=");
+  parameters = cleanCriteria.split(">");
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.EQUAL);
+   setComparator(this.GREATER);
    return;
   }//if
 
@@ -272,6 +264,14 @@ public class TTK91TaskCriteria{
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
    setComparator(this.NOTEQUAL);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("=");
+  if(parameters.length == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.EQUAL);
    return;
   }//if
 
