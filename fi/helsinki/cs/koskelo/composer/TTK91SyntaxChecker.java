@@ -1112,7 +1112,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("acceptedSize")
+				feedbackBox("acceptedSize", false)
 				);
 		// optimikoko
 		page = page.concat(
@@ -1124,7 +1124,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("optimalSize")
+				feedbackBox("optimalSize", false)
 				);
 		// vaaditut käskyt
 		page = page.concat(
@@ -1136,7 +1136,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("requiredCommands")
+				feedbackBox("requiredCommands", true)
 				);
 		// kielletyt käskyt
 		page = page.concat(
@@ -1148,7 +1148,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("forbiddenCommands")
+				feedbackBox("forbiddenCommands", true)
 				);
 		// rekisterikriteerit
 		page = page.concat(
@@ -1160,7 +1160,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("register")
+				feedbackBox("register", true)
 				);
 		// muistikriteerit
 		page = page.concat(
@@ -1172,7 +1172,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("memory")
+				feedbackBox("memory", true)
 				);
 
 		// muistiviitteet
@@ -1184,7 +1184,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("memoryReferences")
+				feedbackBox("memoryReferences", false)
 				);
 		// näyttötulosteet
 		page = page.concat(
@@ -1196,7 +1196,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("screenOutput")
+				feedbackBox("screenOutput", true)
 				);
 		// tiedostotulosteet
 		page = page.concat(
@@ -1208,7 +1208,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("fileOutput")
+				feedbackBox("fileOutput", true)
 				);
 		// submit
 		page = page.concat(
@@ -1237,7 +1237,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	/**
 	 * Palautesivun palautelaatikot tulostava metodi
 	 */
-	private String feedbackBox(String name) {
+	private String feedbackBox(String name, boolean quality) {
 
 
 		// if edit, lisätään vanha teksti.
@@ -1278,6 +1278,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		tmp = tmp + "</textarea>\n";
+		
+		if(quality){
 		tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
 			"\""+
 			name+
@@ -1291,8 +1293,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	
 		
 		}
-		tmp = tmp +	"</textarea>\n"+
-			"</p>\n";
+		tmp = tmp +	"</textarea>\n";
+		}
+		
+		tmp = tmp + "</p>\n";
 
 		return tmp;
 	}// feedbackBox
