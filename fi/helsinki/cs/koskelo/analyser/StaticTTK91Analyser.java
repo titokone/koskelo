@@ -306,7 +306,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     }//run
 
 
-    private void generalAnalysis() {
+    private void generalAnalysis() { // Laurin heiniä FIXME: kesken
 
 	/* Kaikille seuraaville kenties 
 	 */
