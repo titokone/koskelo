@@ -11,19 +11,27 @@ public class TTK91AnalyserData{
 
 	// Controllit joilta saadaan dataa:
 
-	private TTK91Core controlCompiler;           // k‰‰nt‰j‰ -> saadaan mahdolliset k‰‰nnˆsvirheet n‰timmin (kunhan ajetaan malli ensin... 
+	private TTK91Core controlCompiler;    
+	// k‰‰nt‰j‰ -> saadaan mahdolliset k‰‰nnˆsvirheet n‰timmin (kunhan ajetaan malli ensin... 
 	// Jos se ei k‰‰nny, ei varmaan ole tarvetta k‰‰nt‰‰ opiskelijankaan ratkaisua...
-	private TTK91Core controlPublicInputStudent; // publicinputeilla tai ilman unputteja opiskelijan vastaus
-	private TTK91Core controlPublicInputTeacher; // publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
-	private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
-	private TTK91Core controlHiddenInputTeacher; // hiddeninputeilla jos ovat m‰‰ritelty malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+	private TTK91Core controlPublicInputStudent;
+	// publicinputeilla tai ilman unputteja opiskelijan vastaus
+	private TTK91Core controlPublicInputTeacher; 
+	// publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+	private TTK91Core controlHiddenInputStudent;
+	// hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
+	private TTK91Core controlHiddenInputTeacher;
+	// hiddeninputeilla jos ovat m‰‰ritelty malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
 
 	// Teht‰v‰nm‰‰rittelydata
 	private TTK91TaskOptions taskOptions;        // taskoptions
 
 	// Malliratkaisu
-	private String[] exampleCode;                // haetaan taskoptionsista - malliratkaisun koodi
 
+	private String exampleCode;                // haetaan taskoptionsista - malliratkaisun koodi
+	private String[] answer;
+	
+	
 	// K‰‰nnetyt koodit
 	private TTK91Application studentApplication; // opiskelijan vastaus
 	private TTK91Application teacherApplication; // malliratkaisu
@@ -58,31 +66,28 @@ public class TTK91AnalyserData{
 	private    RandomAccessMemory studentHiddenMemory; 
 	private    RandomAccessMemory teacherHiddenMemory;
 	
-	//		    if (controlPublicInputTeacher != null) {
-	//			                teacherMemory = (RandomAccessMemory) controlPublicInputTeacher.getMemory();
-	//					    }
-
-
-	/* public void run( app, app, kbd, kbd ) */ // student, teacher jne
-	/* public RandomAccessMemory getStudentPublicMemory() */
-	/* public String getStudentScreenOut */
-	
 
 	public TTK91AnalyseData(
-			String studentapp, 
-			String teacherapp, 
+			String[] answer, 
 			TTK91TaskOptions taskOptions
 			) {
 
 		this.taskOptions = taskOptions;
-				this.studentApplication = studentapp;
-		this.teacherApplication = teacherapp;
-	
+		this.answer = answer;
+
+		getApplications;
 		getTaskData();
 		run();
 		setOutput();
 	}
 
+	private void getApplications() {
+
+
+		// get the student app and the
+		// teacher app and make them into applications
+		
+	}
 
 	private void getTaskData() {
 		this.publicInput = parseInputString(
