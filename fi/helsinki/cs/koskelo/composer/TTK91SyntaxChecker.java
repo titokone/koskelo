@@ -815,7 +815,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				splitted1[i] = splitted1[i].replaceAll(")","");
 				splitted1[i].trim();
 				splitted2[i] = splitted1[i].split(",");
-				splitted2[i][0].trim();
+				splitted2[i][0].trim(); // kaiva t‰‰lt‰ L
 				splitted2[i][1].trim();
 				outPutTable[i][0] = parsePostInt(
 						splitted2[i][0]
@@ -834,23 +834,57 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			String commandString
 			) throws Exception {
 
-		String[] tmp = commandString.split(",");
+		String[] tmp = commandString.split(";");
+
+
+		// t‰ss‰ vaiheessa joko (ADD) tai (L,ADD)
 
 		//siivotaan kukin
 		for(int i = 0; i < tmp.length; i++) {
+			tmp[i].replaceAll("(","");
+			tmp[i].replaceAll(")","");
 			tmp[i].trim();
 		} // for
 
+		// nyt joko ADD tai L,ADD
 		for(int i = 0; i < tmp.length; i++) {
 
-			if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
-					validateTTK91Command(tmp[i])
-			  ) {
-				// ok!
-			} else {
-				throw new Exception("Invalid TTK-91 command");
-			} // if-else
+			String[] tmp2 = tmp[i].split(",");
+
+			if(tmp2.length > 1) { // ekassa osassa varmaan L ja toisessa ADD
+				if(tmp2[0].equalsIgnoreCase("L")) { // ok, ekassa L
+					if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
+							validateTTK91Command(tmp2[2])
+					  ) {
+						// Tokassa ADD
+					} else {
+						throw new Exception("Invalid TTK-91 command");
+					} // if-else
+				} else {
+					// hups, eka ei ollutkaan L
+					throw new Exception("Invalid quiality part");
+				}
+
+			} else { // ei pilkkua joiten pit‰isi olla pelkk‰ k‰sky
+				if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
+						validateTTK91Command(tmp[i])
+				  ) {
+					// ok!
+				} else {
+					throw new Exception("Invalid TTK-91 command");
+				} // if-else
+
+			}
 		}// for
+
+		// p‰‰stiin t‰nne joten eka splittaus tehd‰‰n uusiksi koska
+		// merkkijonoja muutettiin v‰lill‰. Ja koska p‰‰stiin t‰nne
+		// siit‰ ei seurannut mit‰‰n kamalaa. Trimmataan viel‰ ylim‰‰r‰inen
+		// whitespace pois.
+		tmp = commandString.split(";");
+		for(int i = 0; i < tmp.length; i++) {
+			tmp[i].trim();
+		}
 
 		return tmp;
 
