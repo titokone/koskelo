@@ -23,12 +23,13 @@ public class TTK91AnalyseResults{
     private Boolean memoryReferencesQualityCriteria;
 
     // Statistiikkatiedot
-    
+    // julkisilla syötteillä ajetusta opiskelijan ratkaisusta
+
     private int[] registers;
     private int[] memory;
     private int[] crt;
     private int[] file;
-    private int memoryReferences;
+    private int memoryReferences; 
     private int stackSize;
     private int codeSegmentSize;
     private int dataSegmentSize;
