@@ -1,5 +1,5 @@
 
-import TTK91CompileSource; // FIXME: Tämä kuuluu oikeasti titokoneen rajapintaluokkaan, nyt ruma kehitysaikainen kludge
+// import TTK91CompileSource; // FIXME: Tämä kuuluu oikeasti titokoneen rajapintaluokkaan, nyt ruma kehitysaikainen kludge
 // pitäisi olla tyyliin
 // import fi.hu.cs.ttk91.TTK91CompileSource;
 
@@ -16,7 +16,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     String language;
     ParameterString initP;
 
-
     /**
      * Konstruktori, joka luo uuden alustamattoman StaticTTK91Analyserin, alustettava init-metodilla.
      *
@@ -28,7 +27,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.language = "FI";
 	this.initP = null;
     } // StaticTTK91Analyser()
-
 
 
     /**
@@ -44,7 +42,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.language = language;
 	this.initP = new ParameterString(initparams);
     } // StaticTTK91Analyser(String taskid, String language, String initparams)
-
 
 
     /**
@@ -68,16 +65,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @return Feedback 
      */
 
-    public Feedback analyse(String[] answer, String params) {
-
-	TTK91CompileSource src;
-	
+    public Feedback analyse(String[] answer, String params) { // FIXME: varsinainen toiminnallisuus puuttuu
+	TTK91CompileSource src; 
 	src = StaticTTK91Analyser.parseSourceFromAnswer(answer);
-	
-
 	return new Feedback();
     } // analyse
-
 
 
     /**
@@ -89,6 +81,15 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.cache = c;
     } // registerCache
 
+
+    /**
+     * Apumetodi, jolla kaivetaan lähdekoodi vastauksesta
+     * @param answer
+     */
+
+    private static TTK91CompileSource parseSourceFromAnswer(String[] answer) {
+	return (TTK91CompileSource) new Source(answer[0]); // FIXME: toimiiko tosiaan näin helposti?
+    } // parseSourceFromAnswer
     
 
 }
