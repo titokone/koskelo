@@ -13,7 +13,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		doPost(req, resp);
 	}// doGet
-	
+
 	/** Toteuttaa keskeisen osan luokan toiminnoista, eli tarkistaa
 	 * syötettyjen kriteerien syntaksin ja generoi uuden sivun, jolla
 	 * voi syöttää palautteen. Jos jonkin kriteerin syntaksi on 
@@ -31,12 +31,23 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		// lukemsita varten parametrista req.
 		// Jokainen arvo tarkistetaan siten että katsotaan onko
 		// sen tyyppi ja syntaksi oikein.
-		
-		private String reqMaxCommands; // suorit. konekäskyjen lkm
-		private String reqExampleCode; // malliratkaisu
-		private String reqTaskDescription; // tehtävänantoteksti
-		private String reqPublicInput; // julkiset syötteet
-		private String reqHiddenInput; // piilotetut syötteet
+
+		// suoritettavien konekäskyjen maksimimäärä
+		private String reqMaxCommands = req.getParameter(
+				"max_commands"
+				);
+		// malliratkaisu
+		private String reqExampleCode;
+		// tehtävänanto
+		private String reqTaskDescription;
+		// julkiset syötteet
+		private String reqPublicInput = req.getParameter(
+				"public_input"
+				);
+		// piilotetut syötteet
+		private String reqHiddenInput = req.getParameter(
+				"hidden_input"
+				);
 		private String reqCompareMethod; // verrataanko simulaatioon
 		private String reqAcceptedSize; // miksi tämä on?
 		private String reqOptimalSize; // ratkaisun suosituskoko
@@ -45,11 +56,11 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		private String reqMemoryValues; //muistipaikkojen arvot
 		private String reqScreenOutput; // näytön tulosteet
 		private String reqFileOutput; // tulosteet tiedostoon
-		
+
 		private int maxCommands;
-		private String ExampleCode; //TODO tarkista koodin kääntyminen
+		private String exampleCode; //TODO tarkista koodin kääntyminen
 		private Strking taskDescription; // tarviiko tarkistaa?
-		private int[] publicInput; // 1,2,3,4... 
+		private int[] publicInput; 
 		private int[] hiddenInput; // 1,2,3,5,2...
 		private int compareMethod; // 0 = static, 1 = simuloitu
 		private int acceptedSize; // 200 riviä
@@ -63,16 +74,90 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		// TODO yritetään saada parsittua saatu data
 		try { // maxCommands
-		
-			maxCommands = Integer.parseint(
-					req.getParameter(maxCommands);
-					);
-			
-		} catch (Exception e) { //Jokin kentistä oli virheellinen
+			maxCommands = (Integer.parseint(reqHiddenInput))
+				.getValue();
+
+		} catch (Exception e) { 
 			// TODO lisää virheen palauttaminen
-			req.getRequestDispatcher("TTK91Composer.jsp")
+			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, resp);
+			return;
 		}// catch
+
+		try { // exampleCode
+
+		} catch (Exception e) {
+
+		}
+
+		try { // taskDescription
+
+		} catch (Exception e) {
+
+		}
+
+		try { // publicInput
+
+			StringTokenizer st = new StringTokenizer(
+					reqPublicInput, ","
+					);
+			Vector tmp = new Vector();
+
+			while(st.hasMoreTokens()){
+
+				tmp.add(Integer.parseInt(st.nextToken()));
+			}
+
+			publicInput = new int[tmp.length()];
+
+
+			for(int i = 0; i < tmp.length(); i++) {
+				publicInput[i] = (tmp.get(i)).intValue();
+
+			}
+
+		} catch (Exception e) {
+			// TODO lisää virheen palauttaminen
+			req.getRequestDispatcher("StaticTTK91Composer.jsp")
+				.forward(req, resp);
+			return;
+		}
+
+		try { // hiddenInput
+			StringTokenizer st = new StringTokenizer(
+					reqHiddenInput, ","
+					);
+			Vector tmp = new Vector();
+
+			while(st.hasMoreTokens()){
+
+				tmp.add(Integer.parseInt(st.nextToken()));
+			}
+
+			hiddenInput = new int[tmp.length()];
+
+
+			for(int i = 0; i < tmp.length(); i++) {
+				hiddenInput[i] = (tmp.get(i)).intValue();
+
+			}
+
+
+		} catch (Exception e) {
+			// TODO lisää virheen palauttaminen
+			req.getRequestDispatcher("StaticTTK91Composer.jsp")
+				.forward(req, resp);
+			return;
+
+		}
+
+		try { // compareMethod
+
+		} catch (Exception e) {
+
+		}
+
+
 
 	} // doPost
 
@@ -88,10 +173,10 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 	 * doPostin parsiessa kriteereitä erilleen saamastaan 
 	 * HttpRequestista.
 	 */
-	
+
 	private String[] parsePostText(String s) {
 
 	}//parsePostText
 
-	
+
 } //class
