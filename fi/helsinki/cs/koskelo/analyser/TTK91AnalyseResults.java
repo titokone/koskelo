@@ -108,64 +108,64 @@ public class TTK91AnalyseResults{
 		this.memoryReferencesQuality = b;
 	}
 
-	public void getRegisters(boolean b) {
+	public boolean getRegisters(boolean b) {
 		return this.registers;
 	}
 
-	public void getMemory(boolean b) {
+	public boolean getMemory(boolean b) {
 		return this.memory;
 	}
 
-	public void getScreenOutput(boolean b) {
+	public boolean getScreenOutput(boolean b) {
 		return this.screenOutput;
 	}
-	public void getFileOutput(boolean b) {
+	public boolean getFileOutput(boolean b) {
 		return this.fileOutput;
 	}
-	public void getRequiredCommands(boolean b) {
+	public boolean getRequiredCommands(boolean b) {
 		return this.requiredCommands;
 	}
-	public void getForbiddenCommands(boolean b) {
+	public boolean getForbiddenCommands(boolean b) {
 		return this.forbiddenCommands;
 	}
 
-	public void getAcceptedSize(boolean b) {
+	public boolean getAcceptedSize(boolean b) {
 		return this.acceptedSize;
 	}
 
-	public void getMemoryReferences(boolean b) {
+	public boolean getMemoryReferences(boolean b) {
 		return this.memoryReferences;
 	}
 
-	public void getRegistersQuality(boolean b) {
+	public boolean getRegistersQuality(boolean b) {
 		return this.registersQuality;
 	}
 
-	public void getMemoryQuality(boolean b) {
+	public boolean getMemoryQuality(boolean b) {
 		return this.memoryQuality;
 	}
 
-	public void getScreenOutputQuality(boolean b) {
+	public boolean getScreenOutputQuality(boolean b) {
 		return this.screenOutputQuality;
 	}
 
-	public void getFileOutputQuality(boolean b) {
+	public boolean getFileOutputQuality(boolean b) {
 		return this.fileOutputQuality;
 	}
 
-	public void getRequiredCommandsQuality(boolean b) {
+	public boolean getRequiredCommandsQuality(boolean b) {
 		return this.requiredCommandsQuality;
 	}
 
-	public void getForbiddenCommandsQuality(boolean b) {
+	public boolean getForbiddenCommandsQuality(boolean b) {
 		return this.forbiddenCommandsQuality;
 	}
 
-	public void getOptimalSize(boolean b) {
+	public boolean getOptimalSize(boolean b) {
 		return this.optimalSize;
 	}
 	
-	public void getMemoryReferencesQuality(boolean b) {
+	public boolean getMemoryReferencesQuality(boolean b) {
 		return this.memoryReferencesQuality;
 	}
 
