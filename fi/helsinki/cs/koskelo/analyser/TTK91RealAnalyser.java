@@ -13,18 +13,37 @@ import fi.hu.cs.ttk91.TTK91Cpu;
 import java.util.HashMap;
 
 
+/** Varsinainen analysointiluokka. Luokassa toteutetaan static/fillin
+ * analysereiden varsinainen toiminnallisuus. Käytännössä siis StaticTTK91Analyser
+ * kutsuu tätä luokkaa halutessaan analysoida tehtävän.
+ */
+
 public class TTK91RealAnalyser {
 
     private TTK91AnalyseData analyseData;
     private TTK91TaskOptions taskOptions;
     private String answer;
 
+
+    /** Luo ja alustaa järjestelmän varinaisen analysaattorin. Tätä
+     * osaa voinee käyttää myös dynaamisen tehtävän toteutukseen.
+     *
+     * @param analyseData Valmis analyseData - olio johon on alustettu
+     * sopivat parametrit
+     */
+    
     public TTK91RealAnalyser(TTK91AnalyseData analyseData) {
 	this.analyseData = analyseData;
 	this.taskOptions = analyseData.getTaskOptions();
 	this.answer = analyseData.getAnswer();
     }
 
+    /** Analysointimetodi. Tämän kutsuminen olion luomisen jälkeen
+     * riittää saamaan tehtävän analysoinnin valmiiksi.
+     *
+     * @return analysoinnin tulos
+     */
+    
     public TTK91AnalyseResults analyse() {
 
 	TTK91AnalyseResults results = new TTK91AnalyseResults();
@@ -46,7 +65,6 @@ public class TTK91RealAnalyser {
     }
 
     private void generalAnalysis(TTK91AnalyseResults results) {
-	System.err.println("******************** GENERAL_ANALYSIS ALKAA *******************");
 
 	//  -Suoritettujen konekäskyjen määrä (oikeellisuus)
 	int pubInputSize = this.analyseData.getCommandAmount();
@@ -55,8 +73,6 @@ public class TTK91RealAnalyser {
 	if (sizeLimit > 0) {
 	    results.setAcceptedSize( (pubInputSize <= sizeLimit) && 
 				     (hiddenInputSize <= sizeLimit) );
-	    System.err.println("pubsize: "+pubInputSize+" hidsize: "+hiddenInputSize+" sizeLimit: "+sizeLimit);
-	    System.err.println("Vertailun tulos: "+ ((pubInputSize <= sizeLimit) && (hiddenInputSize <= sizeLimit)));
 	}
 	//	  -Ihannekoko (laatu)
 	int optimalSize = this.taskOptions.getOptimalSize();
@@ -154,7 +170,6 @@ public class TTK91RealAnalyser {
 								this.answer,
 								cmd[0]
 								); 
-		    System.err.println("CommandNotFound palautti: "+forbiddenCommand);
 		    if (!forbiddenCommand.booleanValue()) {
 			break; // kielletty käsky löytyi -> lopetetaan
 		    }
@@ -180,12 +195,11 @@ public class TTK91RealAnalyser {
 
     /**
      * Tutkitaan muistipaikkojen ja muuttujien sisältöön liittyvät
-     * kriteerit Toimintaperiaate: kaydaan muistipaikkoihin ja
-     * muuttujiin liittyvia kriteereja lapi, kunnes joko 1) kaikki on
-     * kayty lapi tai 2) seka jokin oikeellisuus- etta jokin
-     * laatukriteeri on pettanyt. 
+     * kriteerit. Toimintaperiaate: käydään muistipaikkoihin ja
+     * muuttujiin liittyvia kriteerejä läpi, kunnes joko 1) kaikki on
+     * kayty läpi tai 2) sekä jokin oikeellisuus- etta jokin
+     * laatukriteeri on pettänyt. 
      *
-     * FIXME: kuvaus uusiksi
      */
 
     private void analyseMemory(TTK91AnalyseResults results) {
@@ -482,7 +496,7 @@ public class TTK91RealAnalyser {
     }
 
     /**
-     * Apumetodi rekistereiden sisältöön liittyvien kriteerien analysointiin
+     * Apumetodi rekistereiden sisältöön liittyvien kriteerien analysointiin.
      * 
      */
 
