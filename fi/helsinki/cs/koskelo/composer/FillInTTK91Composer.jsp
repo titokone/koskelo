@@ -180,13 +180,13 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
   </p>
 
   <p>
-    <input type="radio" name="compareMethod" value="radiobutton">
+    <input type="radio" name="compareMethod" value="0">
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod1Header", lang)%>
   </p>
   
   <p> 
-    <input type="radio" name="compareMethod" value="radiobutton" checked>
+    <input type="radio" name="compareMethod" value="1" checked>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
