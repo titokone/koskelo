@@ -7,6 +7,10 @@
 <%@
  page import="fi.hy.eassari.showtask.trainer.TaskBase"
 %>
+<%@
+ page import="fi.helsinki.cs.koskelo.common.TTK91Constant"
+%>
+
 
 <%
                     //resolve selected language
@@ -245,13 +249,13 @@ task = (TaskDTO)
   </p>
 
   <p>
-    <input type="radio" name="compareMethod" value="0">
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_SIMULATED%>">
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod1Header", lang)%>
   </p>
   
   <p> 
-    <input type="radio" name="compareMethod" value="1" checked>
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_STATIC%>" checked>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
