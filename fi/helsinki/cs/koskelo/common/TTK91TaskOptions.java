@@ -85,7 +85,6 @@ public class TTK91TaskOptions {
   /**
    * Lis‰‰ rekisterin kriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
-   * FIXME
    */
   public void setRegisterCriterias(TTK91TaskCriteria[] crit) {
     this.regcrits = new Vector();
@@ -107,7 +106,6 @@ public class TTK91TaskOptions {
   /**
    * Lis‰‰ muistipaikka- tai muuttujakriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
-   * FIXME
    */
   public void setMemoryCriterias(TTK91TaskCriteria[] crit) {
     this.memcrits = new Vector();
@@ -129,7 +127,6 @@ public class TTK91TaskOptions {
   /**
    * Lis‰‰ n‰ytˆn tulosteeseen liittyv‰t kriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
-   * FIXME tyyppi muuttuu
    */
   public void setScreenOutputCriterias(TTK91TaskCriteria[] crit) {
     this.screenoutput = crit;
@@ -151,7 +148,6 @@ public class TTK91TaskOptions {
   /**
    * Lis‰‰ tiedostoon tulostamiseen liittyv‰t kriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
-   * FIXME tyyppi muuttuu
    */
   public void setFileOutputCriterias(TTK91TaskCriteria[] crit) {
     this.fileoutput = crit;
