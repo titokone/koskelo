@@ -10,52 +10,51 @@ import fi.hy.eassari.taskdefinition.util.datastructures.*;
 
 public class TTK91TaskParser {
 
- private final String OPTIONS_KEY = "fi.helsinki.cs.koskelo.common.TTK91TaskOptions";
- private TTK91TaskOptions options;
+ private static final String OPTIONS_KEY = "fi.helsinki.cs.koskelo.common.TTK91TaskOptions";
 
- private final String REGISTER_VALUES  = "registerValues";
- private final String MEMORY_VALUES = "memoryValues";
- private final String SCREEN_OUTPUT = "screenOutput";
- private final String FILE_OUTPUT = "fileOutput";
+ private static final String REGISTER_VALUES  = "registerValues";
+ private static final String MEMORY_VALUES = "memoryValues";
+ private static final String SCREEN_OUTPUT = "screenOutput";
+ private static final String FILE_OUTPUT = "fileOutput";
 
- private final String EXAMPLE_CODE = "exampleCode";
- private final String TASK_DESCRIPTION = "taskDescription";
- private final String PUBLIC_INPUT = "publicInput";
- private final String HIDDEN_INPUT = "hiddenInput";
- private final String COMPARE_METHOD = "compareMethod";
- private final String MAX_COMMANDS = "maxCommands";
- private final String ACCEPTED_SIZE = "acceptedSize";
- private final String OPTIMAL_SIZE = "optimalSize";
- private final String MEMORY_REFERENCES = "memoryReferences";
- private final String REQUIRED_COMMANDS = "requiredCommands";
- private final String FORBIDDEN_COMMANDS = "forbiddenCommands";
+ private static final String EXAMPLE_CODE = "exampleCode";
+ private static final String TASK_DESCRIPTION = "taskDescription";
+ private static final String PUBLIC_INPUT = "publicInput";
+ private static final String HIDDEN_INPUT = "hiddenInput";
+ private static final String COMPARE_METHOD = "compareMethod";
+ private static final String MAX_COMMANDS = "maxCommands";
+ private static final String ACCEPTED_SIZE = "acceptedSize";
+ private static final String OPTIMAL_SIZE = "optimalSize";
+ private static final String MEMORY_REFERENCES = "memoryReferences";
+ private static final String REQUIRED_COMMANDS = "requiredCommands";
+ private static final String FORBIDDEN_COMMANDS = "forbiddenCommands";
 
- private final String REGISTER_FEEDBACK_POSITIVE = "registerFeedbackPositive";
- private final String REGISTER_FEEDBACK_NEGATIVE = "registerFeedbackNegative";
- private final String REGISTER_QUALITY_FEEDBACK = "registerQualityFeedback";
- private final String MEMORY_FEEDBACK_POSITIVE = "memoryFeedbackPositive";
- private final String MEMORY_FEEDBACK_NEGATIVE = "memoryFeedbackNegative";
- private final String MEMORY_QUALITY_FEEDBACK = "memoryQualityFeedback";
- private final String SCREEN_OUTPUT_FEEDBACK_POSITIVE = "screenOutputFeedbackPositive";
- private final String SCREEN_OUTPUT_FEEDBACK_NEGATIVE = "screenOutputFeedbackNegative";
- private final String SCREEN_OUTPUT_QUALITY_FEEDBACK = "screenOutputQualityFeedback";
- private final String FILEOUTPUT_FEEDBACK_POSITIVE = "fileOutputFeedbackPositive";
- private final String FILEOUTPUT_FEEDBACK_NEGATIVE = "fileOutputFeedbackNegative";
- private final String FILE_OUTPUT_QUALITY_FEEDBACK = "fileOutputQualityFeedback";
- private final String REQUIRED_COMMANDS_FEEDBACK_POSITIVE = "requiredCommandsFeedbackPositive";
- private final String REQUIRED_COMMANDS_FEEDBACK_NEGATIVE = "requiredCommandsFeedbackNegative";
- private final String REQUIRED_COMMANDS_QUALITY_FEEDBACK = "requiredCommandsQualityFeedback";
- private final String FORBIDDEN_COMMANDS_FEEDBACK_POSITIVE = "forbiddenCommandsFeedbackPositive";
- private final String FORBIDDEN_COMMANDS_FEEDBACK_NEGATIVE = "forbiddenCommandsFeedbackNegative";
- private final String FORBIDDEN_COMMANDS_QUALITY_FEEDBACK = "forbiddenCommandsQualityFeedback";
- private final String ACCEPTED_SIZE_FEEDBACK_POSITIVE = "acceptedSizeFeedbackPositive";
- private final String ACCEPTED_SIZE_FEEDBACK_NEGATIVE = "acceptedSizeFeedbackNegative";
- private final String OPTIMAL_SIZE_FEEDBACK_POSITIVE = "optimalSizeFeedbackPositive";
- private final String OPTIMAL_SIZE_FEEDBACK_NEGATIVE = "optimalSizeFeedbackNegative";
- private final String MEMORY_REFERENCES_FEEDBACK_POSITIVE = "memoryReferencesFeedbackPositive";
- private final String MEMORY_REFERENCES_FEEDBACK_NEGATIVE = "memoryReferencesFeedbackNegative";
+ private static final String REGISTER_FEEDBACK_POSITIVE = "registerFeedbackPositive";
+ private static final String REGISTER_FEEDBACK_NEGATIVE = "registerFeedbackNegative";
+ private static final String REGISTER_QUALITY_FEEDBACK = "registerQualityFeedback";
+ private static final String MEMORY_FEEDBACK_POSITIVE = "memoryFeedbackPositive";
+ private static final String MEMORY_FEEDBACK_NEGATIVE = "memoryFeedbackNegative";
+ private static final String MEMORY_QUALITY_FEEDBACK = "memoryQualityFeedback";
+ private static final String SCREEN_OUTPUT_FEEDBACK_POSITIVE = "screenOutputFeedbackPositive";
+ private static final String SCREEN_OUTPUT_FEEDBACK_NEGATIVE = "screenOutputFeedbackNegative";
+ private static final String SCREEN_OUTPUT_QUALITY_FEEDBACK = "screenOutputQualityFeedback";
+ private static final String FILEOUTPUT_FEEDBACK_POSITIVE = "fileOutputFeedbackPositive";
+ private static final String FILEOUTPUT_FEEDBACK_NEGATIVE = "fileOutputFeedbackNegative";
+ private static final String FILE_OUTPUT_QUALITY_FEEDBACK = "fileOutputQualityFeedback";
+ private static final String REQUIRED_COMMANDS_FEEDBACK_POSITIVE = "requiredCommandsFeedbackPositive";
+ private static final String REQUIRED_COMMANDS_FEEDBACK_NEGATIVE = "requiredCommandsFeedbackNegative";
+ private static final String REQUIRED_COMMANDS_QUALITY_FEEDBACK = "requiredCommandsQualityFeedback";
+ private static final String FORBIDDEN_COMMANDS_FEEDBACK_POSITIVE = "forbiddenCommandsFeedbackPositive";
+ private static final String FORBIDDEN_COMMANDS_FEEDBACK_NEGATIVE = "forbiddenCommandsFeedbackNegative";
+ private static final String FORBIDDEN_COMMANDS_QUALITY_FEEDBACK = "forbiddenCommandsQualityFeedback";
+ private static final String ACCEPTED_SIZE_FEEDBACK_POSITIVE = "acceptedSizeFeedbackPositive";
+ private static final String ACCEPTED_SIZE_FEEDBACK_NEGATIVE = "acceptedSizeFeedbackNegative";
+ private static final String OPTIMAL_SIZE_FEEDBACK_POSITIVE = "optimalSizeFeedbackPositive";
+ private static final String OPTIMAL_SIZE_FEEDBACK_NEGATIVE = "optimalSizeFeedbackNegative";
+ private static final String MEMORY_REFERENCES_FEEDBACK_POSITIVE = "memoryReferencesFeedbackPositive";
+ private static final String MEMORY_REFERENCES_FEEDBACK_NEGATIVE = "memoryReferencesFeedbackNegative";
 
- public TaskDTO assembleStaticTTK91Task(
+ public static TaskDTO assembleStaticTTK91Task(
 		PostParameterParser post,
 		HttpSession session) {
 
@@ -63,7 +62,7 @@ public class TTK91TaskParser {
 
  }//assembleStaticTTK91Task
 
- public TaskDTO assembleFillInTTK91Task(
+ public static TaskDTO assembleFillInTTK91Task(
 	 	PostParameterParser post,
 		HttpSession session) {
 
@@ -71,11 +70,13 @@ public class TTK91TaskParser {
 
  }//assembleFillInTTK91Task
 
- private TaskDTO assemble(
+ private static TaskDTO assemble(
 		 PostParameterParser post,
 		 HttpSession session) {
 
-  this.options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
+  TTK91TaskOptions options;
+
+  options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
   TaskDTO newTask = new TaskDTO();
 
   TTK91TaskCriteria[] rc = options.getRegisterCriterias();
@@ -84,10 +85,10 @@ public class TTK91TaskParser {
   TTK91TaskCriteria[] mc = options.getMemoryCriterias();
   newTask.set( MEMORY_VALUES, concatCriterias(mc) );
 
-  TTK91TaskCriteria[] soc = options.getScreenOutputCriterias();
+  int[][] soc = options.getScreenOutputCriterias();
   newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
 
-  TTK91TaskCriteria[] foc = options.getFileOutputCriterias();
+  int[][] foc = options.getFileOutputCriterias();
   newTask.set( FILE_OUTPUT, concatCriterias(foc) );
 
   String code = options.getExampleCode();
@@ -176,7 +177,7 @@ public class TTK91TaskParser {
 
  }//assemble
 
- private String concatCriterias(TTK91TaskCriteria[] criterias) {
+ private static String concatCriterias(TTK91TaskCriteria[] criterias) {
 
   String criteriaString = "";
 
@@ -190,7 +191,33 @@ public class TTK91TaskParser {
 
  }//concatCriterias
 
- private String concatCommands(String[] commands) {
+ private static String concatCriterias(int[][] criterias) {
+
+     StringBuffer sb = new StringBuffer();
+
+     if(criterias != null) {
+	 for(int i = 0; i < criterias.length; i++) {
+	     // voidaan olettaa että taulukon koko
+	     // on kaksi, sillä outputteille joille
+	     // tätä käytetään niiden jälkimmäisessä taulukossa
+	     // on aina kaksi alkiota. Jos ei ole niin jossain
+	     // aikaisemmin on tehty virhe.
+	     // FIXME järkevämpi toteutus kuin int[][] output
+	     // eille
+	     sb.append("(");
+	     sb.append(criterias[i][0]);
+	     sb.append(",");
+	     sb.append(criterias[i][1]);
+	     sb.append(")");
+	     sb.append(";");
+	 }
+     }
+
+     return sb.toString();
+
+ }//concatCriterias
+
+ private static String concatCommands(String[] commands) {
 
   String commandString = "";
 
