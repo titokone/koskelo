@@ -22,10 +22,8 @@ public class TTK91AnalyseData{
 	// Controllit joilta saadaan dataa:
 
 	private TTK91Core controlCompiler = null;    
-	// kääntäjä -> saadaan mahdolliset käännösvirheet nätimmin (kunhan ajetaan malli ensin... 
-	// Jos se ei käänny, ei varmaan ole tarvetta kääntää opiskelijankaan ratkaisua...
 	private TTK91Core controlPublicInputStudent = null;
-	// publicinputeilla tai ilman unputteja opiskelijan vastaus
+	// publicinputeilla tai ilman inputteja opiskelijan vastaus
 	private TTK91Core controlPublicInputTeacher = null; 
 	// publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on määritelty simuloitavaksi
 	private TTK91Core controlHiddenInputStudent = null;
@@ -50,8 +48,11 @@ public class TTK91AnalyseData{
 	private String teacherRunError = null;
 
 	// Käännetyt koodit
-	private TTK91Application studentApplication = null; // opiskelijan vastaus
-	private TTK91Application teacherApplication = null; // malliratkaisu
+	private TTK91Application studentApplicationPublic = null; // opiskelijan vastaus
+	private TTK91Application teacherApplicationPublic = null; // malliratkaisu
+	private TTK91Application studentApplicationHidden = null; // opiskelijan vastaus
+	private TTK91Application teacherApplicationHidden = null; // malliratkaisu
+
 
 	// Analysointitapa
 	private int compareMethod = -1;
@@ -83,12 +84,20 @@ public class TTK91AnalyseData{
 		compileTeacherApplication();
 		compileStudentApplication();
 		getTaskData();
+		
 		if(!this.errors) {
-		run();
+			run();
+		}
+		
+		if(!this.errors) {
+			setStatistics();
 		}
 	}
 
 
+	private void setStatistics() {
+
+	}
 	
 	private void compileTeacherApplication() {
 
@@ -124,8 +133,17 @@ public class TTK91AnalyseData{
 			return;
 		}//catch
 
-		this.teacherApplication = app;
+		this.teacherApplicationPublic = app;
+	
+		try {
+			app = controlCompiler.compile(src);
+		} catch (TTK91Exception e) {
+			this.teacherCompileError = e.getMessage();
+			this.errors = true;
+			return;
+		}//catch
 
+		this.teacherApplicationHidden = app;
 
 		// get the student app and the
 		// teacher app and make them into applications
@@ -165,8 +183,17 @@ public class TTK91AnalyseData{
 			return;
 		}//catch
 
-		this.studentApplication = app;
-
+		this.studentApplicationPublic = app;
+		
+		try {
+			app = controlCompiler.compile(src);
+		} catch (TTK91Exception e) {
+			this.studentCompileError = e.getMessage();
+			this.errors = true;
+			return;
+		}//catch
+		
+		this.studentApplicationHidden = app;
 
 		// get the student app and the
 		// teacher app and make them into applications
@@ -200,16 +227,16 @@ public class TTK91AnalyseData{
 
 		if(publicInput != null) {
 
-			this.studentApplication.setKbd(publicInput);
+			this.studentApplicationPublic.setKbd(publicInput);
 			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
-				this.teacherApplication.setKbd(publicInput);
+				this.teacherApplicationPublic.setKbd(publicInput);
 			}
 		}
 
 		this.controlPublicInputStudent = new Control(null, null);
 
 		try {
-			this.controlPublicInputStudent.run(this.studentApplication, steps);
+			this.controlPublicInputStudent.run(this.studentApplicationPublic, steps);
 			// 1. simulointi
 		} catch (TTK91Exception e) {
 			this.studentRunError = e.getMessage();
@@ -221,7 +248,7 @@ public class TTK91AnalyseData{
 			// 1. simulointi malliratkaisua
 			this.controlPublicInputTeacher = new Control(null, null);
 			try {
-				this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+				this.controlPublicInputTeacher.run(this.teacherApplicationPublic, steps);
 			} catch (TTK91Exception e) {
 				this.teacherRunError =  e.getMessage();
 				this.errors = true;
@@ -234,10 +261,10 @@ public class TTK91AnalyseData{
 			// mahdollinen 2. simulointi opiskelijan ratkaisusta
 
 			this.controlHiddenInputStudent = new Control(null, null); // luodaan control vain jos hiddeninput määritelty --> "optimointia"
-			this.studentApplication.setKbd(hiddenInput);
+			this.studentApplicationHidden.setKbd(hiddenInput);
 
 			try {
-				this.controlHiddenInputStudent.run(this.studentApplication, steps);
+				this.controlHiddenInputStudent.run(this.studentApplicationHidden, steps);
 			} catch (TTK91Exception e) {
 				this.studentRunError = e.getMessage();
 				this.errors = true;
@@ -249,9 +276,9 @@ public class TTK91AnalyseData{
 				// 2. simulointi malliratkaisua
 
 				this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput määritelty --> "optimointia"
-				this.teacherApplication.setKbd(hiddenInput);
+				this.teacherApplicationHidden.setKbd(hiddenInput);
 				try {
-					this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
+					this.controlHiddenInputTeacher.run(this.teacherApplicationHidden, steps);
 				} catch (TTK91Exception e) {
 					teacherRunError = e.getMessage();
 					this.errors = true;
@@ -316,12 +343,20 @@ public class TTK91AnalyseData{
 		return this.errors;
 	}
 
-	public TTK91Application getStudentApp() {
-		return this.studentApplication;
+	public TTK91Application getStudentAppPub() {
+		return this.studentApplicationPublic;
 	}
 
-	public TTK91Application getTeacherApp() {
-		return this.teacherApplication;
+	public TTK91Application getTeacherAppPub() {
+		return this.teacherApplicationPublic;
+	}
+
+	public TTK91Application getStudentAppHid() {
+		return this.studentApplicationHidden;
+	}
+
+	public TTK91Application getTeacherAppHid() {
+		return this.teacherApplicationHidden;
 	}
 
 }// class
