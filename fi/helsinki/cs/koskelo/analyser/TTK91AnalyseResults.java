@@ -61,14 +61,15 @@ public class TTK91AnalyseResults{
 		optimalSizeCriteria = null;
 		memoryReferencesQualityCriteria = null;
 
-		int[] registers = null;
-		int[] memory = null;
-		int[] crt = null;
-		int memoryReferences = -1;
-		int stackSize = -1;
-		int codeSegmentSize = -1;
-		int dataSegmentSize = -1;
-		int executedCommands = -1;
+		registers = null;
+		memory = null;
+		crt = null;
+		file = null;
+		memoryReferences = -1;
+		stackSize = -1;
+		codeSegmentSize = -1;
+		dataSegmentSize = -1;
+		executedCommands = -1;
 	}
 	/** Asetetaan rekisterikriteereihin liittyvä Boolean. */
 	public void setRegisters(boolean b) {
