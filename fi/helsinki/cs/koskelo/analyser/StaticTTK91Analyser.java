@@ -308,12 +308,23 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     private void generalAnalysis() {
 
-	/* Kaikille seuraaville kenties
-	   -Suoritettujen konek‰skyjen m‰‰r‰ (oikeellisuus)
-	   -Ihannekoko (laatu)
-	   -Muistiviitteiden m‰‰r‰
-	   -Vaaditut k‰skys
-	   -Kielletyt k‰skyt
+	/* Kaikille seuraaville kenties 
+	 */
+	
+	//  -Suoritettujen konek‰skyjen m‰‰r‰ (oikeellisuus)
+
+	TTK91Cpu cpu = controlPublicInputStudent.getCPU();
+	int size = cpu.giveCommAmount();
+	int sizeLimit = taskOptions.getMaxCommands();
+	results.setAcceptedSize(size <= sizeLimit);
+
+	//	  -Ihannekoko (laatu)
+	results.setOptimalSize(size <= taskOptions.getOptimalSize())
+
+	/*
+	  -Muistiviitteiden m‰‰r‰
+	  -Vaaditut k‰skys
+	  -Kielletyt k‰skyt
 	*/
 	//results.setBLAAH(boolean)
 
