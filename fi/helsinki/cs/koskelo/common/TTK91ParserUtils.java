@@ -16,48 +16,46 @@ public class TTK91ParserUtils {
 
 	static public boolean validateTTK91Command(String command) {
 
-		command = command.toUpperCase();
-
 		if( 
-				command.equals("LOAD") || 
-				command.equals("STORE") ||
-				command.equals("IN") ||
-				command.equals("OUT") ||
-				command.equals("ADD") ||
-				command.equals("SUB") ||
-				command.equals("MUL") ||
-				command.equals("DIV") ||
-				command.equals("MOD") ||
-				command.equals("AND") ||
-				command.equals("OR")  ||
-				command.equals("XOR") ||
-				command.equals("SHL") ||
-				command.equals("SHR") ||
-				command.equals("COMP") ||
-				command.equals("JUMP") ||
-				command.equals("JNEG") ||
-				command.equals("JZER") ||
-				command.equals("JPOS") ||
-				command.equals("JNNEG") ||
-				command.equals("JNZER") ||
-				command.equals("JNPOS") ||
-				command.equals("JEQU") ||
-				command.equals("JGRE") ||
-				command.equals("JLES") ||
-				command.equals("JNLES") ||
-				command.equals("JNEQU") ||
-				command.equals("JNGRE") ||
-				command.equals("PUSH") ||
-				command.equals("POP") ||
-				command.equals("CALL") ||
-				command.equals("EXIT") ||
-				command.equals("SVC") ||
-				command.equals("NOP") ||
-				command.equals("NOT") ||
-				command.equals("SHRA") ||
-				command.equals("DC") ||
-				command.equals("DS") ||
-				command.equals("EQU")
+				command.equalsIgnoreCase("LOAD") || 
+				command.equalsIgnoreCase("STORE") ||
+				command.equalsIgnoreCase("IN") ||
+				command.equalsIgnoreCase("OUT") ||
+				command.equalsIgnoreCase("ADD") ||
+				command.equalsIgnoreCase("SUB") ||
+				command.equalsIgnoreCase("MUL") ||
+				command.equalsIgnoreCase("DIV") ||
+				command.equalsIgnoreCase("MOD") ||
+				command.equalsIgnoreCase("AND") ||
+				command.equalsIgnoreCase("OR")  ||
+				command.equalsIgnoreCase("XOR") ||
+				command.equalsIgnoreCase("SHL") ||
+				command.equalsIgnoreCase("SHR") ||
+				command.equalsIgnoreCase("COMP") ||
+				command.equalsIgnoreCase("JUMP") ||
+				command.equalsIgnoreCase("JNEG") ||
+				command.equalsIgnoreCase("JZER") ||
+				command.equalsIgnoreCase("JPOS") ||
+				command.equalsIgnoreCase("JNNEG") ||
+				command.equalsIgnoreCase("JNZER") ||
+				command.equalsIgnoreCase("JNPOS") ||
+				command.equalsIgnoreCase("JEQU") ||
+				command.equalsIgnoreCase("JGRE") ||
+				command.equalsIgnoreCase("JLES") ||
+				command.equalsIgnoreCase("JNLES") ||
+				command.equalsIgnoreCase("JNEQU") ||
+				command.equalsIgnoreCase("JNGRE") ||
+				command.equalsIgnoreCase("PUSH") ||
+				command.equalsIgnoreCase("POP") ||
+				command.equalsIgnoreCase("CALL") ||
+				command.equalsIgnoreCase("EXIT") ||
+				command.equalsIgnoreCase("SVC") ||
+				command.equalsIgnoreCase("NOP") ||
+				command.equalsIgnoreCase("NOT") ||
+				command.equalsIgnoreCase("SHRA") ||
+				command.equalsIgnoreCase("DC") ||
+				command.equalsIgnoreCase("DS") ||
+				command.equalsIgnoreCase("EQU")
 				
 				) {
 				
