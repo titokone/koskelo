@@ -31,9 +31,14 @@ public class TTK91DisplayerUtils {
 	 */
 
 	public static String getHTMLElementInput(String inputHeader, String input){
+
+		 if (input == null || input.equals("")) {
+      return "";
+    }else {
+    return new String("<p class=\"input\"><strong>" 
+		      +inputHeader +": " +input +"</strong></p>");
+    }
 	
-		return new String("<p class=\"input\"><strong>" 
-											+inputHeader +": " +input +"</strong></p>");
 	}//getHTMLELementInput
     
 	/**
