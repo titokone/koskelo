@@ -25,7 +25,7 @@ if (settings != null) {
 int event = -1;
 TaskBase cache = (TaskBase)
                  request.getAttribute(
-                 "fi.hy.eassari.showtask.trainer.TaskBase"
+                  "fi.hy.eassari.showtask.trainer.TaskBase"
                  );
 
 boolean editTask = false;
@@ -37,12 +37,14 @@ try {
  System.out.println("Error while retrieving event-id: "+e);
 }//catch
 
-if (event == Events.BLANKFILL_TEXT_EDIT) {
+if (event == Events.STATIC_TTK91_EDIT) {
  editTask = true;
  task = (TaskDTO)
  request.getSession(false).
  getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
-}//if
+}
+
+String syntaxError = (String)session.getAttribute("TTK91ERROR");
 
 %>
 
@@ -77,42 +79,97 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
       "taskDescriptionHeader", lang)%>
    <br>
-   <textarea name="taskDescription" cols="100" rows="4"></textarea>
+   <textarea name="taskDescription" cols="100" rows="4">
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("taskDescription");
+     }//if
+    %>
+   </textarea>
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "publicInputHeader", lang)%>
   <br>
-    <input type="text" name="publicInput" size="50">
+    <input type="text" name="publicInput" size="50"
+     value="
+     <%
+      if(syntaxError != null) {
+       =request.getAttribute("publicInput");
+      }//if
+     %>
+     "
+    >
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "hiddenInputHeader", lang)%>
    <br>
-   <input type="text" name="hiddenInput" size="50">
+   <input type="text" name="hiddenInput" size="50"
+    value="
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("hiddenInput");
+     }//if
+    %>
+    "
+   >
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "exampleCodeHeader", lang)%>
    <br>
-   <textarea name="exampleCode" cols="50" rows="15"></textarea>
+   <textarea name="exampleCode" cols="50" rows="15">
+
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("exampleCode");
+     }//if
+    %>
+
+   </textarea>
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "maxCommandsHeader", lang)%>
-   <input type="text" name="maxCommands" size="10" maxlength="4">
+   <input type="text" name="maxCommands" size="10" maxlength="4"
+    value="
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("maxCommands");
+     }//if
+    %>
+    "
+   >
+
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "acceptedSizeHeader", lang)%> 
-   <input type="text" name="acceptedSize" size="10" maxlength="4">
+   <input type="text" name="acceptedSize" size="10" maxlength="4"
+    value="
+     <%
+      if(syntaxError != null) {
+       =request.getAttribute("acceptedSize");
+      }//if
+     %>
+    "
+   >
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "optimalSizeHeader", lang)%>
-   <input type="text" name="optimalSize" size="10" maxlength="4">
+   <input type="text" name="optimalSize" size="10" maxlength="4"
+    value="
+     <%
+      if(syntaxError != null) {
+       =request.getAttribute("taskDescription");
+      }//if
+     %>
+    "
+   >
   </p>
 
   <p>
@@ -132,6 +189,13 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
      "requiredCommandsHeader", lang)%>
    <br>
    <textarea name="requiredCommands" rows="4" cols="50">
+
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("requiredCommands");
+     }//if
+    %>
+
    </textarea>
   </p>
 
@@ -140,6 +204,11 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
     "forbiddenCommandsHeader", lang)%>
   <br>
    <textarea name="forbiddenCommands" rows="4" cols="50">
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("forbiddenCommands");
+     }//if
+    %>
    </textarea>
   </p>
 
@@ -148,6 +217,11 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
     "registerValuesHeader", lang)%>
    <br>
     <textarea name="registerValues" cols="50" rows="10">
+     <%
+      if(syntaxError != null) {
+       =request.getAttribute("registerValues");
+      }//if
+     %>
     </textarea>
   </p>
   
@@ -156,11 +230,24 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
     "memoryValuesHeader", lang)%>
    <br>
     <textarea name="memoryValues" cols="50" rows="10">
+     <%
+      if(syntaxError != null) {
+       =request.getAttribute("memoryValues");
+      }//if
+     %>
     </textarea>
     <br>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "memoryReferencesHeader", lang)%>
-    <input type="text" name="memoryReferences" size="10" maxlength="8">
+    <input type="text" name="memoryReferences" size="10" maxlength="8"
+     value="
+      <%
+       if(syntaxError != null) {
+        =request.getAttribute("memoryReferences");
+       }//if
+      %>
+     "
+    >
   </p>
   
   <p>
@@ -168,6 +255,13 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
     "screenOutputHeader", lang)%>
    <br>
    <textarea name="screenOutput" cols="50" rows="5">(1, 20);
+
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("screenOutput");
+     }//if
+    %>
+
    </textarea>
   </p>
   
@@ -175,7 +269,15 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "fileOutputHeader", lang)%>
    <br>
-   <textarea name="fileOutput" cols="50" rows="5"></textarea>
+   <textarea name="fileOutput" cols="50" rows="5">
+
+    <%
+     if(syntaxError != null) {
+      =request.getAttribute("fileOutput");
+     }//if
+    %>
+
+   </textarea>
   </p>
   
     <input type="submit" name="Submit"
