@@ -462,5 +462,9 @@ public final class TTK91AnalyserExtraUtils {
 	return to;
     }
     
+    public static boolean checkOutputCriteria(TTK91TaskCriteria crit, int[] output, int[] compareOutput) {
+	System.err.println("\n********************************\ncheckOutputCriteria not implemented\n************************************");
+	return false;
+    }
 
 }
