@@ -19,11 +19,12 @@ public final class TTK91AnalyserExtraUtils {
 	private TTK91AnalyserExtraUtils() {} // minustahan ei ilmentymiä tehdä.
 
 	/**
-	 * Palauttaa first <op> second, missä <op> sisältää
+	 * Palauttaa first &lt op &gt second, missä &lt op &gt sisältää
 	 * normaalit aritmeettiset vertailuoperaatiot
-	 * @param first - ensimmäinen vertailtava
-	 * @param comparator - vertailuoperaattori, määritykset TTK91Constant-luokassa
-	 * @param second - toinen vertailtava
+	 * @param first  ensimmäinen vertailtava
+	 * @param comparator  vertailuoperaattori, 
+	 * määritykset TTK91Constant-luokassa
+	 * @param second  toinen vertailtava
 	 */
 
 	public static boolean compare(int first, int comparator, String second) {
@@ -35,6 +36,16 @@ public final class TTK91AnalyserExtraUtils {
 			return false; // jotain on rikki kriteereissä
 		}
 	}
+
+	/**
+	 * Palauttaa first &lt op &gt second, missä &lt op &gt sisältää
+	 * normaalit aritmeettiset vertailuoperaatiot
+	 * @param first  ensimmäinen vertailtava
+	 * @param comparator  vertailuoperaattori, 
+	 * määritykset TTK91Constant-luokassa
+	 * @param second  toinen vertailtava
+	 */
+
 
 	public static boolean compare(int first, int comparator, int second) {
 
@@ -69,11 +80,13 @@ public final class TTK91AnalyserExtraUtils {
 	} // compare
 
 	/**
-	 * Tarkistaa löytyykö ensimmäisestä merkkijonosta toisen parametrin osoittama käsky.
+	 * Tarkistaa löytyykö ensimmäisestä merkkijonosta 
+	 * toisen parametrin osoittama käsky.
 	 * Ei ole ihan puhdas '(indexOf > 0)', mutta melkein ;)
 	 * @param answer
 	 * @param cmd
-	 * @return null jos ongelmia, Boolean.FALSE jos ei löydy, Boolean.TRUE jos löytyy.
+	 * @return null jos ongelmia, 
+	 * Boolean.FALSE jos ei löydy, Boolean.TRUE jos löytyy.
 	 */
 	public static Boolean isCommandFound(String answer, String cmd) {
 
@@ -96,7 +109,8 @@ public final class TTK91AnalyserExtraUtils {
 			temp = haystack.indexOf(needle);
 			return new Boolean(temp >= 0);
 		}
-		return null; // jotain meni pieleen, mutta ei nyt osata kertoa sitä tarkemmin...
+		return null; // jotain meni pieleen, 
+		//mutta ei nyt osata kertoa sitä tarkemmin...
 	} // isCommandFound
 
 
@@ -106,7 +120,8 @@ public final class TTK91AnalyserExtraUtils {
 	 * Ei ole ihan puhdas '(indexOf > 0)', mutta melkein ;)
 	 * @param answer
 	 * @param cmd
-	 * @return null jos ongelmia, Boolean.TRUE jos ei löydy, Boolean.FALSE jos löytyy.
+	 * @return null jos ongelmia, 
+	 * Boolean.TRUE jos ei löydy, Boolean.FALSE jos löytyy.
 	 */
 
 	public static Boolean commandNotFound(String answer, String cmd) {
@@ -116,6 +131,14 @@ public final class TTK91AnalyserExtraUtils {
 		}
 		return returnMe;
 	}
+
+	/** Tarkistaa staattisen muistikriteerin. Ottaa parametrina
+	 * tiedot opiskelijan suorituksen lopputilasta.
+	 *
+	 * @param criteria Vertailukriteeri, ei null
+	 * @param symboltable Vertailun avuksi symbolitaulu
+	 * @param memoryLines Vertailtava muisti
+	 */
 
 	public static boolean checkStaticMemoryCriteria(
 			TTK91TaskCriteria criteria,
@@ -169,6 +192,14 @@ public final class TTK91AnalyserExtraUtils {
 	
 	}
 
+	/** Tarkistaa staattisen muistikriteerin. Ottaa parametrina
+	 * kaikki mahdolliset tiedot opiskelijan suorituksen lopputilasta,
+	 * vaikka piilosyötteillä ei olisikaan simuloitu.
+	 *
+	 * @param criteria Ei saa olla null
+	 */
+
+	
 	public static boolean checkStaticMemoryCriteria(
 			TTK91TaskCriteria criteria,
 			HashMap studentPublicSymbolTable,
@@ -194,6 +225,15 @@ public final class TTK91AnalyserExtraUtils {
 		return (publiccrit && hiddencrit);
 
 	}
+
+	/** Tarkistaa simuloidun muistikriteerin. Ottaa parametrina
+	 * tiedot opiskelijan suorituksen lopputilasta ja malliratkaisun
+	 * suorituksen lopputilasta.
+	 *
+	 * @param criteria Vertailukriteeri, ei null
+	 * @param symboltable Vertailun avuksi symbolitaulu
+	 * @param memoryLines Vertailtava muisti
+	 */
 
 
 	public static boolean checkSimulatedMemoryCriteria(
@@ -278,6 +318,14 @@ public final class TTK91AnalyserExtraUtils {
 
 	}
 
+	/** Tarkistaa simuloidun muistikriteerin. Ottaa parametrina
+	 * kaikki mahdolliset tiedot opiskelijan suorituksen lopputilasta sekä
+	 * malliratkaisun suorituksen lopputilasta, 
+	 * vaikka piilosyötteillä ei olisikaan simuloitu.
+	 *
+	 * @param criteria Ei saa olla null
+	 */
+
 	public static boolean checkSimulatedMemoryCriteria(
 			TTK91TaskCriteria criteria,
 			HashMap studentPublicSymbolTable,
@@ -313,6 +361,13 @@ public final class TTK91AnalyserExtraUtils {
 
 	}
 
+	/** Tarksitaa yksittäisen rekisterikriteerin. Ottaa kaksi
+	 * TTK91Cpu:ta parametrinaan.
+	 *
+	 * @param criteria Ei saa olla null
+	 * @param studentCpu Ei saa olla null
+	 */
+	
 	public static boolean checkRegisterCriteria(
 			TTK91TaskCriteria criteria,
 			TTK91Cpu studentCpu, 	//not null
@@ -361,7 +416,12 @@ public final class TTK91AnalyserExtraUtils {
 			);
 	
 	}
- 
+
+
+	/** Palauttaa sopivan vakioarvon titokoneesta mapattuna merkkijonolle
+	 * @param register ottaa rekisterin nimen string esityksen
+	 */
+	
 	private static int getRegisterNumber( String register ){
 
 		String compare = register.toUpperCase();
@@ -430,6 +490,11 @@ public final class TTK91AnalyserExtraUtils {
 
 	}
 
+
+	/**Parsii titokoneen esittämästä ulkoasusta tulostetaulukon.
+	 * @param from Titokoneen tuloste string
+	 */
+
     public static int[] parseOutputArrays(String from) {
 	if (from == null) {
 	    return null;
@@ -453,6 +518,9 @@ public final class TTK91AnalyserExtraUtils {
 	return to;
     }
     
+    /** Tarkistaa yksittäisen tulostekriteerin staattisessa tapauksessa.
+     * @param criteria ei saa olla null
+     */
 
     public static boolean checkOutputCriteria(
 		    TTK91TaskCriteria crit,
@@ -499,6 +567,12 @@ public final class TTK91AnalyserExtraUtils {
 			    );
     }
 
+    /** Tarkistaa yksittäisen tulostekriteerin. Tätä voidaan
+     * kutsua vaikka vertailukohde compareOutput on null, jolloin
+     * kutsu on sama kuin checkOutputCriteria (crit, output)
+     *
+     * @param crit ei saa olla null
+     */
     
     public static boolean checkOutputCriteria(
 		    TTK91TaskCriteria crit, 
