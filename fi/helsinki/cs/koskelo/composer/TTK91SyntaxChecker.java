@@ -1216,6 +1216,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		String tmp = "";
 
+		String feedback = "";
+		
 		tmp = tmp + "<p>\n"+
 			"<textarea cols=\"40\" rows=\"5\" "+
 			"name=\""+
@@ -1223,7 +1225,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			"FeedbackPositive\">";
 
 		if(editTask) {
-			tmp = tmp + (String)task.get(name + "FeedbackPositive");
+			feedback =  (String)task.get(name + "FeedbackPositive");
+			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
+			tmp = tmp + feedback;
+			}
+			feedback = "";
 		}
 
 		tmp = tmp +	"</textarea>\n";
@@ -1235,7 +1241,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			"FeedbackNegative\">";
 
 		if(editTask) {
-			tmp = (String)tmp+task.get(name+"FeedbackNegative");
+		feedback =  (String)task.get(name + "FeedbackNegative");
+			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
+			tmp = tmp + feedback;
+			}
+			feedback = "";
 
 		}
 
@@ -1245,7 +1255,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			name+
 			"QualityFeedback\">";
 		if(editTask){
-			tmp = tmp+ (String)task.get(name + "QualityFeedback");
+			feedback =  (String)task.get(name + "FeedbackQuality");
+			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
+			tmp = tmp + feedback;
+			}
+			feedback = "";
+	
+		
 		}
 		tmp = tmp +	"</textarea>\n"+
 			"</p>\n";
