@@ -1,0 +1,86 @@
+.assignment {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+	background-color: #CCCCCC;
+	border: 1px solid #333333;
+	padding: 3px;
+
+}
+.blankspot {
+	background-color: #FFA5CC;
+	color: #000000;
+	font-weight: bold;
+}
+.body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	color: #000000;
+}
+.bordered {
+	border: 1px solid #CCCCCC;
+}
+.button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+
+}
+.center {
+	text-align: center;
+}
+.header {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.helpnote {
+	background-color: #FFFF99;
+	padding: 5px;
+	border: 1px dotted #333333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-style: italic;
+}
+.highlight1 {
+	background-color: #F0F0F0;
+}
+.input {
+	border: 1px solid #999999;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+.orderingblock {
+	background-color: #CCCCCC;
+	width: 600px;
+	clip: rect(auto auto auto auto);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	font-weight: bold;
+	color: #333333;
+	border: 1px solid #000000;
+	text-indent: 20pt;
+}
+.subHeader {
+	text-align: center;
+}
+.small {
+	font-size: 10pt;
+}
+.table {
+	border: 1px solid #CCCCCC;
+}
+.tableHeader {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	font-weight: bold;
+	background-color: #006699;
+	color: #FFFFFF;
+	border: 1px dotted #FFFFFF;
+}.positivefeedback {
+	font-weight: bold;
+	color: #0099CC;
+}
+.negativefeedback {
+	font-weight: bold;
+	color: #FF3300;
+}
