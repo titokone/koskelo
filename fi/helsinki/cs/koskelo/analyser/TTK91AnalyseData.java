@@ -125,7 +125,7 @@ public class TTK91AnalyseData{
 				controlPublicInputStudent.getCpu(); 
 
 			usedCommands = cpu.giveCommAmount();
-			maxStackSize = cpu.giveStackSize();
+			maxStackSize = cpu.giveStackMaxSize();
 			memoryReferences = ram.getMemoryReferences();
 			codeSegmentSize = ram.getCodeAreaSize();
 			dataSegmentSize = ram.getDataAreaSize();
