@@ -556,7 +556,68 @@ public class TTK91AnalyseData{
 	
 	}
 
+    public String getStudentScreenOutputPublic(){
+	if (studentApplicationPublic != null) {
+	    return studentApplicationPublic.readCrt();
+	} else {
+	    return null;
+	}
+    }
 
+    public String getStudentScreenOutputHidden(){
+	if (studentApplicationHidden != null) {
+	    return studentApplicationHidden.readCrt();
+	} else {
+	    return null;
+	}
+    }
+    
+    public String getTeacherScreenOutputPublic(){
+	if (teacherApplicationPublic != null) {
+	    return teacherApplicationPublic.readCrt();
+	} else {
+	    return null;
+	}
+    }
+    
+    public String getTeacherScreenOutputHidden(){
+	if (teacherApplicationHidden != null) {
+	    return teacherApplicationHidden.readCrt();
+	} else {
+	    return null;
+	}
+    }
 
+    public String getStudentFileOutputPublic(){
+	if (studentApplicationPublic != null) {
+	    return studentApplicationPublic.readStdOut();
+	} else {
+	    return null;
+	}
+    }
 
+    public String getStudentFileOutputHidden(){
+	if (studentApplicationHidden != null) {
+	    return studentApplicationHidden.readStdOut();
+	} else {
+	    return null;
+	}
+    }
+    
+    public String getTeacherFileOutputPublic(){
+	if (teacherApplicationPublic != null) {
+	    return teacherApplicationPublic.readStdOut();
+	} else {
+	    return null;
+	}
+    }
+    
+    public String getTeacherFileOutputHidden(){
+	if (teacherApplicationHidden != null) {
+	    return teacherApplicationHidden.readStdOut();
+	} else {
+	    return null;
+	}
+    }
+    
 }// class
