@@ -319,10 +319,16 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	results.setAcceptedSize(size <= sizeLimit);
 
 	//	  -Ihannekoko (laatu)
-	results.setOptimalSize(size <= taskOptions.getOptimalSize())
+	results.setOptimalSize(size <= taskOptions.getOptimalSize());
+
+	//	  -Muistiviitteiden määrä
+
+	TTK91Memory mem = controlPublicInputStudent.getMemory();
+	int memrefs = mem.getMemoryReferences();
+	TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
+	boolean memrefsok = checkMemRefCriteria(memrefs, memRefCriteria.getComparator(), memRefCriteria.getSecondComparable());
 
 	/*
-	  -Muistiviitteiden määrä
 	  -Vaaditut käskys
 	  -Kielletyt käskyt
 	*/
@@ -371,5 +377,31 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	return input;
     }
 
+    private boolean checkMemRefCriteria(int memrefs, int comparator, String secondcomparable) {
+	int checkAgainstMe = -1;
+	try {
+	    checkAgainstMe = Integer.parseInt(secondcomparable);
+	}
+	catch (NumberFormatException e) {
+	    // rikkinäinen kriteeri - ei pitäisi tapahtua
+	    throw new RunTimeException("TTK91Analyser.checkMemRefCriteria(): Broken criteria, String to int conversion failed");
+	}
+	switch (comparator) { // FIXME: vakiot vakioina! Joku kokoelmaluokka?
+	    
+	case 0: // LESS:
+		break;
+	case 1: // LESSEQ:
+	    break;
+	case 2: // GREATER:
+	    break;
+	case 3: // GREATEREQ:
+	    break;
+	case 4: // EQUAL:
+	    break;
+	case 5: // NOTEQUAL:
+	    break;
+	default:
+	}
+    }
 
 } // StaticTTK91Analyser
