@@ -5,7 +5,7 @@ package fi.helsinki.cs.koskelo.composer;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import fi.helsinki.cs.koskelo.common.*;
-//import fi.hy.eassari.taskdefinition.util.*;
+import fi.hy.eassari.taskdefinition.util.*;
 
 public class TTK91TaskParser {
 
