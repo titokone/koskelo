@@ -829,18 +829,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				splitted1[i] = splitted1[i].replaceAll("\\)","");
                                 //splitted1_0["L,1,10"]
 
-				splitted1[i].trim();
+				splitted1[i] = splitted1[i].trim();
 				splitted2[i] = splitted1[i].split(",");
                                 //splitted2_0["L"] ja splitted2_1["1"] ja INDEX_OUT_OF_BOUNDS
 
-				splitted2[i][0].trim(); // kaiva täältä L
+				splitted2[i][0] = splitted2[i][0].trim(); // kaiva täältä L
 				//Jos vain (1,10) ? Etsitään olematonta laatua
 
 				if(splitted2[i][0].equalsIgnoreCase("L")) {
 				    quality = true; // Tällä ei näköjään tehdä yhtään mitään (?)
 				}
 				
-				splitted2[i][1].trim();
+				splitted2[i][1] = splitted2[i][1].trim();
 				outPutTable[i][0] = parsePostInt(
 						splitted2[i][0]
 						);
