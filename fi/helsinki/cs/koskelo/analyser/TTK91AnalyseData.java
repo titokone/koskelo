@@ -343,19 +343,19 @@ public class TTK91AnalyseData{
 		return this.errors;
 	}
 
-	public TTK91Application getStudentAppPub() {
+	public TTK91Application getStudentAppPublic() {
 		return this.studentApplicationPublic;
 	}
 
-	public TTK91Application getTeacherAppPub() {
+	public TTK91Application getTeacherAppPublic() {
 		return this.teacherApplicationPublic;
 	}
 
-	public TTK91Application getStudentAppHid() {
+	public TTK91Application getStudentAppHidden() {
 		return this.studentApplicationHidden;
 	}
 
-	public TTK91Application getTeacherAppHid() {
+	public TTK91Application getTeacherAppHidden() {
 		return this.teacherApplicationHidden;
 	}
 
