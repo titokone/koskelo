@@ -204,10 +204,11 @@ public class TTK91RealAnalyser {
 		TTK91Memory teacherHiddenMem = this.analyseData.getTeacherMemoryHidden();
 		int analyseSwitcher = this.analyseData.analyseSwitcher();
 
-		/* tutkitaan "helpot" virhetilanteet pois; opiskelijan
-		   ratkaisun muistia ei ole käytössä, tai jos pitäisi
-		   verrata malliratkaisuun, eikä sitä ole käytettävissä
-		   */
+		/* Valitaan toimintapa analysointimetodin
+		 * perusteella. case-blokit omina koottuina
+		 * lauseinaan, jotta muuttujanimikierrätys onnistuu
+		 * (täsmälleen sama käyttötarkoitus) 
+		 */
 
 		switch (analyseSwitcher) {
 			case TTK91Constant.COMPARE_TO_STATIC_PUBLIC:
@@ -579,9 +580,9 @@ public class TTK91RealAnalyser {
 		String teacherPublicScreenOutput = this.analyseData.getTeacherScreenOutputPublic();
 		String teacherHiddenScreenOutput = this.analyseData.getTeacherScreenOutputHidden();
 
-		System.err.prinln("studpublicout: "+ studentPublicScreenOuput);
+		System.err.println("studpublicout: "+ studentPublicScreenOutput);
 
-		System.err.prinln("teachpublicout: "+ teacherPublicScreenOuput);
+		System.err.println("teachpublicout: "+ teacherPublicScreenOutput);
 		
 		int[] studPubScreenOut = 
 			TTK91AnalyserExtraUtils.parseOutputArrays(studentPublicScreenOutput);
