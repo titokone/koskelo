@@ -9,9 +9,11 @@ import fi.helsinki.cs.koskelo.common.*;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
-	HttpServletRequest req;
-	HttpServletResponse res;
-
+	private Static String staticResponse = "../../StaticTTK91Composer.jsp";
+	private HttpServletRequest req;
+	private HttpServletResponse res;
+	private HttpSession session;
+	
 	/** Kutsuu doPostia parametreillaan. Yhteensopivuuden vuoksi.
 	 *
 	 */
@@ -41,7 +43,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.req = req;
 		this.res = res;
-
+		
 		String exampleCode; //TODO tarkista koodin k‰‰ntyminen
 		String taskDescription; // tarviiko tarkistaa?
 		String[] requiredCommands; // JUMP
@@ -140,7 +142,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// TODO checking of session, but no need for new one
 
-		HttpSession session = this.req.getSession(false);
+		this.session = this.req.getSession(false);
 
 
 		// TODO n‰m‰ omiksi privametodeikseen
@@ -159,8 +161,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
+			returnError(this.staticResponse, "foo");
 			return;
 		}// catch
 
@@ -174,9 +175,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			taskOptions.setExampleCode(exampleCode);
 			}
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
+			
+			returnError(this.staticResponse, "foo");
 			return;
 
 		}
@@ -185,46 +185,38 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO vaaditaanko?
 			// TODO dynaamisen teht‰v‰n syntaksin tarkistaminen
 			// TODO dynaamisen teht‰v‰n vertailu mallikoodiin
-
+			
+		if(reqTaskDescription != null) {
 			taskDescription = reqTaskDescription;
 			taskOptions.setTaskDescription(taskDescription);
 
+		}
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
+			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 		try { // publicInput
 
 			if(reqPublicInput != null) {
-	//			publicInput = parseInputString(reqPublicInput);
-	//			taskOptions.setPublicInput(publicInput);
+				publicInput = parseInputString(reqPublicInput);
+				taskOptions.setPublicInput(publicInput);
 			}
 
 		} catch (Exception e) {
-
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
+			returnError(this.staticResponse, "foo");
 			return;
 		}
 
 		try { // hiddenInput
 
 			if(reqHiddenInput != null) {
-	//			hiddenInput = parseInputString(reqHiddenInput);
-	//			taskOptions.setHiddenInput(hiddenInput);
+				hiddenInput = parseInputString(reqHiddenInput);
+				taskOptions.setHiddenInput(hiddenInput);
 			}
 
 		} catch (Exception e) {
-
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
 		}
 
@@ -236,15 +228,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		} catch (Exception e) {
-
-			// TODO virheen palautus.
-			// T‰lle metodinsa kun se on n‰iss‰
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
-			// kkaikissa?
 		}
 
 		try { //  acceptedSize
@@ -255,12 +240,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			}
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 
@@ -271,10 +252,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				taskOptions.setOptimalSize(optimalSize);
 			}
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
 
 		}
@@ -292,12 +270,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 		try { // forbiddenCommands
@@ -314,13 +288,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 
@@ -328,21 +297,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // memoryCriteria
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 		try { // registerCriteria
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
 
 		}
@@ -350,10 +312,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // screenOutput
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
-
+			returnError(this.staticResponse, "foo");
 			return;
 
 		}
@@ -362,14 +321,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // fileOutput
 
 		} catch (Exception e) {
-			// TODO lis‰‰ virheen palauttaminen
-			this.req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(this.req, this.res);
+			returnError(this.staticResponse, "foo");
 			return;
 
 		}
 
-		session.setAttribute("TTK91TaskOptions", taskOptions);
+		this.session.setAttribute(
+				"fi.helsinki.cs.koskelo.common.TTK91TaskOptions",
+				taskOptions
+				);
 
 		this.res.setContentType ("text/html");
 		ServletOutputStream out = this.res.getOutputStream();
@@ -378,6 +338,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	} // doPost
 
+
+	private void returnError(String target, String error) {
+	
+		this.session.setAttribute("ERROR", error);
+		this.req.getRequestDispatcher(target).
+			forward(this.req, this.res);
+	}
 
 	private int[] parseInputString(String input)
 		throws ServletException, IOException {
