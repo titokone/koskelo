@@ -269,9 +269,22 @@ public class CriteriaTest extends TestCase {
        		Assert.assertTrue(ab.getComparator() == 6);
 	}
 
-	/*	public static void main(String args[]) throws Exception{
-		new TTK91TaskCriteria("Foo;");
-		}
-		*/
 
+
+	public void testConstructor() {
+
+		try{
+			new TTK91TaskCriteria("A>B");
+		} catch (Exception e) {
+			fail("iik");
+		}
+
+		try{
+			new TTK91TaskCriteria("sfdlögknsdfk");
+			fail("iik");
+		} catch (Exception e) {
+			
+		}
+	}
+	
 }
