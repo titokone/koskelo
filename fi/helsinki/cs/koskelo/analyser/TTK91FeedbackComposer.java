@@ -84,7 +84,7 @@ public class TTK91FeedbackComposer{
 		 */
 
 			
-		// Hyväksytty koko
+		// Hyväksytty koko, kriteeriin ei liity laadullista palautetta
 
 		correct = analyseResults.getAcceptedSize();
 		if (correct != null) { // null tarkoittaa, että kriteerityyppiä ei ole
@@ -111,7 +111,7 @@ public class TTK91FeedbackComposer{
 																										 correct.booleanValue()));
 		}//if
 
-		// Optimaalinen koko
+		// Optimaalinen koko, kriteeriin ei liity laadullista palautetta
 
 		correct = analyseResults.getOptimalSize();
 		if (correct != null) {
@@ -119,9 +119,12 @@ public class TTK91FeedbackComposer{
 																					"optimalSizeHeader", language);
 			if (correct.booleanValue()) {
 				
-				feedback = "";
-				quality = taskFeedback.getOptimalSizeFeedbackQuality();
+				feedback = taskFeedback.getOptimalSizeFeedbackPositive();
 			} 
+			else {
+			
+				feedback = taskFeedback.getOptimalSizeFeedbackNegative();
+			}
 
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
