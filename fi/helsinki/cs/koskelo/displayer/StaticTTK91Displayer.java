@@ -116,10 +116,10 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 	 * @return syötteet html-muodossa
 	 */
 
-	private String getHTMLElementInput(String inputText, String input){
+	private String getHTMLElementInput(String inputHeader, String input){
 	
 		return new String("<p class=\"input\"><strong>" 
-											+inputText +": " +input +"</strong></p>");
+											+inputHeader +": " +input +"</strong></p>");
 	}//getHTMLELementInput
     
 	/**
