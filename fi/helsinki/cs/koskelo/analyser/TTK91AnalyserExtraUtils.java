@@ -185,7 +185,8 @@ public final class TTK91AnalyserExtraUtils {
 			HashMap studentPublicSymbolTable,
 			HashMap studentHiddenSymbolTable,
 			MemoryLine[] studentPublicMemoryLines,
-			MemoryLine[] studentHiddenMemoryLines) {
+			MemoryLine[] studentHiddenMemoryLines
+			) {
 
 		boolean publiccrit = false;
 		boolean hiddencrit = false;
@@ -204,5 +205,122 @@ public final class TTK91AnalyserExtraUtils {
 		return (publiccrit && hiddencrit);
 
 	}
-				
+
+
+	public static boolean checkSimulatedMemoryCriteria(
+			TTK91TaskCriteria criteria,
+			HashMap studentSymbolTable,
+			HashMap teacherSymbolTable,
+			MemoryLine[] studentMemoryLines,
+			MemoryLine[] teacherMemoryLines
+			) {
+		
+		String studentsymbol = criteria.getFirstComparable();
+		String teachersymbol = criteria.getSecondComparable();
+		
+		int studentMemoryValue;
+		int teacherMemoryValue;
+		int studentMemoryslot = -1;
+		int teacherMemoryslot = -1;
+		
+		MemoryLine studentMemoryLine = null;
+		MemoryLine teacherMemoryLine = null;
+		
+		try{
+
+			studentMemoryslot = Integer.parseInt(studentsymbol);
+
+			
+		} catch (NumberFormatException nfe) {
+
+			Integer memoryInteger = (Integer)
+				(studentSymbolTable.get(studentsymbol));
+
+			
+			if(memoryInteger != null) {
+				studentMemoryslot = memoryInteger.intValue();
+			} else {
+				return false;
+			}
+		}
+
+		try{
+
+			teacherMemoryslot = Integer.parseInt(teachersymbol);
+			
+		} catch (NumberFormatException nfe) {
+
+			Integer memoryInteger = (Integer)
+				(teacherSymbolTable.get(teachersymbol));
+
+			
+			if(memoryInteger != null) {
+				teacherMemoryslot = memoryInteger.intValue();
+			} else {
+				return false;
+			}
+		}
+
+		if(
+				(studentMemoryslot >= 0) &&
+				(teacherMemoryslot >= 0) &&
+				(studentMemoryslot < studentMemoryLines.length)&&
+				(teacherMemoryslot < teacherMemoryLines.length)
+				){
+		
+			studentMemoryLine = studentMemoryLines[studentMemoryslot];
+			teacherMemoryLine = teacherMemoryLines[teacherMemoryslot];
+		} else {
+			return false;
+		}
+				 
+
+		studentMemoryValue = studentMemoryLine.getBinary();
+		teacherMemoryValue = teacherMemoryLine.getBinary();
+
+
+		return compare(
+				studentMemoryValue, 
+				criteria.getComparator(), 
+				teacherMemoryValue
+				);
+
+
+
+	}
+
+	public static boolean checkSimulatedMemoryCriteria(
+			TTK91TaskCriteria criteria,
+			HashMap studentPublicSymbolTable,
+			HashMap teacherPublicSymbolTable,
+			HashMap studentHiddenSymbolTable,
+			HashMap teacherHiddenSymbolTable,
+			MemoryLine[] studentPublicMemoryLines,
+			MemoryLine[] teacherPublicMemoryLines,
+			MemoryLine[] studentHiddenMemoryLines,
+			MemoryLine[] teacherHiddenMemoryLines
+			) {
+	
+		boolean publiccrit = false;
+		boolean hiddencrit = true;
+
+		publiccrit = checkSimulatedMemoryCriteria(
+				criteria,
+				studentPublicSymbolTable,
+				teacherPublicSymbolTable,
+				studentPublicMemoryLines,
+				teacherPublicMemoryLines
+				);
+
+		hiddencrit = checkSimulatedMemoryCriteria(
+				criteria,
+				studentHiddenSymbolTable,
+				teacherHiddenSymbolTable,
+				studentHiddenMemoryLines,
+				teacherHiddenMemoryLines
+				);
+
+		return (publiccrit && hiddencrit);
+
+	}
 }
