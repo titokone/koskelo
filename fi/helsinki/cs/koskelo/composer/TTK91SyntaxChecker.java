@@ -248,12 +248,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// pyydetyt rekisterien arvot
 		String reqRegisterCriteria = this.req.getParameter(
-				"registerCriteria"
+				"registerValues"
 				);
 
 		//muistipaikkojen arvot
 		String reqMemoryCriteria = this.req.getParameter(
-				"memoryCriteria"
+				"memoryValues"
 				);
 		// Muistiviittaukset
 		String reqMemoryReferences = this.req.getParameter(
@@ -307,7 +307,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// fillin, asetetaan samantien myˆs kohdeosoite oikein.
 		// Defaulttina oletetaan, ett‰ tehd‰‰n uutta staattista
 		// teht‰v‰‰
-		if(event == Events.STATIC_TTK91_EDIT){
+		//
+		if(event == Events.STATIC_TTK91_COMPOSE) {
+			// Do nothing
+		} else if(event == Events.STATIC_TTK91_EDIT){
 
 			// staattisen teht‰v‰n editointi
 
@@ -318,10 +321,20 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						"util.datastructures.TaskDTO"
 						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
-
+			
 			// uusi FILL_IN-teht‰v‰
-
 			fillIn = true;
+			staticResponse = "/jsp/FillInTTK91Composer.jsp";
+		
+		} else if(event == Events.FILLIN_TTK91_EDIT) {
+
+			editTask = true;
+			fillIn = true;
+			task = (TaskDTO)
+				this.session.getAttribute(
+						"fi.hy.taskdefinition."+
+						"util.datastructures.TaskDTO"
+						);
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
@@ -540,7 +553,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				// kokonaisluku. T‰st‰ lent‰‰ poikkeus, jos
 				// niin ei ole, joten p‰‰dyt‰‰n virheilmotukseen.
 				// Analyser olettaa ett‰ t‰m‰ tarkastus on tehty.
-				parsePostInt(memoryReferences.getSecondComparable());
+				//parsePostInt(memoryReferences.getSecondComparable());
 				
 				taskOptions.setMemRefCriteria(
 						memoryReferences
@@ -932,7 +945,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			for(int i = 0; i < tmp.length; i++) {
 				criterias[i] = new TTK91TaskCriteria(
-						tmp[i].trim()
+						tmp[i]
 						);
 			} // for
 
@@ -1195,25 +1208,49 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 */
 	private String feedbackBox(String name) {
 
-		return "<p>\n"+
+
+		// if edit, lis‰t‰‰n vanha teksti.
+		
+		String tmp = "";
+		
+		tmp = tmp + "<p>\n"+
 			"<textarea cols=\"40\" rows=\"5\" "+
 			"name=\""+
 			name+
-			"FeedbackPositive\">"+
-			"</textarea>\n"+
-			"<textarea "+
+			"FeedbackPositive\">";
+
+		if(editTask) {
+			tmp = tmp + (String)task.get(name + "FeedbackPositive");
+			tmp = tmp + "Foo!!";
+		}
+		
+		tmp = tmp +	"</textarea>\n";
+		tmp = tmp +	"<textarea "+
 			"cols=\"40\" rows=\"5\" "+
 			"name="+
 			"\""+
 			name+
-			"FeedbackNegative\">"+
-			"</textarea>\n"+
-			"<textarea cols=\"40\" rows=\"5\" name="+
+			"FeedbackNegative\">";
+
+		if(editTask) {
+			tmp = (String)tmp+task.get(name+"FeedbackNegative");
+			tmp = tmp + "Foo!!";
+			
+		}
+		
+		tmp = tmp + "</textarea>\n";
+		tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
 			"\""+
 			name+
-			"QualityFeedback\">"+
-			"</textarea>\n"+
+			"QualityFeedback\">";
+		if(editTask){
+			tmp = tmp + "Foo!!";
+			tmp = tmp+ (String)task.get(name + "QualityFeedback");
+		}
+		tmp = tmp +	"</textarea>\n"+
 			"</p>\n";
+	
+		return tmp;
 	}// feedbackBox
 
 
