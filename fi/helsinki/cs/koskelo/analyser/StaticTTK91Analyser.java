@@ -14,6 +14,7 @@ import fi.hy.eassari.showtask.trainer.Feedback;
 import fi.hy.eassari.showtask.trainer.ParameterString;
 import fi.hy.eassari.showtask.trainer.AttributeCache;
 import fi.hy.eassari.showtask.trainer.CommonAnalyser;
+import fi.hy.eassari.showtask.trainer.CacheException;
 
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
 
@@ -40,6 +41,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     private TTK91Application studentApplication; // opiskelijan vastaus
     private TTK91Application teacherApplication; // malliratkaisu
     private TTK91AnalyseResults results; //Uusi luokka.
+    private TTK91FeedbackComposer fbcomposer;
 
     /**
      * Konstruktori, joka luo uuden alustamattoman
@@ -54,6 +56,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.initP = null;
 	//	this.control = null;  // ei tarvittane en‰‰
 	this.results = null;
+	this.fbcomposer = new TTK91FeedbackComposer();
     } // StaticTTK91Analyser()
 
 
@@ -85,7 +88,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	// toiminnallisuus
 	// kesken
 
-	getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu
+	getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu 
+	                               // FIXME: v‰‰r‰ parametri
 	getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
 	getTTK91TaskOptions();
 
@@ -99,26 +103,15 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
 
-	return TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
-
-
-	/*
-	  try {
-	  core.run(app, 5); // FIXME: maksimikierrosten m‰‰r‰
-	  // taskoptionsista (tai jostain muualta)
-	  }
-	  catch (TTK91Exception e) {
-	  //	System.err.println("Ajonaikainen virhe"+e.getMessage());
-	  return new Feedback(); // FIXME: oikeanlainen palaute, kun
-	  // suoritus ep‰onnistuu
-	  }
-
-	  TTK91Memory mem = core.getMemory();
-	  TTK91Cpu cpu = core.getCpu();
-
-
-	  return new Feedback();
-	*/
+	Feedback palaute = null;
+	try {
+	    palaute = TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
+	}
+	catch (CacheException e) {
+	    // FIXME: mit‰ tehd‰‰n
+	}
+	
+	return palaute;
 
     } // analyse
 
@@ -153,7 +146,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	TTK91Application app = null;
 
 	try {
-	    //	    app = core.compile(src);
 	    controlCompiler.compile(src);
 	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
@@ -188,7 +180,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	TTK91Application app = null;
 
 	try {
-	    //	    app = core.compile(src);
 	    controlCompiler.compile(src);
 	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
@@ -227,8 +218,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	int[] publicInputTable = taskOptions.getPublicInput();
 	int[] hiddenInputTable = taskOptions.getHiddenInput();
 
-	String publicInput;
-	String hiddenInput;
+	String publicInput = null; 
+	String hiddenInput = null;
 
 	int steps = taskOptions.getMaxCommands();
 	int compareMethod = taskOptions.getCompareMethod();
@@ -239,7 +230,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	 * siten, ett‰ kullekin simulointikierrokselle
 	 * luodaan oma controlinsa.
 	 */
-	if(publicInput != null) {
+	if(publicInputTable != null) {
 
 	    publicInput = parseInputString(publicInputTable);
 	    this.studentApplication.setKbd(publicInput);
@@ -250,32 +241,53 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 
 	this.controlPublicInputStudent = new Control(null, null);
-	this.controlPublicInputStudent.run(this.teacherApplication, steps);
-	// 1. simulointi
+
+	try {
+	    this.controlPublicInputStudent.run(this.studentApplication, steps);
+	    // 1. simulointi
+	}
+	catch (TTK91Exception e) {
+	    //FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
+	}
 
 	if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 	    // 1. simulointi malliratkaisua
 	    this.controlPublicInputTeacher = new Control(null, null);
-	    this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+	    try {
+		this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+	    }
+	    catch (TTK91Exception e) {
+		// FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
+	    }
 	}
 
 
-	if(hiddenInput != null) {
+	if (hiddenInputTable != null) {
 	    // mahdollinen 2. simulointi opiskelijan ratkaisusta
-	    hiddenInput = parseInputString(publicInputTable);
+	    hiddenInput = parseInputString(hiddenInputTable);
 
-	    this.controlHiddenInputStudent = new Control(null, null);
-	    this.studentApplication.setKbd(publicInput);
-	    this.controlHiddenInputStudent.run(this.studentApplication, steps);
+	    this.controlHiddenInputStudent = new Control(null, null); // luodaan control vain jos hiddeninput m‰‰ritelty --> "optimointia"
+	    this.studentApplication.setKbd(hiddenInput);
+
+	    try {
+		this.controlHiddenInputStudent.run(this.studentApplication, steps);
+	    }
+	    catch (TTK91Exception e) {
+		//FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
+	    }
 
 	    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 		// simuloidaa malliratkaisu
 		// 2. simulointi malliratkaisua
 
-		this.controlHiddenInputTeacher = new Control(null, null);
-		this.teacherApplication.setKbd(publicInput);
-		this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
-
+		this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput m‰‰ritelty --> "optimointia"
+		this.teacherApplication.setKbd(hiddenInput);
+		try {
+		    this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
+		}
+		catch (TTK91Exception e) {
+		    // FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
+		}
 	    }
 	} 
 
