@@ -43,6 +43,7 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
  request.getSession(false).
  getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
 }//if
+
 %>
 
 <html>
@@ -126,40 +127,65 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
-//FIMXE: JATKA TÄSTÄ
-      <p>Ohjelmassa vaaditut käskyt:<br>
-    <textarea name="requiredCommands" rows="4" cols="50">(V, ADD);
-(K, JUMP);</textarea>
+
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+     "requiredCommandsHeader", lang)%>
+   <br>
+   <textarea name="requiredCommands" rows="4" cols="50">
+   </textarea>
   </p>
 
-      <p>Ohjelmassa kielletyt käskyt:<br>
-    <textarea name="forbiddenCommands" rows="4" cols="50"></textarea>
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+    "forbiddenCommandsHeader", lang)%>
+  <br>
+   <textarea name="forbiddenCommands" rows="4" cols="50">
+   </textarea>
   </p>
 
-  <p>Rekisterien sisältö:<br>
-    <textarea name="registerValues" cols="50" rows="10">(L,R1 = 100);
-(R4 &lt; 10);
-(R2 &gt; 1);</textarea>
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+    "registerValuesHeader", lang)%>
+   <br>
+    <textarea name="registerValues" cols="50" rows="10">
+    </textarea>
   </p>
-  <p>Muistipaikkojen ja muuttujien sisältö:<br>
-    <textarea name="memoryValues" cols="50" rows="10">(muuttuja1  &lt; 20);
-(L,muuttuja2 = 10);</textarea>
+  
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+    "memoryValuesHeader", lang)%>
+   <br>
+    <textarea name="memoryValues" cols="50" rows="10">
+    </textarea>
     <br>
-    Muistiviitteiden määrä: 
-    <input type="text" name="memoryReferences" size="10" maxlength="8" value="&lt; 40">
+    <%=cache.getAttribute("D", "staticttk91taskcomposer",
+     "memoryReferencesHeader", lang)%>
+    <input type="text" name="memoryReferences" size="10" maxlength="8">
   </p>
-  <p>Tulosteet näytölle:<br>
-    <textarea name="screenOutput" cols="50" rows="5">(1, 20);
-(2, 30);
-(3, 1);
-(4, 5);</textarea>
+  
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+    "screenOutputHeader", lang)%>
+   <br>
+   <textarea name="screenOutput" cols="50" rows="5">(1, 20);
+   </textarea>
   </p>
-  <p>Tulosteet tiedostoon:<br>
-    <textarea name="fileOutput" cols="50" rows="5"></textarea>
+  
+  <p>
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
+    "fileOutputHeader", lang)%>
+   <br>
+   <textarea name="fileOutput" cols="50" rows="5"></textarea>
   </p>
-  <p> 
+  
     <input type="submit" name="Submit"
-     value="<%=cache.getAttribute("D", "staticttk91taskcomposer", "submitButtonText", lang)%>">
+     value="<%=cache.getAttribute(
+            "D", "staticttk91taskcomposer",
+            "submitButtonText", lang)
+            %>"
+    >
+    
 </form>
 </body>
 </html>
