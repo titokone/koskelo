@@ -68,7 +68,7 @@ public class FillInTTK91Analyser extends StaticTTK91Analyser {
 		
 			return (super.analyse(answerAll, params));
 		} else {
-			return (new Feedback(TTK91Constant.FATAL_ERROR, 
+			return (new Feedback(TTK91Constant.ERROR, 
 													 "Esimerkkikoodia ei saatu haettua."));
 		}
 	}
