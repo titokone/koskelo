@@ -460,11 +460,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// simuloituun vai täysin staattiseen lopputilaan.
 			// Jälkimmäisessä tapauksessa titokoneella ei
 			// simuloida mahdollisesti annettua malliratkaisua.
-
-			if(validParam(reqCompareMethod)) {
+			
 				compareMethod = parsePostInt(reqCompareMethod);
 
-				if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED && !validParam(exampleCode)) {
+				if(
+						compareMethod == TTK91Constant.COMPARE_TO_SIMULATED &&
+						!validParam(exampleCode)
+					 ) {
 
 
 					// Vaaditaan esimerkkikoodi, jos
@@ -482,7 +484,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					return;
 				}
 
-			}
 
 		} catch (Exception e) {
 			returnError(this.staticResponse,
@@ -628,7 +629,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			if(validParam(reqMemoryCriteria)) {
 				memoryCriteria = parseCriteriaString(
 						reqMemoryCriteria
+				
 						);
+		
+				if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
+			
+					checkCriteriasForInts(memoryCriteria);
+				
+				}
+				
 				taskOptions.setMemoryCriterias(
 						memoryCriteria
 						);
@@ -652,6 +661,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				registerCriteria = parseCriteriaString(
 						reqRegisterCriteria
 						);
+			
+				if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
+			
+					checkCriteriasForInts(registerCriteria);
+				
+				}
+
 				taskOptions.setRegisterCriterias(
 						registerCriteria
 						);
@@ -930,6 +946,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	}// validTTK91Commands
 
+	/**Apumetodi, jolla tarkistetaan että staattisen vertailun tapauksessa
+	 * vertailukohteet muisti- ja rekisterikriteereissä ovat kokonaislukuja.
+	 */
+
+	private void checkCriteriasForInts(TTK91TaskCriteria[] criterias) 
+		throws Exception{
+	
+			for( int i = 0; i < criterias.length; i++) {
+				parsePostInt(criterias[i].getSecondComparable());
+			}
+		}
+	
 	/**
 	 * Apumetodi, jolla parsitaan muistipaikka 
 	 * ja rekisterikriteerejä kuvaavat
