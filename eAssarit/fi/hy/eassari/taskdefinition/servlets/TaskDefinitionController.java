@@ -151,7 +151,14 @@ public class TaskDefinitionController extends HttpServlet {
 				  }
 	  			  if (taskType.equals(TaskTypes.BLANKFILL_TASK)) {
 	  			  	  request.getRequestDispatcher("/jsp/blankfill1.jsp").forward(request,response);						
-			      }
+				  }
+				  //ADDED by HT 19.11.2004
+				  if( taskType.equals(TaskTypes.STATIC_TTK91) ) {
+	  			  	  request.getRequestDispatcher("/jsp/StaticTTK91Composer.jsp").forward(request,response);
+				  }//if
+				  if( taskType.equals(TaskTypes.FILLIN_TTK91) ) {
+	  			  	  request.getRequestDispatcher("/jsp/FillInTTK91Composer.jsp").forward(request,response);
+				  }//if
 			      break;
 			  case Events.DELETE_TASK:
 			  	  taskDb.deleteTaskData(taskId);
