@@ -3,8 +3,6 @@ package fi.helsinki.cs.koskelo.composer;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.util.Vector;
-import java.util.StringTokenizer;
 import fi.helsinki.cs.koskelo.common.*;
 import fi.hy.eassari.taskdefinition.util.*;
 import fi.hy.eassari.taskdefinitioni.util.datastructures.*;

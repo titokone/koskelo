@@ -131,12 +131,13 @@ public class TTK91TaskOptions {
    * Lisää näytön tulosteeseen liittyvän kriteerin crt-taulukon viimeiseksi.
    * @param crit Kokoelmaan lisättävä kriteeri
    */
+  /*
   public void addScreenOutputCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
 	    this.screencrits.add(crit);
     }
   } // addScreenOutputCriteria
-
+*/
 
   /**
    * Lisää tiedostoon tulostamiseen liittyvät kriteerit kokoelmaan.
@@ -151,12 +152,13 @@ public class TTK91TaskOptions {
    * Lisää tiedostoon tulostamiseen liittyvän kriteerin file-taulukon viimeiseksi.
    * @param crit Kokoelmaan lisättävä kriteeri
    */
+  /*
   public void addFileOutputCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
 	    this.filecrits.add(crit);
     }
   } // addFileOutputCriteria
-
+*/
 
   /**
    * Asettaa mallivastauksen.
@@ -294,12 +296,8 @@ public class TTK91TaskOptions {
    * Hakee kaikki näytön tulosteisiin liittyvät kriteerit.
    * @return kriteerit TTK91-simulaattorin näyttötulosteille
    */
-  public TTK91TaskCriteria[] getScreenOutputCriterias() {
-    TTK91TaskCriteria[] ret = new TTK91TaskCriteria[screencrits.size()];
-    for (int i = 0; i < ret.length; ++i) {
-	    ret[i] = (TTK91TaskCriteria) screencrits.get(i);
-    }
-    return ret;
+  public int[][] getScreenOutputCriterias() {
+    return this.screenoutput;
   } // getScreenOutputCriterias
 
 
@@ -307,16 +305,12 @@ public class TTK91TaskOptions {
    * Hakee kaikki tiedoston tulosteisiin liittyvät kriteerit.
    * @return kriteerit TTK91-simulaattorin tiedostotulosteille
    */
-  public TTK91TaskCriteria[] getFileOutputCriterias() {
-    TTK91TaskCriteria[] ret = new TTK91TaskCriteria[filecrits.size()];
-    for (int i = 0; i < ret.length; ++i) {
-	    ret[i] = (TTK91TaskCriteria) filecrits.get(i);
-    }
-    return ret;
-    //    return (TTK91TaskCriteria[]) this.regcrits.toArray();
+  public int[][] getFileOutputCriterias() {
+    return this.fileoutput;
   } // getFileOutputCriterias
 
 
+ 
   /**
    * Hakee mallivastauksen.
    * @return mallivastaus merkkijonona
@@ -639,6 +633,28 @@ public class TTK91TaskOptions {
   } // toStringHelper
 
 
+  private static void toStringHelper(StringBuffer sb, int[][] cmds) {
+	  if(cmds != null) {
+		  for(int i = 0; i < cmds.length; i++) {
+			  
+			  // voidaan olettaa että taulukon koko
+			  // on kaksi, sillä outputteille joille
+			  // tätä käytetään niiden jälkimmäisessä taulukossa
+			  // on aina kaksi alkiota. Jos ei ole niin jossain
+			  // aikaisemmin on tehty virhe.
+			  // FIXME järkevämpi toteutus kuin int[][] output
+			  // eille
+			  sb.append("(");
+			  sb.append(cmds[i][0]);
+			  sb.append(",");
+			  sb.append(cmds[i][1]);
+			  sb.append(")");
+			  sb.append("|");
+		  }
+	  }
+  }
+				  
+  
     /**
      * Palauttaa merkkijonoesityksen TTK91TaskOptions-oliosta
      */
@@ -660,12 +676,12 @@ public class TTK91TaskOptions {
     strbf.append(":");
 
     //    Näyttötulostuksen kriteerit
-    TTK91TaskCriteria[] screens = this.getScreenOutputCriterias();
+    int[][] screens = this.getScreenOutputCriterias();
     toStringHelper(strbf, screens);
     strbf.append(":");
 
     //    Tiedostotulostuksen kriteerit
-    TTK91TaskCriteria[] files = this.getFileOutputCriterias();
+    int[][] files = this.getFileOutputCriterias();
     toStringHelper(strbf, files);
     strbf.append(":");
     
