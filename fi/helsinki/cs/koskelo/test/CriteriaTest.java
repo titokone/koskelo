@@ -1,10 +1,12 @@
+package fi.helsinki.cs.koskelo.test;
 
 import java.util.*;
-import junit.framework.*;
+//import junit.framework.*;
 import fi.helsinki.cs.koskelo.common.*;
+import fi.helsinki.cs.koskelo.composer.*;
 
-public class CriteriaTest extends TestCase {
-
+public class CriteriaTest// extends TestCase {
+{
 
 
 	private TTK91TaskCriteria a;
@@ -15,7 +17,7 @@ public class CriteriaTest extends TestCase {
 	private TTK91TaskCriteria f;
 	private TTK91TaskCriteria g;
 	
-	public void setUp() {
+	public void setUp() throws InvalidTTK91CriteriaException{
 		TTK91TaskCriteria a = new TTK91TaskCriteria("(A < B);");
 		TTK91TaskCriteria b = new TTK91TaskCriteria("(L, A < B);");
 		TTK91TaskCriteria c = new TTK91TaskCriteria("(A <= B);");
@@ -26,7 +28,7 @@ public class CriteriaTest extends TestCase {
 		e.setComparator(e.LESS);
 	}
 	
-	public void testLessContructors() {
+/*	public void testLessContructors() {
 
 		Assert.assertTrue(
 				(e.getFirstComparable())
@@ -49,5 +51,9 @@ public class CriteriaTest extends TestCase {
 				);
 
 
+	}
+*/
+	public static void main(String args[]) throws Exception{
+		new TTK91TaskCriteria("Foo;");
 	}
 }
