@@ -131,78 +131,78 @@ public class TTK91AnalyseResults{
 		this.memoryReferencesQuality = b;
 	}
 /** Rekisterikriteerien täyttyminen.*/
-	public boolean getRegisters(boolean b) {
+	public boolean getRegisters() {
 		return this.registers;
 	}
 /** Muistikriteerien täyttyminen. */
-	public boolean getMemory(boolean b) {
+	public boolean getMemory() {
 		return this.memory;
 	}
 
 /** Näyttötulostekriteerien täyttyminen. */
-	public boolean getScreenOutput(boolean b) {
+	public boolean getScreenOutput() {
 		return this.screenOutput;
 	}
 	/** Tiedostotulostekriteerien täyttyminen.*/
-	public boolean getFileOutput(boolean b) {
+	public boolean getFileOutput() {
 		return this.fileOutput;
 	}
 	/** Vaadittujen konekäskyjen esiintyminen.*/
-	public boolean getRequiredCommands(boolean b) {
+	public boolean getRequiredCommands() {
 		return this.requiredCommands;
 	}
 	/** Kiellettyjen konekäskyjen esiintyminen. */
-	public boolean getForbiddenCommands(boolean b) {
+	public boolean getForbiddenCommands() {
 		return this.forbiddenCommands;
 	}
 
 	/** Hyväksytyn koon täyttyminen. */
-	public boolean getAcceptedSize(boolean b) {
+	public boolean getAcceptedSize() {
 		return this.acceptedSize;
 	}
 
 	/** Vaaditun muistiviitemäärän täyttymienn.*/
-	public boolean getMemoryReferences(boolean b) {
+	public boolean getMemoryReferences() {
 		return this.memoryReferences;
 	}
 
 	/** Rekisterien laatukriteerien täyttyminen. */
-	public boolean getRegistersQuality(boolean b) {
+	public boolean getRegistersQuality() {
 		return this.registersQuality;
 	}
 
 	/** Laadullisten muistikriteerien täyttyminen. */
-	public boolean getMemoryQuality(boolean b) {
+	public boolean getMemoryQuality() {
 		return this.memoryQuality;
 	}
 
 	/** Laadullisten näyttötulosteiden täyttyminen. */
-	public boolean getScreenOutputQuality(boolean b) {
+	public boolean getScreenOutputQuality() {
 		return this.screenOutputQuality;
 	}
 	/** Laadullisten tiedostotulosteiden täyttyminen. */
 
-	public boolean getFileOutputQuality(boolean b) {
+	public boolean getFileOutputQuality() {
 		return this.fileOutputQuality;
 	}
 
 	/** Laadullisten vaadittujen konekäskyjen täyttyminen.*/
-	public boolean getRequiredCommandsQuality(boolean b) {
+	public boolean getRequiredCommandsQuality() {
 		return this.requiredCommandsQuality;
 	}
 	/** Laadullisten kiellettyjen konekäskyjen täyttyminen.*/
 
-	public boolean getForbiddenCommandsQuality(boolean b) {
+	public boolean getForbiddenCommandsQuality() {
 		return this.forbiddenCommandsQuality;
 	}
 	/** Optimikoon saavuttaminen. */
 
-	public boolean getOptimalSize(boolean b) {
+	public boolean getOptimalSize() {
 		return this.optimalSize;
 	}
 	
 	/** Mahdollinen laadullinen muistiiviitepalaute. */
-	public boolean getMemoryReferencesQuality(boolean b) {
+	public boolean getMemoryReferencesQuality() {
 		return this.memoryReferencesQuality;
 	}
 
