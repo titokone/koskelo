@@ -81,19 +81,22 @@ public class TTK91TaskParser {
 
   Object temp = session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); //KAATUU
   if(temp == null) {return null;} //FIXME KAATUU TÄSSÄ
-  TaskDTO newTask = (TaskDTO)temp;
+
+  TaskDTO newTask = null;
+  newTask = (TaskDTO)temp;
+
 
   TTK91TaskCriteria[] rc = options.getRegisterCriterias();
-  // newTask.set( REGISTER_VALUES, concatCriterias(rc) );
+  newTask.set( REGISTER_VALUES, concatCriterias(rc) );
 
   TTK91TaskCriteria[] mc = options.getMemoryCriterias();
-  //  newTask.set( MEMORY_VALUES, concatCriterias(mc) );
+  newTask.set( MEMORY_VALUES, concatCriterias(mc) );
 
   int[][] soc = options.getScreenOutputCriterias();
-  //  newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
+  newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
 
   int[][] foc = options.getFileOutputCriterias();
-  //  newTask.set( FILE_OUTPUT, concatCriterias(foc) );
+  newTask.set( FILE_OUTPUT, concatCriterias(foc) );
 
   String code = options.getExampleCode();
   newTask.set( EXAMPLE_CODE, code );
@@ -102,10 +105,10 @@ public class TTK91TaskParser {
   newTask.set( TASK_DESCRIPTION, taskdesc );
 
   int[] publicinput = options.getPublicInput();
-  //  newTask.set( PUBLIC_INPUT, publicinput );
+  newTask.set( PUBLIC_INPUT, publicinput );
 
   int[] hiddeninput = options.getHiddenInput();
-  //  newTask.set( HIDDEN_INPUT, hiddeninput );
+  newTask.set( HIDDEN_INPUT, hiddeninput );
 
   int compmethod = options.getCompareMethod();
   newTask.set( COMPARE_METHOD, ("" + compmethod ) );
@@ -120,13 +123,19 @@ public class TTK91TaskParser {
   newTask.set( OPTIMAL_SIZE, ( "" + optsize ) );
 
   TTK91TaskCriteria memrefs = options.getMemRefCriteria();
-  newTask.set( MEMORY_REFERENCES, memrefs.toString() );
+  if(memrefs != null) {
+   newTask.set( MEMORY_REFERENCES, memrefs.toString() );
+  }//if
 
   String[] reqcomm = options.getRequiredCommands();
-  //  newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
+  if(reqcomm != null) {
+   newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
+  }//if
 
   String[] forbcomm = options.getForbiddenCommands();
-  //  newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
+  if(forbcomm != null) {
+   newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
+  }//if
 
   newTask.set( REGISTER_FEEDBACK_POSITIVE,
 	       post.getStringParameter(REGISTER_FEEDBACK_POSITIVE) );
@@ -214,8 +223,8 @@ public class TTK91TaskParser {
 	     sb.append(criterias[i][1]);
 	     sb.append(")");
 	     sb.append(";");
-	 }
-     }
+	 }//for
+     }//if
 
      return sb.toString();
 
