@@ -51,7 +51,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.taskID = null;
 	this.language = "FI";
 	this.initP = null;
-	this.control = null;
+	//	this.control = null;  // ei tarvittane en‰‰
 	this.results = null;
     } // StaticTTK91Analyser()
 
@@ -67,7 +67,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.taskID = taskid;
 	this.language = language;
 	this.initP = new ParameterString(initparams);
-	this.control = new Control(null, null);
+	//	this.control = new Control(null, null); // ei tarvittane en‰‰
 	this.results = new TTK91AnalyseResults(); //Oletuksena kaikki tulokset false
     } // init
 
@@ -84,8 +84,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	// toiminnallisuus
 	// kesken
 
-	getTeacherApplication();
-	getStudentApplication();
+	getTeacherApplication(); // k‰‰nnet‰‰n mahdollinen malliratkaisu
+	getStudentApplication(); // k‰‰nnet‰‰n opiskelijan ratkaisu
 	getTTK91TaskOptions();
 
 	//RUN()
@@ -98,7 +98,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
 
-	return TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback() );
+	return TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
 
 
 	/*
@@ -132,7 +132,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 
     /**
-     * Apumetodi, jolla kaivetaan l‰hdekoodi vastauksesta
+     * Apumetodi, jolla kaivetaan opiskelijan ratkaisun l‰hdekoodi vastauksesta ja k‰‰nnet‰‰n siit‰ TTK91Application
      * @param answer
      */
 
@@ -164,7 +164,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     }//getStudentApplication
 
+
+    /**
+     * Apumetodi, jolla kaivetaan malliratkaisun l‰hdekoodi vastauksesta ja k‰‰nnet‰‰n siit‰ TTK91Application
+     * @param answer
+     */
+
     private void getTeacherApplication(String[] answer) {
+
 
 	TTK91CompileSource src = 
 	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
@@ -191,6 +198,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.teacherApplication = app;
 
     }//getTTK91Application
+
+    /**
+     * Apumetodi, joka suorittaa varsinaisen l‰hdekoodin kaivamisen vastauksesta
+     * @param answer
+     */
 
     private static TTK91CompileSource parseSourceFromAnswer(String[] answer) {
 	if (answer != null) { 
