@@ -16,7 +16,18 @@ public class TTK91FeedbackComposer{
 
 
 	/**
-	 * Metodi, joka muodostaa palautteen.
+	 * Metodi, joka muodostaa palautteen. Tutkii jokaista kriteeri‰ kohden
+	 * onko se oikein ja muodostaa palautteen sen mukaisesti. Palaute on
+	 * html-muodossa.
+	 *
+	 * @param analyseResults Analyserin teht‰v‰‰n antama analyysin tulos
+	 * @param taskFeedback   teht‰v‰‰n liittyv‰t palautteet
+	 * @param cache          haetaan teht‰v‰‰n liittyvi‰ attribuutteja
+	 * @param taskID         teht‰v‰n tunnus
+	 * @param language       k‰ytetty kieli
+	 * @return Feedback-olion, joka sis‰lt‰‰ palautteen
+	 * @throws CacheException jos tulee ongelmia attribuuttien 
+	 *                        hakemisessa AttributeCachesta
 	 */
 
 	public static Feedback formFeedback(TTK91AnalyseResults analyseResults,
@@ -34,7 +45,7 @@ public class TTK91FeedbackComposer{
 		String criteriaHeader = ""; // k‰sitelt‰v‰n kriteerin nimi
 		String feedback = "";       // k‰sitelt‰v‰ palaute
 		String quality = "";        // k‰sitelt‰v‰ laadullinen palaute
-		int evalution = 100;        // oletetaan, ett‰ teht‰v‰ on oikein
+		int evaluation = 100;        // oletetaan, ett‰ teht‰v‰ on oikein
 		Boolean correct = null;
 
 
@@ -63,24 +74,36 @@ public class TTK91FeedbackComposer{
 												 +"width=\"40%\">"+qualityLabel +"</td>"
 												 +"</tr>");
 	
+		/**
+		 * Seuraavassa k‰yd‰‰n l‰pi jokainen kriteerityyppi ja
+		 * katsotaan onko kriteerityyppi oikein, v‰‰rin tai onko
+		 * sit‰ m‰‰ritelty ollenkaan. Jos kriteeri
+		 * on oikein/v‰‰rin, haetaan positiivinen/negatiivinen palaute.
+		 * Lis‰ksi tarkistetaan onko kriteerityypin laadullinen osa oikein
+		 * ja haetaan tarvittaessa laadullinen palaute. 
+		 */
+
 			
 		// Hyv‰ksytty koko
 
 		correct = analyseResults.getAcceptedSize();
-		if (correct != null) {
+		if (correct != null) { // null tarkoittaa, ett‰ kriteerityyppi‰ ei ole
+
+			// haetaan kriiterin kielikohtainen otsikko
+
 			criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
 																					"acceptedSizeHeader", language);
-			if (correct.booleanValue()) {
+			if (correct.booleanValue()) { // kriteeri oikein
 				
 				feedback = taskFeedback.getAcceptedSizeFeedbackPositive();
 
-			} else {
+			} else { // kriteeri v‰‰rin
 
 				feedback = taskFeedback.getAcceptedSizeFeedbackNegative();
 
 				// Jos yksikin kriteeri on v‰‰rin, vastausta ei hyv‰ksyt‰.
 
-				evalution = 0;
+				evaluation = 0;
 			} 
 
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
@@ -103,7 +126,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 
 		// Muistiin viittaukset
 
@@ -111,15 +134,16 @@ public class TTK91FeedbackComposer{
 		if (correct != null) {
 			criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
 																					"memoryReferencesHeader", language);
-			if (correct.booleanValue()) {
+			if (correct.booleanValue()) { 
 			
 				feedback = taskFeedback.getMemoryReferencesFeedbackPositive();
 
-			} else {
+			} else { 
 
 				feedback = taskFeedback.getMemoryReferencesFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
+			// tutkitaan onko laadullinen kriteeri oikein
 			if ((analyseResults.getMemoryReferencesQuality()).booleanValue()){
 				quality = taskFeedback.getMemoryReferencesFeedbackQuality();
 			} else {
@@ -129,7 +153,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 
 		// Vaaditut k‰skyt
 		
@@ -144,7 +168,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getRequiredCommandsFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getRequiredCommandsQuality()).booleanValue()){
 				quality = taskFeedback.getRequiredCommandsFeedbackQuality();
@@ -155,7 +179,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 	
 
 		// Kielletyt k‰skyt
@@ -171,7 +195,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getForbiddenCommandsFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getForbiddenCommandsQuality()).booleanValue()){
 				quality = taskFeedback.getForbiddenCommandsFeedbackQuality();
@@ -182,7 +206,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 		
 			
 		// Muisti
@@ -198,7 +222,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getMemoryFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getMemoryQuality()).booleanValue()){
 				quality = taskFeedback.getMemoryFeedbackQuality();
@@ -209,7 +233,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 
 		// Rekisterit
 		
@@ -224,7 +248,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getRegisterFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getRegistersQuality()).booleanValue()){
 				quality = taskFeedback.getRegisterFeedbackQuality();
@@ -235,7 +259,7 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
 
 		
 		// Tulosteet n‰ytˆlle
@@ -251,7 +275,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getScreenOutputFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getScreenOutputQuality()).booleanValue()){
 				quality = taskFeedback.getScreenOutputFeedbackQuality();
@@ -263,7 +287,8 @@ public class TTK91FeedbackComposer{
 																										 quality, 
 																										 correct.booleanValue()));
 	
-		}
+		}//if
+
 		// Tulosteet tiedostoon
 		
 		correct = analyseResults.getFileOutput();
@@ -277,7 +302,7 @@ public class TTK91FeedbackComposer{
 			} else {
 
 				feedback = taskFeedback.getFileOutputFeedbackNegative();
-				evalution = 0;
+				evaluation = 0;
 			} 
 			if ((analyseResults.getFileOutputQuality()).booleanValue()){
 				quality = taskFeedback.getFileOutputFeedbackQuality();
@@ -288,11 +313,17 @@ public class TTK91FeedbackComposer{
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
 																										 correct.booleanValue()));
-		}
+		}//if
+
 		// taulukko loppuu
  
 		feedbackTable.append("</table><br>");
 
+		/**
+		 * TODO: Statistiikkan lis‰ys palautteeseen
+		 */
+		
+		
 
 		/** 
 		 * Haetaan teht‰v‰‰ vastaava yleinen positiivinen 
@@ -306,13 +337,29 @@ public class TTK91FeedbackComposer{
 		String feedbackSummaryNeg = 
 			cache.getAttribute("T", taskID, "negativefeedback", language);
 		
+		/**
+		 * Lopuksi luodaan uusi Feedback-olio. Parametreja ovat:
+		 * 0 (onnistumisen koodi), evaluation (oikeellisuusprosentti),
+		 * feedbackSummary/Pos/Neg (teht‰v‰n positiivinen/negatiivinen palaute),
+		 * new String(feedbackTable) (kriteerien palaute).
+		 */
 
-		return new Feedback(0, evalution, feedbackSummaryPos, 
+		return new Feedback(0, evaluation, feedbackSummaryPos, 
 												feedbackSummaryNeg, new String(feedbackTable));
 		
 	}//formFeedback
 
-	public Feedback formFeedback(String errorMessage) {
+	/**
+	 * Muodostaa virheilmoituksen.
+	 *
+	 * @param errorMessage virheilmoitus
+	 * @return sis‰lt‰‰ virheilmoituksen
+	 */
+
+
+	public static Feedback formFeedback(String errorMessage) {
+
+		// Virhekoodi 2 on fataalivirhe.
 
 		return new Feedback(2, errorMessage);
 	}//formFeedback
@@ -343,7 +390,7 @@ public class TTK91FeedbackComposer{
 	
 	}//getHTMLElementFeedbackRow
 
-
+	/*	
 
 	public static void main(String [] args){
 		FeedbackTestCache cache = new FeedbackTestCache();
@@ -366,5 +413,5 @@ public class TTK91FeedbackComposer{
 		catch(Exception e){}
 		
 	}
-	
+	*/
 }//class
