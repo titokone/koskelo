@@ -10,23 +10,85 @@ import fi.hy.eassari.taskdefinition.util.datastructures.*;
 import fi.hy.eassari.showtask.trainer.TaskBase;
 import fi.hy.eassari.showtask.trainer.*;
 
+/** Servletti TTK91-tehtävänannon syntaktisen oikeellisuuden tarkistamiseen.
+ * Servletti lukee Static/FillIn/DynamicTTK91Composer.jsp:n formin sisällön
+ * ja tarkistaa kustakin kentästä niiden sisällöstä oikean muodon.
+ *
+ * Tulevaisuuden jatkokehityksessä saattaa olla järkevää erottaa servletti
+ * kahteen osaan siten, että feedbackillä on oma servlettinsä, ettei koodin
+ * määrä tässä tiedostossa kasva järjettömän suureksi.
+ *
+ * @Author Eeva Nevalainen
+ * @Version 0.1
+ */
+
 public class TTK91SyntaxChecker extends HttpServlet {
 
+	/**
+	 * Oletuskohde, jonne palataan jos jokin kriteereistä on väärin.
+	 */
 	private String staticResponse = "/jsp/StaticTTK91Composer.jsp";
+	/** 
+	 * Kieliasetus. Assarin defaultasetus on ilmeisesti englanti, mutta
+	 * tämä ylikirjoitetaan settingissistä saaduilla asetuksilla.
+	 */
 	private String lang = "EN"; // default in assari.
+	/**
+	 * Http-pyyntö.
+	 */
 	private HttpServletRequest req;
+	/**
+	 * http-vastaus.
+	 */
 	private HttpServletResponse res;
+	/*
+	 * @see Session
+	 */
 	private HttpSession session;
+	/** 
+	 * Assarin oma sessityyppinsä. Täältä saadaan asetustietoa, kuten
+	 * kieli, joka asetetaan langiin.
+	 */
 	private TeacherSession settings;
+	/** 
+	 * Events-luokan kokonaisluku. Tästä voidaan päätellä minkätyyppistä
+	 * tehtävää ollaan luomassa. Luku lähetetään eteenpäin
+	 * taskDefinitionControllerille.
+	 */
 	private int event;
+	/**
+	 * Cache, josta saadaan sivujen merkkijonot. Assarin toteuttama,
+	 * lötyy fi.hy.eassari.showtask.trainer -pakkauksesta.
+	 */
 	private TaskBase cache;
+	/**
+	 * Assarin tietorakenne. Tätä tarvitaan palautteiden palauttamiseen
+	 * sivulle, kun tehtävää halutaan editoida.
+	 */
 	private TaskDTO task;
+	/** Boolean, joka kertoo ollaanko luomassa uutta tehtävää vai 
+	 * editoimassa jo vanhaa. Jos ollaan editoimassa jo olemassaolevaa
+	 * tehtävää, halutaan palauttaa annetut palautteet lomakkeeseen,
+	 * jotta käyttäjän on mukavampi muuttaa niitä.
+	 */
 	private boolean editTask = false;
+	/** Boolean kuvaamassa onko kyseessä FillIn_TTK91 tyyppinen tehtävä.
+	 * Muutetaanko intiksi jolloin saadaan toteutettua tähän samaan myös
+	 * dynaaminen tehtävä?
+	 */
 	private boolean fillIn = false;
 
 	// FIXME näikö?
 	private ServletConfig config;
 	//FIXME: PASKAA KOODIA
+	
+	/**
+	 * Yliajettu servletin alustusmetodi. Periaatteessa lukee
+	 * konfiguraatiotiedoston ja luo uuden ilmentymän TaskBasesta.
+	 *
+	 * @param config Palvelinohjelmisto automaattisesti osaa antaa
+	 * oikeat parametrit alustaessaan servlettiä. CHECK!!
+	 */
 	public void init (ServletConfig config) throws ServletException  {
 		
 		this.config = config;   
@@ -68,6 +130,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	/** Kutsuu doPostia parametreillaan. Yhteensopivuuden vuoksi.
 	 *
+	 * @param req Http-pyyntö, jonka asiakkaan selain lähettää.
+	 * @param res http-vastaus asiakkaan selaimelle.
 	 */
 	protected void doGet(
 			HttpServletRequest req,
@@ -82,6 +146,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * voi syöttää palautteen. Jos jonkin kriteerin syntaksi on
 	 * virheellinen, sivu palaa takaisin edelliselle sivulle ja antaa
 	 * virheilmoituksen.
+	 *
+	 * @param req HTTP-pyyntö joko Static- FillIn tai Dynamic 
+	 * TTK91Composerilta
+	 * @param res HTTP-vastaus asiakkaalle. Ilman virhetilanteita
+	 * lomake tehtävän ratkaisun palautteen keräämiseen
 	 */
 
 	protected void doPost(
@@ -92,6 +161,17 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.req = req;
 		this.res = res;
+		this.session = this.req.getSession(false);
+
+		// Tarkistetaan onko sessio vanhentunut
+		if(this.session == null) { 
+			//sessio on vanhentunut, joten ohjataan käyttäjä
+			//sisäänkirjautumissivulle eikä tehdä muuta
+			req.getRequestDispatcher(
+					"/jsp/login.jsp"
+					).forward(req,res);
+			return;
+		}//if
 
 		String exampleCode; //TODO tarkista koodin kääntyminen
 		String taskDescription; // tarviiko tarkistaa?
@@ -116,11 +196,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// Jokainen arvo tarkistetaan siten että katsotaan onko
 		// sen tyyppi ja syntaksi oikein.
 
-		// suoritettavien konekäskyjen maksimimäärä
-
+		// Minkä tyyppinen pyyntö on, editointi vai uusi
 		String reqEvent = this.req.getParameter(
-				"event");
+				"event"
+				);
 
+		// suoritettavien konekäskyjen maksimimäärä
 		String reqMaxCommands = this.req.getParameter(
 				"maxCommands"
 				);
@@ -191,25 +272,25 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				);
 
 
-		// TODO checking of session, but no need for new one
-
-		this.session = this.req.getSession(false);
-
-		if(this.session == null) { // Sessio vanhentunut
-			req.getRequestDispatcher(
-					"/jsp/login.jsp"
-					).forward(req,res);
-			return;
-		}//if
+		// Asetustiedot. mm. kieliasetukset, jota 
+		// käytetään sivulla päättämään minkä kieliset
+		// merkkijonot tulostetaan palautteenkeräämissivulle.
 
 		settings = (TeacherSession)
 			session.getAttribute(
 					"fi.hy.taskdefinition."+
 					"util.datastructures.TeacherSession"
 					);
+		
+		// Asetuksia ei välttämättä ole
 		if (settings != null){
+			// Asetuksista löytyy mahdollisesti korvaava
+			// kieli aikaisemmin asetetulle oletuskielelle 
+			// EN
 			lang = settings.getSelectedLanguageId();
 		}
+
+		// Yritetään parsia kokonaisluku eventistä.
 
 		try { // event
 			event = parsePostInt(reqEvent);
@@ -222,8 +303,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// päätetään mitä meidän haluttiiin tekevän. Jos
 		// fillin, asetetaan samantien myös kohdeosoite oikein.
-		// TODO fillinedit
+		// Defaulttina oletetaan, että tehdään uutta staattista
+		// tehtävää
 		if(event == Events.STATIC_TTK91_EDIT){
+			
+			// staattisen tehtävän editointi
+			
 			editTask = true;
 			task = (TaskDTO)
 				this.session.getAttribute(
@@ -231,12 +316,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						"util.datastructures.TaskDTO"
 						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
+		
+			// uusi FILL_IN-tehtävä
+			
 			fillIn = true;
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
 		try {
-			// maxCommands ei voi olla null
+			// maxCommands ei voi olla null, sillä
+			// maxCommandsia käytetään looppiin juuttumisen
+			// estämiseksi kun suoritetaan titokoneella
+			// opiskelijan ohjelmaa
 
 			if(validParam(reqMaxCommands)) {
 				maxCommands = parsePostInt(reqMaxCommands);
@@ -253,7 +344,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		
 		}// catch
 
-		try { // exampleCode
+		try { // exampleCode eli ohjelman malliratkaisu
 			// TODO validin TTK91-koodin tarkistaminen
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
@@ -275,7 +366,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}
 
-		try { // taskDescription
+		try { // taskDescription, eli tehtävänanto
 			// TODO vaaditaanko?
 			// TODO dynaamisen tehtävän syntaksin tarkistaminen
 			// TODO dynaamisen tehtävän vertailu mallikoodiin
@@ -291,7 +382,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // publicInput
+		try { // publicInput, eli julkiset syötteet
 
 			if(validParam(reqPublicInput)) {
 				publicInput = parseInputString(reqPublicInput);
@@ -303,7 +394,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // hiddenInput
+		try { // hiddenInput, eli piilotetut syötteet
 
 			if(validParam(reqHiddenInput)) {
 				hiddenInput = parseInputString(reqHiddenInput);
@@ -315,8 +406,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // compareMethod
+		try { // compareMethod, vertailutapa.
+			// compareMethod ilmaisee verrataanko titokoneen
+			// simuloituun vai täysin staattiseen lopputilaan.
+			// Jälkimmäisessä tapauksessa titokoneella ei
+			// simuloida mahdollisesti annettua malliratkaisua.
+			// TODO jos verrataan simuloituun, pakko olla malli-
+			// ratkaisu
 			// FIXME: not like this
+
 			if(validParam(reqCompareMethod)) {
 				compareMethod = 1;
 			}
@@ -325,7 +423,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { //  acceptedSize
+		try { //  acceptedSize eli maksimipituus ohjelmalle,
+			// joka vielä kuitenkin hyväksytään
+			
 			if(validParam(reqAcceptedSize)) {
 				acceptedSize = parsePostInt(reqAcceptedSize);
 				taskOptions.setAcceptedSize(acceptedSize);
@@ -336,7 +436,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 
-		try { // optimalSize
+		try { // optimalSize eli ratkaisun optimipituus
 			if(validParam(reqOptimalSize)) {
 				optimalSize = parsePostInt(reqOptimalSize);
 				taskOptions.setOptimalSize(optimalSize);
@@ -349,6 +449,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // memoryReferences. Odotetaan vertailu
 			//operaattoria ja numeroa. 
+			//Tallenetaan TTK91Criteriana siten,
+			//että ensimmäisenä vertailuoperaattorina
+			//on merkkijono MEMORYREFERENCES
+			
 			if(validParam(reqMemoryReferences)) {
 				String tmp = "MEMORYREFERENCES"+
 					reqMemoryReferences;
@@ -364,7 +468,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // requiredCommands
+		try { // requiredCommands eli ohjelmassa vaaditut
+			//TTK91-kielen konekäskyt.
+			//Kustakin käskystä tarkistetaan onko se vaaditunkalta
+			//tainen merkkijono.
 
 			if(validParam(reqRequiredCommands)) {
 				requiredCommands = validTTK91Commands(
@@ -379,7 +486,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // forbiddenCommands
+		try { // forbiddenCommands eli ohjelmassa kielletyt
+			//käskyt
 			if(validParam(reqForbiddenCommands)) {
 				forbiddenCommands = validTTK91Commands(
 						reqForbiddenCommands
@@ -395,7 +503,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 
-		try { // memoryCriteria
+		try { // memoryCriteria eli muistipaikkoihin
+			//liittyvät vertailukriteerit.
+			//Kukin on muotoa (A>B); tai (L, A<B);
+			//Tyyppiä TTK91TaskCriteria
 			if(validParam(reqMemoryCriteria)) {
 				memoryCriteria = parseCriteriaString(
 						reqMemoryCriteria
@@ -409,7 +520,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // registerCriteria
+		try { // registerCriteria eli titokoneen rekistereihin
+			//liittyvät vertailukriteerit. 
+			//Tyyppiä TTK91TaskCriteria.
 			if(validParam(reqRegisterCriteria)) {
 				registerCriteria = parseCriteriaString(
 						reqRegisterCriteria
@@ -423,7 +536,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // screenOutput
+		try { // screenOutput eli opiskelijan 
+			//ohjelman tulosteet näytölle. Lukupareja, joista
+			//ensimmäinen ilmaisee monesko tuloste ja toinen
+			//ilmaisee mitä tulostettu.
 			if(validParam(reqScreenOutput)) {
 				screenOutput = parseOutputString(
 						reqScreenOutput
@@ -437,7 +553,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}
 
-		try { // fileOutput
+		try { // fileOutput eli opiskelijan ohjelman tulosteet
+			// tiedostoon. Titokoneen virtuaalitiedosto tässä
+			// tapauksessa.
 			if(validParam(reqFileOutput)) {
 				fileOutput = parseOutputString(
 						reqFileOutput
@@ -452,6 +570,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}
 
+		// Asetetaan taskOptions sessioon, jotta
+		// taskdefinitioncontrollerissa se saadaan annettua
+		// eteenpäin TTK91TaskParserille. TaskParser muokkaa
+		// siitä tietokantaan tallennettavan otuksen.
 		this.session.setAttribute(
 				"fi.helsinki.cs.koskelo.common."+
 				"TTK91TaskOptions",
@@ -459,23 +581,34 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				);
 
 		this.res.setContentType ("text/html");
+		
 		ServletOutputStream out = this.res.getOutputStream();
+		
 		try{
 			if(cache != null) {
 				out.print(feedbackForm());
 
 			} else {
-				// FIXME
+				// init() failed
 				out.print("Didn't get any cache");
 			}
 		} catch (CacheException e) {
-			//FIXME
+			// jotain meni päin hemmmttiä tultamisen
+			// aikana
 			out.print("CacheException");
 		}
 
 	} // doPost
 
 
+	/**
+	 * Apumetodi virheen palauttamiseen. Piilottaa osan toisteisesta
+	 * koodista. Target on käytännössä aina StaticResponse, mutta
+	 * tässä ollaan varauduttu mahdolliseen muuhunkin tarpeeseen.
+	 * @param error Merkkijono, jonka sivu, jolle palataaan voi
+	 * tulostaa käyttäjälle selityksenä virheestä.
+	 */
+	
 	private void returnError(String target, String error) 
 		throws ServletException, java.io.IOException{
 
@@ -484,7 +617,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				forward(this.req, this.res);
 		}
 
-	/** Heittää poikkeuksen jos code-string ei ole validi FillIn esimerkkiohjelma.
+	/** Heittää poikkeuksen jos code-string ei ole validi 
+	 * FillIn esimerkkiohjelma.
 	 * Vaatimukset sopivuudelle ovat, että merkkijonossa esiintyy [ ensin 
 	 * ja sitten ].
 	 * Molempia saa esiintyä tasan yksi.
@@ -506,9 +640,22 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 		}
 
+	
+	/** Apumetodi ohjelman saamien syötteiden parsimiseen. Lukee
+	 * merkkijonon muotoa 2,3,4 jne
+	 * @param input Käyttäjän antama syötemerkkijono
+	 */
+	
 	private int[] parseInputString(String input)
 		throws Exception {
 
+			// Kokonaisluvussa saa ilmeisesti olla piste.
+			// Syötteessämme ei kuitenkaan saa olla, joten
+			// heitetään poikkeus, jolloin doPost tietää
+			// että merkkijono oli virheellinen.
+			if(input.indexOf(".") > -1) {
+				throw new Exception("Not an integer");
+			}
 
 			String[] tmp = input.split(",");
 			int[] retInput;
@@ -524,7 +671,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} // parseInputString
 
 
-	/* Parses string of format (1,2);(2,3); etc into int[][] */
+	/** Lukee käyttäjän antaman vaaditun outputin ja muuntaa
+	 * sen muotoon int[][]. Jälkimmäisessä taulukossa on aina
+	 * tasan kaksi lukua, ensimmäinen luku ilmaisemassa tulosteen
+	 * järjestyslukua ja toinen ilmaisemassa tulosteen sisältöä.
+	 *
+	 * Ylimääräiset annettavat numerot yksien sulkujen sisällä 
+	 * jätetään huomiotta.
+	 */
 	private int[][] parseOutputString(String output) 
 		throws Exception{
 
@@ -549,7 +703,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			return outPutTable;
 		}
-
+/** Apumetodi, jolla tarkistetaan syötteistä ovatko ne pilkulla
+ * toisistaan erotettuja TTK91-käskyjä.
+ */
 	private String[] validTTK91Commands(
 			String commandString
 			) throws Exception {
@@ -577,7 +733,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	}// validTTK91Commands
 
-
+/**
+ * Apumetodi, jolla parsitaan muistipaikka ja rekisteri kriteerejä kuvaavat
+ * merkkijonot. 
+ * 
+ *@return taulukkoesitys annetun merkkijonon kriteereistä.
+ */
 	private TTK91TaskCriteria[] parseCriteriaString(String criteriaString) 
 		throws InvalidTTK91CriteriaException{
 
@@ -601,6 +762,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		return (s != null && !(s.trim()).equals(""));
 	}//validParam
 
+
+	/** Apumetodi, joka muodostaa palautelomakkeen.
+	 *
+	 * Tämä voisi olla joskus ihan hyvä idea siirtää omaksi sivukseen.
+	 *
+	 * @return Palautelomakesivu
+	 */
 	private String feedbackForm() throws CacheException{
 
 		String page = "<html>";
@@ -840,6 +1008,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	}// feedbackForm
 
 
+	/**
+	 * Palautesivun palautelaatikot tulostava metodi
+	 */
 	private String feedbackBox(String name) {
 
 		return "<p>\n"+
