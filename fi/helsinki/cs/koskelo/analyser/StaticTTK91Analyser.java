@@ -252,7 +252,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    // 1. simulointi
 	}
 	catch (TTK91Exception e) {
-	    //FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
 	    feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
 	    return false;
 	}
@@ -264,7 +263,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		this.controlPublicInputTeacher.run(this.teacherApplication, steps);
 	    }
 	    catch (TTK91Exception e) {
-		// FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
 		feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
 		return false;
 	    }
@@ -282,7 +280,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		this.controlHiddenInputStudent.run(this.studentApplication, steps);
 	    }
 	    catch (TTK91Exception e) {
-		//FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
 		feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
 		return false;
 	    }
@@ -297,7 +294,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		    this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
 		}
 		catch (TTK91Exception e) {
-		    // FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
 		    feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
 		    return false;
 		}
