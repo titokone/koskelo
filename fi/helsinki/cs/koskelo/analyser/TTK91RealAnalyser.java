@@ -42,7 +42,7 @@ public class TTK91RealAnalyser {
 	// - statistiikat
 	setStatistics(results);
 
-	return new TTK91AnalyseResults();
+	return results;
     }
 
     private void generalAnalysis(TTK91AnalyseResults results) {
@@ -56,6 +56,7 @@ public class TTK91RealAnalyser {
 	    results.setAcceptedSize( (pubInputSize <= sizeLimit) && 
 				     (hiddenInputSize <= sizeLimit) );
 	    System.err.println("pubsize: "+pubInputSize+" hidsize: "+hiddenInputSize+" sizeLimit: "+sizeLimit);
+	    System.err.println("Vertailun tulos: "+ ((pubInputSize <= sizeLimit) && (hiddenInputSize <= sizeLimit)));
 	}
 	//	  -Ihannekoko (laatu)
 	int optimalSize = this.taskOptions.getOptimalSize();
@@ -115,6 +116,9 @@ public class TTK91RealAnalyser {
 
 	//      -Kielletyt käskyt
 	String[] forbiddenCommands = this.taskOptions.getForbiddenCommands();
+
+	//	for (int i=0; i < forbiddenCommands
+
 	if (forbiddenCommands != null) {
 	         
 	    Boolean forbiddenQualityCommand = null;
@@ -130,18 +134,19 @@ public class TTK91RealAnalyser {
 		else { // -> oikeellisuus
 		    forbiddenCommand = 
 			TTK91AnalyserExtraUtils.commandNotFound(this.answer, cmd[0]); 
+		    System.err.println("CommandNotFound palautti: "+forbiddenCommand);
 		    if (!forbiddenCommand.booleanValue()) {
-			break; // vaatimalla vaadittua käskyä ei löytynyt -> lopetetaan
+			break; // kielletty käsky löytyi -> lopetetaan
 		    }
 		}
 
 	    }
 
 	    if (forbiddenCommand != null) {
-		results.setForbiddenCommands(!forbiddenCommand.booleanValue());
+		results.setForbiddenCommands(forbiddenCommand.booleanValue());
 	    }
 	    if (forbiddenQualityCommand != null) {
-		results.setForbiddenCommandsQuality(!forbiddenQualityCommand.booleanValue());
+		results.setForbiddenCommandsQuality(forbiddenQualityCommand.booleanValue());
 	    }
 	    
 	}
