@@ -183,7 +183,7 @@ public class TTK91AnalyseResults{
 		this.dataSegmentSize = dataSegmentSize;
 	}
 
-	public void setExecutedCommandsCount(int excecutedCommands) {
+	public void setExecutedCommandsCount(int executedCommands) {
 		this.executedCommands = executedCommands;
 	}
 
