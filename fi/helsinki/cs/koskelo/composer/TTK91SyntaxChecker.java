@@ -27,35 +27,35 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	/**
 	 * Oletuskohde, jonne palataan jos jokin kriteereistä on väärin.
 	 */
-	private String staticResponse = "/jsp/StaticTTK91Composer.jsp";
+	//	private String staticResponse ;
 	/**
 	 * Kieliasetus. Assarin defaultasetus on ilmeisesti englanti, mutta
 	 * tämä ylikirjoitetaan settingissistä saaduilla asetuksilla.
 	 */
-	private String lang = "EN"; // default in assari.
+	//	private String lang = "EN"; // default in assari.
 	/**
 	 * Http-pyyntö.
 	 */
-	private HttpServletRequest req;
+	//	private HttpServletRequest req;
 	/**
 	 * http-vastaus.
 	 */
-	private HttpServletResponse res;
+	//	private HttpServletResponse res;
 	/*
 	 * @see Session
 	 */
-	private HttpSession session;
+	//	private HttpSession session;
 	/**
 	 * Assarin oma sessityyppinsä. Täältä saadaan asetustietoa, kuten
 	 * kieli, joka asetetaan langiin.
 	 */
-	private TeacherSession settings;
+//	private TeacherSession settings;
 	/**
 	 * Events-luokan kokonaisluku. Tästä voidaan päätellä minkätyyppistä
 	 * tehtävää ollaan luomassa. Luku lähetetään eteenpäin
 	 * taskDefinitionControllerille.
 	 */
-	private int event;
+//	private int event;
 	/**
 	 * Cache, josta saadaan sivujen merkkijonot. Assarin toteuttama,
 	 * lötyy fi.hy.eassari.showtask.trainer -pakkauksesta.
@@ -65,21 +65,21 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * Assarin tietorakenne. Tätä tarvitaan palautteiden palauttamiseen
 	 * sivulle, kun tehtävää halutaan editoida.
 	 */
-	private TaskDTO task;
+//	private TaskDTO task;
 	/** Boolean, joka kertoo ollaanko luomassa uutta tehtävää vai
 	 * editoimassa jo vanhaa. Jos ollaan editoimassa jo olemassaolevaa
 	 * tehtävää, halutaan palauttaa annetut palautteet lomakkeeseen,
 	 * jotta käyttäjän on mukavampi muuttaa niitä.
 	 */
-	private boolean editTask = false;
+	//	private boolean editTask = false;
 	/** Boolean kuvaamassa onko kyseessä FillIn_TTK91 tyyppinen tehtävä.
 	 * Muutetaanko intiksi jolloin saadaan toteutettua tähän samaan myös
 	 * dynaaminen tehtävä?
 	 */
-	private boolean fillIn = false;
+	//	private boolean fillIn = false;
 
 	// FIXME näikö?
-	private ServletConfig config;
+	//	private ServletConfig config;
 	//FIXME: PASKAA KOODIA
 
 	/**
@@ -91,15 +91,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 */
 	public void init (ServletConfig config) throws ServletException  {
 
-		this.config = config;
-		super.init(this.config);
+		//	this.config = config;
+		super.init(config);
 
 		if (cache == null) {
 			// Only created by first servlet to call
-			String conFile = this.config
+			String conFile = config
 				.getServletContext()
 				.getInitParameter("confile");
-			conFile = this.config
+			conFile = config
 				.getServletContext()
 				.getRealPath(conFile);
 
@@ -158,12 +158,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			HttpServletResponse res
 			) throws ServletException, java.io.IOException{
 
-		this.req = req;
-		this.res = res;
-		this.session = this.req.getSession(false);
+		HttpSession session = req.getSession(false);
 
 		// Tarkistetaan onko sessio vanhentunut
-		if(this.session == null) {
+		if(session == null) {
 			//sessio on vanhentunut, joten ohjataan käyttäjä
 			//sisäänkirjautumissivulle eikä tehdä muuta
 			req.getRequestDispatcher(
@@ -176,6 +174,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String taskDescription; // tarviiko tarkistaa?
 		String[] requiredCommands; // JUMP
 		String[] forbiddenCommands; // EQU
+
 		int compareMethod; // 0 = static, 1 = simuloitu
 		int maxCommands;
 		int acceptedSize; // 200 riviä
@@ -189,84 +188,93 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		TTK91TaskCriteria[] fileOutput; // (1,3)(2,4)(4,3)
 
 		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
+		String lang = "EN";
+		String staticResponse= "/jsp/StaticTTK91Composer.jsp";
+		int event = -1;
+		TeacherSession settings;
+		TaskDTO task;
 
+		
+		
+		boolean fillIn = false;
+		boolean editTask = false;
 		// Nämä muuttujat ovat edellisen sivun inputin
 		// lukemista varten parametrista req.
 		// Jokainen arvo tarkistetaan siten että katsotaan onko
 		// sen tyyppi ja syntaksi oikein.
 
 		// Minkä tyyppinen pyyntö on, editointi vai uusi
-		String reqEvent = this.req.getParameter(
+		String reqEvent = req.getParameter(
 				"event"
 				);
 
 		// suoritettavien konekäskyjen maksimimäärä
-		String reqMaxCommands = this.req.getParameter(
+		String reqMaxCommands = req.getParameter(
 				"maxCommands"
 				);
 		// malliratkaisu
-		String reqExampleCode = this.req.getParameter(
+		String reqExampleCode = req.getParameter(
 				"exampleCode"
 				);
 
 		// tehtävänanto
-		String reqTaskDescription = this.req.getParameter(
+		String reqTaskDescription = req.getParameter(
 				"taskDescription"
 				);
 
 		// julkiset syötteet
-		String reqPublicInput = this.req.getParameter(
+		String reqPublicInput = req.getParameter(
 				"publicInput"
 				);
 
 		// piilotetut syötteet
-		String reqHiddenInput = this.req.getParameter(
+		String reqHiddenInput = req.getParameter(
 				"hiddenInput"
 				);
 
 		// verrataanko simulaatioon
-		String reqCompareMethod = this.req.getParameter(
+		String reqCompareMethod = req.getParameter(
 				"compareMethod"
 				);
 
 		// ratkaisun hyväksymiskoko
-		String reqAcceptedSize = this.req.getParameter(
+		String reqAcceptedSize = req.getParameter(
 				"acceptedSize"
 				);
 		// ratkaisun suosituskoko
-		String reqOptimalSize = this.req.getParameter(
+		String reqOptimalSize = req.getParameter(
 				"optimalSize"
 				);
 		// kielletyt konekäskyt
-		String reqRequiredCommands = this.req.getParameter(
+		String reqRequiredCommands = req.getParameter(
 				"requiredCommands"
 				);
 		// vaaditut konekäskyt
-		String reqForbiddenCommands = this.req.getParameter(
+		String reqForbiddenCommands = req.getParameter(
 				"forbiddenCommands"
 				);
 
 		// pyydetyt rekisterien arvot
-		String reqRegisterCriteria = this.req.getParameter(
+		String reqRegisterCriteria = req.getParameter(
 				"registerValues"
 				);
 
 		//muistipaikkojen arvot
-		String reqMemoryCriteria = this.req.getParameter(
+		String reqMemoryCriteria = req.getParameter(
 				"memoryValues"
 				);
 		// Muistiviittaukset
-		String reqMemoryReferences = this.req.getParameter(
+		String reqMemoryReferences = req.getParameter(
 				"memoryReferences"
 				);
 
 		// näytön tulosteet
-		String reqScreenOutput = this.req.getParameter(
+		String reqScreenOutput = req.getParameter(
 				"screenOutput"
 				);
 
 		// tulosteet tiedostoon
-		String reqFileOutput = this.req.getParameter(
+		String reqFileOutput = req.getParameter(
 				"fileOutput"
 				);
 
@@ -282,7 +290,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					);
 
 
-		this.session.removeAttribute("TTK91ERROR");
+		session.removeAttribute("TTK91ERROR");
 
 		// Asetuksia ei välttämättä ole
 		if (settings != null){
@@ -294,7 +302,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// Yritetään parsia kokonaisluku eventistä.
 
-		
+
 		try { // event
 			event = parsePostInt(reqEvent);
 		} catch (Exception e) {
@@ -311,7 +319,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		//
 
 		task = (TaskDTO)
-			this.session.getAttribute(
+			session.getAttribute(
 					"fi.hy.taskdefinition."+
 					"util.datastructures.TaskDTO"
 					);
@@ -342,424 +350,499 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // catch CacheException kun haetaan virheilmotusta tietokannasta
 
-		try {
-			// maxCommands ei voi olla null, sillä
-			// maxCommandsia käytetään looppiin juuttumisen
-			// estämiseksi kun suoritetaan titokoneella
-			// opiskelijan ohjelmaa
+			try {
+				// maxCommands ei voi olla null, sillä
+				// maxCommandsia käytetään looppiin juuttumisen
+				// estämiseksi kun suoritetaan titokoneella
+				// opiskelijan ohjelmaa
 
-			if(validParam(reqMaxCommands)) {
-				maxCommands = parsePostInt(reqMaxCommands);
-			} else {
-				maxCommands = 10000;
-			}
-
-			taskOptions.setMaxCommands(maxCommands);
-
-		} catch (Exception e) {
-
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91maxcommandssyntaxerror",
-						lang
-						)
-
-				   );
-			return;
-
-		}// catch
-
-		try { // exampleCode eli ohjelman malliratkaisu
-			// TODO dynaamisen koodin syntaksin tarkistaminen
-			// TODO dynaamisen koodin vaatiminen
-
-			exampleCode = reqExampleCode;
-
-			if(validParam(reqExampleCode)){
-				if(fillIn) {
-					fillInValidate(exampleCode);
+				if(validParam(reqMaxCommands)) {
+					maxCommands = parsePostInt(reqMaxCommands);
+				} else {
+					maxCommands = 10000;
 				}
 
-				taskOptions.setExampleCode(exampleCode);
+				taskOptions.setMaxCommands(maxCommands);
+
+			} catch (Exception e) {
+
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91maxcommandssyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
 
 
-			 } else if( fillIn) {
-				 throw new Exception("Missing examplecode");
-			 }
-		} catch (Exception e) {
+					   );
+				return;
 
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91examplecodesyntaxerror",
-						lang
-						)
-				   );
-			return;
+			}// catch
 
-		}
+			try { // exampleCode eli ohjelman malliratkaisu
+				// TODO dynaamisen koodin syntaksin tarkistaminen
+				// TODO dynaamisen koodin vaatiminen
 
-		try { // taskDescription, eli tehtävänanto
-			// TODO dynaamisen tehtävän syntaksin tarkistaminen
-			// TODO dynaamisen tehtävän vertailu mallikoodiin
+				exampleCode = reqExampleCode;
 
-			taskDescription = reqTaskDescription;
-			taskOptions.setTaskDescription(
-					taskDescription
-					);
+				if(validParam(reqExampleCode)){
+					if(fillIn) {
+						fillInValidate(exampleCode);
+					}
 
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91taskdescriptionsyntaxerror",
-						lang
-						)
+					taskOptions.setExampleCode(exampleCode);
 
-				   );
-			return;
-		}
 
-		try { // publicInput, eli julkiset syötteet
+				} else if( fillIn) {
+					throw new Exception("Missing examplecode");
+				}
+			} catch (Exception e) {
 
-			if(validParam(reqPublicInput)) {
-				publicInput = parseInputString(reqPublicInput);
-				taskOptions.setPublicInput(publicInput);
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91examplecodesyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+
 			}
 
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91publicinputsyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
+			try { // taskDescription, eli tehtävänanto
+				// TODO dynaamisen tehtävän syntaksin tarkistaminen
+				// TODO dynaamisen tehtävän vertailu mallikoodiin
 
-		try { // hiddenInput, eli piilotetut syötteet
+				taskDescription = reqTaskDescription;
+				taskOptions.setTaskDescription(
+						taskDescription
+						);
 
-			if(validParam(reqHiddenInput)) {
-				hiddenInput = parseInputString(reqHiddenInput);
-				taskOptions.setHiddenInput(hiddenInput);
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91taskdescriptionsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+
+					   );
+				return;
 			}
 
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91hiddeninputsyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
+			try { // publicInput, eli julkiset syötteet
 
-		try { // compareMethod, vertailutapa.
-			// compareMethod ilmaisee verrataanko titokoneen
-			// simuloituun vai täysin staattiseen lopputilaan.
-			// Jälkimmäisessä tapauksessa titokoneella ei
-			// simuloida mahdollisesti annettua malliratkaisua.
-			
+				if(validParam(reqPublicInput)) {
+					publicInput = parseInputString(reqPublicInput);
+					taskOptions.setPublicInput(publicInput);
+				}
+
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91publicinputsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+			try { // hiddenInput, eli piilotetut syötteet
+
+				if(validParam(reqHiddenInput)) {
+					hiddenInput = parseInputString(reqHiddenInput);
+					taskOptions.setHiddenInput(hiddenInput);
+				}
+
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91hiddeninputsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+			try { // compareMethod, vertailutapa.
+				// compareMethod ilmaisee verrataanko titokoneen
+				// simuloituun vai täysin staattiseen lopputilaan.
+				// Jälkimmäisessä tapauksessa titokoneella ei
+				// simuloida mahdollisesti annettua malliratkaisua.
+
 				compareMethod = parsePostInt(reqCompareMethod);
 
 				if(
 						compareMethod == TTK91Constant.COMPARE_TO_SIMULATED &&
 						!validParam(exampleCode)
-					 ) {
+				  ) {
 
 
 					// Vaaditaan esimerkkikoodi, jos
 					// vaadittiin vertailua simuloituun
 					// malliratkaisuun
-					
-					returnError(this.staticResponse,
+
+					returnError(staticResponse,
 							cache.getAttribute(
 								"D",
 								"ttk91syntaxchecker",
 								"ttk91missingexamplecodeerror",
 								lang
-								)
+								),
+							req,
+							res,
+							session
+
 						   );
 					return;
 				}
 				taskOptions.setCompareMethod(compareMethod);
 
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91comparemethodsyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91comparemethodsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
 
-		try { //  acceptedSize eli maksimipituus ohjelmalle,
-			// joka vielä kuitenkin hyväksytään
-
-			if(validParam(reqAcceptedSize)) {
-				acceptedSize = parsePostInt(reqAcceptedSize);
-				taskOptions.setAcceptedSize(acceptedSize);
+					   );
+				return;
 			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91acceptedsizesyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
 
+			try { //  acceptedSize eli maksimipituus ohjelmalle,
+				// joka vielä kuitenkin hyväksytään
 
-		try { // optimalSize eli ratkaisun optimipituus
-			if(validParam(reqOptimalSize)) {
-				optimalSize = parsePostInt(reqOptimalSize);
-				taskOptions.setOptimalSize(optimalSize);
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91optimalsizesyntaxerror",
-						lang
-						)
-				   );
-			return;
-
-		}
-
-		try { // memoryReferences. Odotetaan vertailu
-			//operaattoria ja numeroa.
-			//Tallenetaan TTK91Criteriana siten,
-			//että ensimmäisenä vertailuoperaattorina
-			//on merkkijono MEMORYREFERENCES
-
-			if(validParam(reqMemoryReferences)) {
-				
-				String tmp = "MEMORYREFERENCES"+
-					reqMemoryReferences;
-				
-				memoryReferences = new TTK91TaskCriteria(
-						tmp
-						);
-				parsePostInt(memoryReferences.getSecondComparable());
-
-				// tarkistetaam että vertailun oikea puoli on
-				// kokonaisluku. Tästä lentää poikkeus, jos
-				// niin ei ole, joten päädytään virheilmotukseen.
-				// Analyser olettaa että tämä tarkastus on tehty.
-				//parsePostInt(memoryReferences.getSecondComparable());
-
-				taskOptions.setMemRefCriteria(
-						memoryReferences
-						);
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91memoryreferencessyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
-
-		try { // requiredCommands eli ohjelmassa vaaditut
-			//TTK91-kielen konekäskyt.
-			//Kustakin käskystä tarkistetaan onko se vaaditunkalta
-			//tainen merkkijono.
-
-			if(validParam(reqRequiredCommands)) {
-				requiredCommands = validTTK91Commands(
-						reqRequiredCommands
-						);
-				taskOptions.setRequiredCommands(
-						requiredCommands
-						);
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91requiredcommandssyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
-
-		try { // forbiddenCommands eli ohjelmassa kielletyt
-			//käskyt
-			if(validParam(reqForbiddenCommands)) {
-				forbiddenCommands = validTTK91Commands(
-						reqForbiddenCommands
-						);
-				taskOptions.setForbiddenCommands(
-						forbiddenCommands
-						);
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91forbiddencommandssyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
-
-
-
-		try { // memoryCriteria eli muistipaikkoihin
-			//liittyvät vertailukriteerit.
-			//Kukin on muotoa (A>B); tai (L, A<B);
-			//Tyyppiä TTK91TaskCriteria
-			if(validParam(reqMemoryCriteria)) {
-				memoryCriteria = parseCriteriaString(
-						reqMemoryCriteria
-				
-						);
-		
-				if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
-			
-					checkCriteriasForInts(memoryCriteria);
-				
+				if(validParam(reqAcceptedSize)) {
+					acceptedSize = parsePostInt(reqAcceptedSize);
+					taskOptions.setAcceptedSize(acceptedSize);
 				}
-				
-				taskOptions.setMemoryCriterias(
-						memoryCriteria
-						);
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91memoryvaluesyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91acceptedsizesyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
 
-		try { // registerCriteria eli titokoneen rekistereihin
-			//liittyvät vertailukriteerit.
-			//Tyyppiä TTK91TaskCriteria.
-			if(validParam(reqRegisterCriteria)) {
-				registerCriteria = parseCriteriaString(
-						reqRegisterCriteria
-						);
-			
-				if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
-			
-					checkCriteriasForInts(registerCriteria);
-				
+					   );
+				return;
+			}
+
+
+			try { // optimalSize eli ratkaisun optimipituus
+				if(validParam(reqOptimalSize)) {
+					optimalSize = parsePostInt(reqOptimalSize);
+					taskOptions.setOptimalSize(optimalSize);
 				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91optimalsizesyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
 
-				taskOptions.setRegisterCriterias(
-						registerCriteria
-						);
+					   );
+				return;
+
 			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91registervaluesyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
 
-		try { // screenOutput eli opiskelijan
-			//ohjelman tulosteet näytölle. Lukupareja, joista
-			//ensimmäinen ilmaisee monesko tuloste ja toinen
-			//ilmaisee mitä tulostettu.
-			if(validParam(reqScreenOutput)) {
-				screenOutput = parseOutputString(
-						reqScreenOutput
-						);
-				taskOptions.setScreenOutputCriterias(
-						screenOutput
-						);
+			try { // memoryReferences. Odotetaan vertailu
+				//operaattoria ja numeroa.
+				//Tallenetaan TTK91Criteriana siten,
+				//että ensimmäisenä vertailuoperaattorina
+				//on merkkijono MEMORYREFERENCES
+
+				if(validParam(reqMemoryReferences)) {
+
+					String tmp = "MEMORYREFERENCES"+
+						reqMemoryReferences;
+
+					memoryReferences = new TTK91TaskCriteria(
+							tmp
+							);
+					parsePostInt(memoryReferences.getSecondComparable());
+
+					// tarkistetaam että vertailun oikea puoli on
+					// kokonaisluku. Tästä lentää poikkeus, jos
+					// niin ei ole, joten päädytään virheilmotukseen.
+					// Analyser olettaa että tämä tarkastus on tehty.
+					//parsePostInt(memoryReferences.getSecondComparable());
+
+					taskOptions.setMemRefCriteria(
+							memoryReferences
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91memoryreferencessyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
 			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91screenoutputsyntaxerror",
-						lang
-						)
-				   );
-			return;
-		}
 
-		try { // fileOutput eli opiskelijan ohjelman tulosteet
-			// tiedostoon. Titokoneen virtuaalitiedosto tässä
-			// tapauksessa.
-			if(validParam(reqFileOutput)) {
-				fileOutput = parseOutputString(
-						reqFileOutput
-						);
-				taskOptions.setFileOutputCriterias(
-						fileOutput
-						);
+			try { // requiredCommands eli ohjelmassa vaaditut
+				//TTK91-kielen konekäskyt.
+				//Kustakin käskystä tarkistetaan onko se vaaditunkalta
+				//tainen merkkijono.
+
+				if(validParam(reqRequiredCommands)) {
+					requiredCommands = validTTK91Commands(
+							reqRequiredCommands
+							);
+					taskOptions.setRequiredCommands(
+							requiredCommands
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91requiredcommandssyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
 			}
-		} catch (Exception e) {
-			returnError(this.staticResponse,
-					cache.getAttribute(
-						"D",
-						"ttk91syntaxchecker",
-						"ttk91fileoutputsyntaxerror",
-						lang
-						)
-				   );
-			return;
 
-		}
+			try { // forbiddenCommands eli ohjelmassa kielletyt
+				//käskyt
+				if(validParam(reqForbiddenCommands)) {
+					forbiddenCommands = validTTK91Commands(
+							reqForbiddenCommands
+							);
+					taskOptions.setForbiddenCommands(
+							forbiddenCommands
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91forbiddencommandssyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+
+
+			try { // memoryCriteria eli muistipaikkoihin
+				//liittyvät vertailukriteerit.
+				//Kukin on muotoa (A>B); tai (L, A<B);
+				//Tyyppiä TTK91TaskCriteria
+				if(validParam(reqMemoryCriteria)) {
+					memoryCriteria = parseCriteriaString(
+							reqMemoryCriteria
+
+							);
+
+					if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
+
+						checkCriteriasForInts(memoryCriteria);
+
+					}
+
+					taskOptions.setMemoryCriterias(
+							memoryCriteria
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91memoryvaluesyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+			try { // registerCriteria eli titokoneen rekistereihin
+				//liittyvät vertailukriteerit.
+				//Tyyppiä TTK91TaskCriteria.
+				if(validParam(reqRegisterCriteria)) {
+					registerCriteria = parseCriteriaString(
+							reqRegisterCriteria
+							);
+
+					if(compareMethod == TTK91Constant.COMPARE_TO_STATIC){
+
+						checkCriteriasForInts(registerCriteria);
+
+					}
+
+					taskOptions.setRegisterCriterias(
+							registerCriteria
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91registervaluesyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+			try { // screenOutput eli opiskelijan
+				//ohjelman tulosteet näytölle. Lukupareja, joista
+				//ensimmäinen ilmaisee monesko tuloste ja toinen
+				//ilmaisee mitä tulostettu.
+				if(validParam(reqScreenOutput)) {
+					screenOutput = parseOutputString(
+							reqScreenOutput
+							);
+					taskOptions.setScreenOutputCriterias(
+							screenOutput
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91screenoutputsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+
+					   );
+				return;
+			}
+
+			try { // fileOutput eli opiskelijan ohjelman tulosteet
+				// tiedostoon. Titokoneen virtuaalitiedosto tässä
+				// tapauksessa.
+				if(validParam(reqFileOutput)) {
+					fileOutput = parseOutputString(
+							reqFileOutput
+							);
+					taskOptions.setFileOutputCriterias(
+							fileOutput
+							);
+				}
+			} catch (Exception e) {
+				returnError(staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91fileoutputsyntaxerror",
+							lang
+							),
+						req,
+						res,
+						session
+					   );
+				return;
+
+			}
 
 		} catch (CacheException ce) {
-			returnError(this.staticResponse,
-					"Error while retrieving error message" + ce.getMessage());
+			returnError(staticResponse,
+					"Error while retrieving error message" + ce.getMessage(),
+					req,
+					res,
+					session);
 		}
 
 		// Asetetaan taskOptions sessioon, jotta
 		// taskdefinitioncontrollerissa se saadaan annettua
 		// eteenpäin TTK91TaskParserille. TaskParser muokkaa
 		// siitä tietokantaan tallennettavan otuksen.
-		this.session.setAttribute(
+		session.setAttribute(
 				"fi.helsinki.cs.koskelo.common."+
 				"TTK91TaskOptions",
 				taskOptions
 				);
 
-		this.res.setContentType ("text/html");
-		ServletOutputStream out = this.res.getOutputStream();
+		res.setContentType ("text/html");
+		ServletOutputStream out = res.getOutputStream();
 
 		try{
 			if(cache != null) {
-				out.print(feedbackForm());
+				out.print(
+						feedbackForm(
+							lang, 
+							task, 
+							editTask,
+							event,
+							req.getParameter("taskid"),
+							req.getParameter("taskname")
+							)
+						);
 
 			} else {
 				// init() failed
@@ -782,13 +865,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * tulostaa käyttäjälle selityksenä virheestä.
 	 */
 
-	private void returnError(String target, String error)
+	private void returnError(String target, String error, HttpServletRequest req, HttpServletResponse res, HttpSession session)
 		throws ServletException, java.io.IOException{
 
-			this.req.setAttribute("fi.hy.eassari.showtask.trainer.TaskBase", cache);
-			this.session.setAttribute("TTK91ERROR", error);
-			this.req.getRequestDispatcher(target).
-				forward(this.req, this.res);
+			req.setAttribute("fi.hy.eassari.showtask.trainer.TaskBase", cache);
+			session.setAttribute("TTK91ERROR", error);
+			req.getRequestDispatcher(target).
+				forward(req, res);
 		}
 
 	/** Heittää poikkeuksen jos code-string ei ole validi
@@ -801,14 +884,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private void fillInValidate(String code)
 		throws Exception {
 
-			if(code.indexOf("[")> -1) {
-				if(
-						(code.indexOf("[") < code.indexOf("]"))&&
-						(code.indexOf("[") == code.lastIndexOf("[")) &&
-						(code.indexOf("]") == code.lastIndexOf("]"))
-				  ){
-					return;
-				}
+			if( 
+					(code.indexOf("[")> -1) && 
+					(code.indexOf("[") < code.indexOf("]"))&&
+					(code.indexOf("[") == code.lastIndexOf("[")) &&
+					(code.indexOf("]") == code.lastIndexOf("]"))
+			  ){
+				return;
+			
 			} else {
 				throw new Exception("Invalid fillin");
 			}
@@ -875,11 +958,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			String commandString
 			) throws Exception {
 
-                //Esimerkki stringi: "(L, JUMP); (LOAD);"
+		//Esimerkki stringi: "(L, JUMP); (LOAD);"
 
-	        //Hävitetään kaikki whitespacet
-	        String cleanString = commandString.replaceAll("\\s","");
-         	//"(L,JUMP);(LOAD)";
+		//Hävitetään kaikki whitespacet
+		String cleanString = commandString.replaceAll("\\s","");
+		//"(L,JUMP);(LOAD)";
 
 		String[] tmp = cleanString.split(";");
 		//tmp1_0["(L,JUMP) "] ja tmp1_1["(LOAD)"]
@@ -888,7 +971,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		for(int i = 0; i < tmp.length; i++) {
 
 			tmp[i] = tmp[i].replaceAll("\\(","");
-		        //tmp1["L,JUMP) "] ja tmp1_1["LOAD)"]
+			//tmp1["L,JUMP) "] ja tmp1_1["LOAD)"]
 
 			tmp[i] = tmp[i].replaceAll("\\)","");
 			//tmp1["L,JUMP"] ja  tmp1_1["LOAD"]
@@ -906,12 +989,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 					if( fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
 							validateTTK91Command(tmp2[1]) ) {
-					  // Oikea käsky oli toisessa alkiossa
+						// Oikea käsky oli toisessa alkiossa
 
 					} else {
 
-					    //Ei ollut TTK91-käsky
-					    throw new Exception("Invalid TTK-91 command");
+						//Ei ollut TTK91-käsky
+						throw new Exception("Invalid TTK-91 command");
 
 					} // if-else
 
@@ -940,8 +1023,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// Trimmataan vielä ylimääräinen
 		// whitespace pois.
 
-	        //Hävitetään kaikki whitespacet
-	        cleanString  = commandString.replaceAll("\\s","");
+		//Hävitetään kaikki whitespacet
+		cleanString  = commandString.replaceAll("\\s","");
 
 		tmp = cleanString.split(";");
 
@@ -955,16 +1038,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	/**Apumetodi, jolla tarkistetaan että staattisen vertailun tapauksessa
 	 * vertailukohteet muisti- ja rekisterikriteereissä ovat kokonaislukuja.
+	 * Heittää poikkeuksen, jos näin ei ole, jolloin päädytään virheellisen
+	 * syötteen seurauksena olevaan catchiin.
 	 */
 
 	private void checkCriteriasForInts(TTK91TaskCriteria[] criterias) 
 		throws Exception{
-	
+
 			for( int i = 0; i < criterias.length; i++) {
 				parsePostInt(criterias[i].getSecondComparable());
 			}
 		}
-	
+
 	/**
 	 * Apumetodi, jolla parsitaan muistipaikka 
 	 * ja rekisterikriteerejä kuvaavat
@@ -991,6 +1076,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}//parseCriteriaString
 
+
+
+	/** Apumetodi joka muuttaa booleaniksi sen, että kentässä
+	 * on muutakin kuin tyjää.
+	 */
+	
 	private boolean validParam(String s){
 		return (s != null && !(s.trim()).equals(""));
 	}//validParam
@@ -1002,7 +1093,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 *
 	 * @return Palautelomakesivu
 	 */
-	private String feedbackForm() throws CacheException{
+	private String feedbackForm(
+			String lang, 
+			TaskDTO task, 
+			boolean editTask,
+			int event,
+			String taskid,
+			String taskname
+			) throws CacheException{
 
 		String page = "<html>";
 
@@ -1053,7 +1151,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				" <input name=\"event\""+
 				" type=\"hidden\" id=\"event\""+
 				" value =\""+
-				this.req.getParameter("event")+
+				event+
 				"\" />"
 				);
 		// hidden input. Yuk.
@@ -1061,7 +1159,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				" <input name=\"taskid\""+
 				" type=\"hidden\" id=\"taskid\""+
 				" value =\""+
-				req.getParameter("taskid")+
+				taskid+
 				"\" />"
 				);
 
@@ -1069,7 +1167,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				" <input name=\"taskname\""+
 				" type=\"hidden\" id=\"taskname\""+
 				" value =\""+
-				req.getParameter("taskname")+
+				taskname+
 				"\" />"
 				);
 		//kriteeriotsakkeet
@@ -1119,7 +1217,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("acceptedSize", false)
+				feedbackBox("acceptedSize", false, task, editTask)
 				);
 		// optimikoko
 		page = page.concat(
@@ -1131,7 +1229,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("optimalSize", false)
+				feedbackBox("optimalSize", false, task, editTask)
 				);
 		// vaaditut käskyt
 		page = page.concat(
@@ -1143,7 +1241,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("requiredCommands", true)
+				feedbackBox("requiredCommands", true, task, editTask)
 				);
 		// kielletyt käskyt
 		page = page.concat(
@@ -1155,7 +1253,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("forbiddenCommands", true)
+				feedbackBox("forbiddenCommands", true, task, editTask)
 				);
 		// rekisterikriteerit
 		page = page.concat(
@@ -1167,7 +1265,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("register", true)
+				feedbackBox("register", true, task, editTask)
 				);
 		// muistikriteerit
 		page = page.concat(
@@ -1179,7 +1277,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("memory", true)
+				feedbackBox("memory", true, task, editTask)
 				);
 
 		// muistiviitteet
@@ -1191,7 +1289,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("memoryReferences", false)
+				feedbackBox("memoryReferences", false, task, editTask)
 				);
 		// näyttötulosteet
 		page = page.concat(
@@ -1203,7 +1301,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("screenOutput", true)
+				feedbackBox("screenOutput", true, task, editTask)
 				);
 		// tiedostotulosteet
 		page = page.concat(
@@ -1215,7 +1313,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</p>\n"+
-				feedbackBox("fileOutput", true)
+				feedbackBox("fileOutput", true, task, editTask)
 				);
 		// submit
 		page = page.concat(
@@ -1244,7 +1342,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	/**
 	 * Palautesivun palautelaatikot tulostava metodi
 	 */
-	private String feedbackBox(String name, boolean quality) {
+	private String feedbackBox(String name, boolean quality, TaskDTO task, boolean editTask) {
 
 
 		// if edit, lisätään vanha teksti.
@@ -1252,7 +1350,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String tmp = "";
 
 		String feedback = "";
-		
+
 		tmp = tmp + "<p>\n"+
 			"<textarea cols=\"40\" rows=\"5\" "+
 			"name=\""+
@@ -1262,7 +1360,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		if(editTask) {
 			feedback =  (String)task.get(name + "FeedbackPositive");
 			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
-			tmp = tmp + feedback;
+				tmp = tmp + feedback;
 			}
 			feedback = "";
 		}
@@ -1276,33 +1374,33 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			"FeedbackNegative\">";
 
 		if(editTask) {
-		feedback =  (String)task.get(name + "FeedbackNegative");
+			feedback =  (String)task.get(name + "FeedbackNegative");
 			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
-			tmp = tmp + feedback;
+				tmp = tmp + feedback;
 			}
 			feedback = "";
 
 		}
 
 		tmp = tmp + "</textarea>\n";
-		
+
 		if(quality){
-		tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
-			"\""+
-			name+
-			"QualityFeedback\">";
-		if(editTask){
-			feedback =  (String)task.get(name + "FeedbackQuality");
-			if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
-			tmp = tmp + feedback;
+			tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
+				"\""+
+				name+
+				"QualityFeedback\">";
+			if(editTask){
+				feedback =  (String)task.get(name + "FeedbackQuality");
+				if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
+					tmp = tmp + feedback;
+				}
+				feedback = "";
+
+
 			}
-			feedback = "";
-	
-		
+			tmp = tmp +	"</textarea>\n";
 		}
-		tmp = tmp +	"</textarea>\n";
-		}
-		
+
 		tmp = tmp + "</p>\n";
 
 		return tmp;
