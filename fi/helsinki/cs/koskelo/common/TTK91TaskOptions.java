@@ -24,6 +24,9 @@ public class TTK91TaskOptions {
   private int[] publicinput;
   private int[] hiddeninput;
 
+  private int[][] screenoutput;
+  private int[][] fileoutput;
+  
   private int comparemethod;
   private int maxcommands;
   private int acceptedsize;
@@ -48,6 +51,8 @@ public class TTK91TaskOptions {
     this.taskdescription = null;
     this.publicinput = null;
     this.hiddeninput = null;
+    this.screenoutput = null;
+    this.fileoutput = null;
     this.comparemethod = 0;
     this.maxcommands = MAX_COMMANDS; // FIXME: kai t‰m‰ oletus m‰‰ritell‰‰n jossain muualla?
     this.acceptedsize = 0;
@@ -117,9 +122,8 @@ public class TTK91TaskOptions {
    * Lis‰‰ n‰ytˆn tulosteeseen liittyv‰t kriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
    */
-  public void setScreenOutputCriteria(TTK91TaskCriteria[] crit) {
-    this.screencrits = new Vector();
-    TTK91TaskOptions.addCriterias(crit, this.screencrits);
+  public void setScreenOutputCriteria(int[][] crit) {
+    this.screenoutput = crit;
   } // addScreenOutputCriteria(TTK91TaskCriteria[] crit)
 
 
@@ -138,9 +142,8 @@ public class TTK91TaskOptions {
    * Lis‰‰ tiedostoon tulostamiseen liittyv‰t kriteerit kokoelmaan.
    * @param crit Kokoelmaan lis‰tt‰v‰ kriteeritaulukko
    */
-  public void setFileOutputCriterias(TTK91TaskCriteria[] crit) {
-    this.filecrits = new Vector();
-    TTK91TaskOptions.addCriterias(crit, this.filecrits);
+  public void setFileOutputCriterias(int[][] crit) {
+    this.fileoutput = crit;
   } // addFileOutputCriteria(TTK91TaskCriteria[] crit)
 
 
