@@ -81,11 +81,21 @@ public class TTK91AnalyseData{
 
 	// Titokoneiden muistit (FIXME, näitä ei taideta tarvita?):
 
-	private    RandomAccessMemory studentPublicMemory = null; 
-	private    RandomAccessMemory teacherPublicMemory = null; 
-	private    RandomAccessMemory studentHiddenMemory = null; 
-	private    RandomAccessMemory teacherHiddenMemory = null;
+//	private    RandomAccessMemory studentPublicMemory = null; 
+//	private    RandomAccessMemory teacherPublicMemory = null; 
+//	private    RandomAccessMemory studentHiddenMemory = null; 
+//	private    RandomAccessMemory teacherHiddenMemory = null;
 
+
+	/** Luodaan uusi TTK91AnalyseDAta, jolle annetaan parametreina 
+	 * tehtävänperustiedot, opiskelijan vastaus ja malliratkaisu.
+	 * Malliratkaisu annetaan erikseen, jotta sitä voideen erikseen
+	 * esikäsitellä analyserissa.
+	 *
+	 * @param taskOptions Tehtävän kriteerit ja perustiedot
+	 * @param answer Opiskelijan vastaus
+	 * @param exampleCode Malliratkaisu, jos sellaista on
+	 */
 
 	public TTK91AnalyseData(
 			TTK91TaskOptions taskOptions,
@@ -112,6 +122,8 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Statistiikkojen kaivelua muuttujiin, siivottu yhteen metodiin.
+	 */
 
 	private void setStatistics() {
 
@@ -147,6 +159,9 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Malliratkaisun kääntäminen. Malliratkaisua ei käännetä jos malliratkaisu on null.
+	 */
+	
 	private void compileTeacherApplication() {
 
 
@@ -155,15 +170,17 @@ public class TTK91AnalyseData{
 		TTK91CompileSource src = null;
 
 		if(exampleCode == null) {
-			return; // FIXME: virheenkäsittely
+			return; 
 		}
 
 
 		src = (TTK91CompileSource) new Source(exampleCode);
 
 		if (src == null) {
-			this.teacherCompileError = "Malliratkaisua ei pystytty"+
+			this.teacherCompileError = "Teacher compile error: Malliratkaisua ei pystytty"+
 				" muuntamaan TTK91CompileSource-muotoon";
+			this.errors = true;
+			return;
 		}//if
 
 
@@ -200,6 +217,9 @@ public class TTK91AnalyseData{
 
 	}
 
+	/** Opiskelijan ohjelman kääntäminen. Jos opiskelijan ohjelmaa ei ole, palautetaan virhe.
+	 */
+	
 	private void compileStudentApplication() {
 
 
@@ -212,12 +232,18 @@ public class TTK91AnalyseData{
 			ans = ans + "\n SVC SP, =HALT";
 			src = (TTK91CompileSource) new Source(ans);
 			// FIXME: toimiiko tosiaan näin helposti?
+		} else {
+			this.errors = true;
+			this.studentCompileError = "Student compile error: Ratkaisu puuttuu";
+			return;
+		
 		}
 
 		if (src == null) {
-			this.studentCompileError = "Ratkaisua ei pystytty"+
+			this.studentCompileError = "Student compile error: Ratkaisua ei pystytty"+
 				" muuntamaan TTK91CompileSource-muotoon";
 			this.errors = true;
+			return;
 		}//if
 
 
@@ -254,39 +280,45 @@ public class TTK91AnalyseData{
 
 	}
 
+	/** Piilotettu taskOptionsista erikseen datan hakeminen tänne.
+	 */
+	
 	private void getTaskData() {
 		this.publicInput = parseInputString(
 				this.taskOptions.getPublicInput()
 				);
-		System.err.println("TTK91AnalyseData.getTaskData:public_inputin_parsimista:"+this.publicInput);
 		this.hiddenInput = parseInputString(
 				this.taskOptions.getHiddenInput()
 				);
 
 		this.steps = taskOptions.getMaxCommands();
-
 		this.compareMethod = taskOptions.getCompareMethod();
-	
-		System.err.println("Vertailumetodi luettiin: " + compareMethod);
 	}
 
 
-
+/** Rakennetaan coret analysointia varten. Ei simuloida turhia
+ * coreja, jos sellaisia ei kaivata, koska myöskään myöhemmin
+ * ei haluta opemuistina muuta kuin null jo simulointia ei ole.
+ */
+	
 	private void run() {
 
 
 		/* Koska titokoneesta metodilla .getCPU() saadaan
-		 * vain viite controlin sisäiseen prosessiin käytetään
+		 * vain viite controlin sisäiseen prosessoriin käytetään
 		 * yhteensä maksissaan neljää controlia, kuitenkin
 		 * siten, että kullekin simulointikierrokselle
-		 * luodaan oma controlinsa.
+		 * luodaan oma controlinsa. Kannattaa myöskin
+		 * huomata että applicationeja on neljä,
+		 * sen takia, että outputit saadaan sieltä myöhemmin
+		 * ja niiden kaikkien simuloinnit tahdotaan tehdä kerralla.
+		 * Myöskin muun applicationista haettavan datan kannalta
+		 * mahdollisesti myöhemmin tästä voi olla hyötyä.
 		 */
 
 		if(publicInput != null) {
-		    System.err.println("Asetetaan studentApplicationille keyboard inputti");
 			this.studentApplicationPublic.setKbd(publicInput);
 			if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
-			    System.err.println("Asetetaan teacherApplicationille keyboard inputti");
 			    this.teacherApplicationPublic.setKbd(
 								 publicInput
 								 );
@@ -310,8 +342,6 @@ public class TTK91AnalyseData{
 
 		if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
 			// 1. simulointi malliratkaisua
-			System.err.println("Simuloituvertailu");
-			
 			this.controlPublicInputTeacher = new Control(null, null);
 			
 			try {
@@ -369,15 +399,13 @@ public class TTK91AnalyseData{
 			}
 		} 
 
-
-
-		// Aja ohjelmat.
-		// Aseta muisti,
-		// Aseta rekisterit,
-		// Aseta tulosteet.
-
 	}
 
+
+
+	/** Parsitaan int[] taulukosta titokoneelle soveliaaseen
+	 * muotoon input. Periaatteessa sama muoto kuin alunperin kriteereissä.
+	 */
 	private String parseInputString(int[] inputTable) {
 
 	    if (inputTable == null) {
@@ -399,7 +427,7 @@ public class TTK91AnalyseData{
 		}
 	}
 
-	/* Tarvitaan vielä: sopivat getterit */
+	/** Seuraavat getterit ovat datan saamiseksi analyserissa, realAnalyserissa jne.*/
 
 	public String getStudentCompileError() {
 		return this.studentCompileError;
@@ -417,6 +445,12 @@ public class TTK91AnalyseData{
 		return this.teacherRunError;
 	}
 
+	/** Näin analyser saa kaikki neljä virheilmoitusta siististi kerralla.
+	 * Käytännössä vain yksi on käytössä, sillä jos teacher ei käänny,
+	 * turha yritää opiskelijaa, jos opiskelija ei käänny, turha mitään on
+	 * ajaa, jos opiskelijaa ei voida ajaa, turha yrittää saada sitä vertailtavaan
+	 * tilaan
+	 */
 	public String[] getErrorMessages() { //FIXME rumaa!
 		String[] errors = new String[4];
 		errors[0] = studentCompileError;
@@ -519,15 +553,11 @@ public class TTK91AnalyseData{
 	}
 
 	public int getCommandAmount() {
-
 		return  this.usedCommands;
-
 	}
 
 	public int getHiddenCommandAmount() {
-
 		return  this.hiddenUsedCommands;
-
 	}
 
 	public int getStackSize() {
@@ -595,11 +625,7 @@ public class TTK91AnalyseData{
     }
     
     public String getTeacherScreenOutputPublic(){
-	if (teacherApplicationPublic == null) {
-	    System.err.println("TTK91AnalyseData.getTeacherScreenOutputPublic(): teacherApplicationPublic == null !!! ");
-	}
 	if (teacherApplicationPublic != null && controlPublicInputStudent != null) {
-	    System.err.println("TTK91AnalyseData.getTeacherScreenOutputPublic(): Yritetään lukea teacherApplicationPublic.readCrt()");
 	    return teacherApplicationPublic.readCrt();
 	} else {
 	    return null;
