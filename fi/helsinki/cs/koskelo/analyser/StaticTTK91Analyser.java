@@ -15,6 +15,7 @@ import fi.hy.eassari.showtask.trainer.ParameterString;
 import fi.hy.eassari.showtask.trainer.AttributeCache;
 import fi.hy.eassari.showtask.trainer.CommonAnalyser;
 
+import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
 
 /**
  * Luokka staattisten TTK-91 -teht‰vien vastauksien tarkastamiseen
@@ -84,8 +85,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	// toiminnallisuus
 	// kesken
 
-	getTeacherApplication(); // k‰‰nnet‰‰n mahdollinen malliratkaisu
-	getStudentApplication(); // k‰‰nnet‰‰n opiskelijan ratkaisu
+	getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu
+	getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
 	getTTK91TaskOptions();
 
 	//RUN()
@@ -142,7 +143,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
 
 	if (src == null) {
-	    return new Feedback(); 
+	    // return new Feedback(); 
 	    // FIXME: oikeanlainen palaute kun sorsa
 	    // ei suostu menem‰‰n edes
 	    // TTK91CompileSource-muotoon - voiko
@@ -177,7 +178,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
 
 	if (src == null) {
-	    return new Feedback(); 
+	    //	    return new Feedback(); 
 	    // FIXME: oikeanlainen palaute kun sorsa
 	    // ei suostu menem‰‰n edes
 	    // TTK91CompileSource-muotoon - voiko
