@@ -10,9 +10,9 @@ public class TTK91TaskCriteria{
 
 	// Olion sisäiset muuttujat
 	
-	private int comparison;
-	private String firstComparable;
-        private String secondComparableB; //Tänne kommentti
+        private int comparator; //Looginen operaattori
+        private String firstComparable; //Ensimmäinen vertailtava
+        private String secondComparable; //Toinen vertailtava
 	
 
 
