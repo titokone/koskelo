@@ -1,4 +1,5 @@
 //TODO: Kommentit ym. sössö
+import java.lang.String.*;
 
 package fi.helsinki.cs.koskelo.common;
 
@@ -62,7 +63,7 @@ public class TTK91TaskCriteria{
 
   this.quality = quality;
 
- }//setComparator
+ }//setQuality
 
 
 
