@@ -21,10 +21,6 @@ public class TTK91TaskCriteria{
  private boolean quality; //True = kriteeri on laadullinen
 
 
- /** Returns an empty TTK91Criteria object for wich
-  * all options are still unset. Use setComparison,
-  * setFirstComparable and setSecondComparable to set them.
-  */
 
  public TTK91TaskCriteria() {
 
@@ -34,14 +30,7 @@ public class TTK91TaskCriteria{
 
  }//TTK91TaskCriteria()
 
- /**
-  * Returns an ready TTK91Criteria object if @param criteria
-  * is correct criteria string.
-  *
-  *@param criteria Standardized string representation of a
-  * criteria. Exeption NAMEHERE is thrown if string doesn't
-  * represent a correct criteria.
-  */
+
 
  public TTK91TaskCriteria(String criteria){
 
@@ -50,9 +39,6 @@ public class TTK91TaskCriteria{
  }// TTK91TaskCriteria(String criteria)
 
 
-
- /**
-  */
 
  public TTK91TaskCriteria(
 		String firstComparable,
@@ -72,10 +58,16 @@ public class TTK91TaskCriteria{
 
 
 
- /**
-  */
+ public void setQuality(boolean quality) {
 
- public boolean setComparator(int comparator) throws {
+  this.quality = quality;
+
+ }//setComparator
+
+
+
+ public void setComparator(int comparator)
+ 				throws InvalidTTK91CriteriaException {
 
   checkComparator(comparator);
   this.comparator = comparator;
@@ -84,10 +76,7 @@ public class TTK91TaskCriteria{
 
 
 
- /**
-  */
-
- public boolean setFirstComparable(String comparable) {
+ public void setFirstComparable(String comparable) {
 
   this.firstComparable = comparable;
 
@@ -95,10 +84,7 @@ public class TTK91TaskCriteria{
 
 
 
- /**
-  */
-
- public boolean setSecondComparable(String comparable) {
+ public void setSecondComparable(String comparable) {
 
   this.secondComparable = comparable;
 
@@ -106,13 +92,154 @@ public class TTK91TaskCriteria{
 
 
 
+ private void checkComparator(int comparator)
+              throws InvalidTTK91CriteriaException {
 
- /** Returns a String representation of TTK91Criteria
-  *
-  * @return Standardized string representation of
-  * a TTK91Criteria. This string given to the constructor
-  * would parse into exactly similar criteria object.
-  */
+  if(comparator < this.LESS ||
+     comparator > this.NOTEQUAL) {
+
+   throw new InvalidTTK91CriteriaException("Invalid comparator");
+
+  }//if
+
+  return;
+
+ }//checkComparator
+
+
+
+ private void parseCriteria(String criteria)
+			  throws InvalidTTK91CriteriaException {
+
+  String[] result = criteria.split(","); //Erota parametrit yksi ja kaksi
+                                         //Saattaa olla vain yksi
+
+  String parameter; //Parametrien v‰liaikaiseen talletukseen
+
+  if(result.length() == 1) { // Jos oli vain yksi parametri
+
+   String cleanCriteria = cleanString(result[0]);
+   findSecondParameterValues(cleanCriteria);
+
+  } else if(result.length() == 2) { // Kaksi parametria
+
+   //Tutki laatuparametrin syntaksi
+   String cleanCriteriaPart1 = cleanString(result[0]);
+   if(cleanCriteriaPart1.equals("L") {
+	setQuality(true);
+   } else {
+	throw new InvalidTTK91CriteriaException("Invalid quality indicator");
+   }//else
+
+   //Tutki loogisen operaation syntaksi
+   String cleanCriteriaPart2 = cleanString(result[1]);
+   findSecondParameterValues(cleanCriteriaPart2);
+
+  } else { // Laiton m‰‰r‰ parametrej‰
+
+   throw new InvalidTTK91CriteriaException("Invalid amount of parameters");
+
+  }//else
+
+  return;
+
+ }//parseCriteria
+
+
+
+ private String cleanString(String dirty) {
+
+  String clean;
+  clean = dirty.replace(' ', '');
+  clean = dirty.replace('(', '');
+  clean = dirty.replace(')', '');
+  clean = dirty.replace(';', '');
+  return clean;
+
+ }//cleanString
+
+
+
+ private void findSecondParameterValues(String cleanCriteria) {
+
+  parameters = cleanCriteria.split("<");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.LESS);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("<=");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.LESSEQ);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("=<");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.LESSEQ);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split(">");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.GREATER);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split(">=");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.GREATEREQ);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("=>");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.GREATEREQ);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("=");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.EQUAL);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("!=");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.NOTEQUAL);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("=!");
+  if(parameters.length() == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.NOTEQUAL);
+   return;
+  }//if
+
+  throw new InvalidTTK91CriteriaException("Invalid or missing"+
+                                          " logical operation");
+
+ }//findSecondParameterValues
+
+
 
  public String toString() {
 
@@ -140,42 +267,8 @@ public class TTK91TaskCriteria{
 
 
 
- /**
-  * Internal method used for trying to parse a TTK91 criteria
-  * object. Given a string representation in specified form,
-  * tries to extract firstComparable, secondComparable and
-  * comprarison.
-  */
-
- private void parseCriteria(String criteria) {
-
-  //TODO: kriteerin parsinta
-
- }//parseCriteria
-
-
-
- /**
-  */
-
- private void checkComparator(int comparator)
-              throws InvalidTTK91CriteriaException {
-
-  if(comparator < this.LESS ||
-     comparator > this.NOTEQUAL) {
-
-   throw new InvalidTTK91CriteriaException("Invalid comparator");
-
-  }//if
-
- }//checkComparator
-
-
-
- /**
-  */
-
  private String comparatorSymbol() {
+	 			throws InvalidTTK91CriteriaException {
 
   String symbol;
 
@@ -199,6 +292,9 @@ public class TTK91TaskCriteria{
    case this.NOTEQUAL:
          symbol = "!=";
          break;
+   default this.INVALID:
+         throw new InvalidTTK91CriteriaException("Invalid comparator");
+
   }//switch
 
   return symbol;
