@@ -376,7 +376,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		page.concat(
 				"<form method=\"post\" action=\""+
 				context+
-				"/koskelo/common/TTK91TaskParser"+
+				"/eassari/taskdefinition/TaskDefintionController"+
 				"\">\n"
 			   );
 
