@@ -36,6 +36,7 @@ TaskDTO task = null;
 
 String syntaxErrorMsg = null;
 boolean syntaxError = false;
+String temp; //Parametrin != null välitarkistukseen
 
 try {
  event = ( (Integer)request.getAttribute("event") ).intValue();
@@ -108,7 +109,8 @@ out.print("EVENT"+event);
 
    } else if(task != null) {
 
-    out.print( task.get("taskDescription") );
+     temp = (String) task.get("taskDescription");
+     if(temp != null) { out.print(temp); }
 
    }//else
 
@@ -129,7 +131,8 @@ out.print("EVENT"+event);
 
       } else if(task != null) {
 
-       out.print( task.get("publicInput") );
+       temp = (String) task.get("publicInput");
+       if(temp != null) { out.print(temp); } 
 
       }//else
 
@@ -150,7 +153,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("hiddenInput") );
+      temp = (String) task.get("hiddenInput");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -170,7 +174,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("exampleCode") );
+      temp = (String) task.get("exampleCode");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -189,7 +194,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("maxCommands") );
+      temp = (String) task.get("maxCommands");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -208,7 +214,8 @@ out.print("EVENT"+event);
 
       } else if(task != null) {
 
-       out.print( task.get("acceptedSize") );
+       temp = (String) task.get("acceptedSize");
+       if(temp != null) { out.print(temp); } 
 
       }//else
 
@@ -226,7 +233,8 @@ out.print("EVENT"+event);
 
       } else if(task != null) {
 
-       out.print( task.get("optimalSize") );
+         temp = (String) task.get("optimalSize");
+         if(temp != null) { out.print(temp); } 
 
       }//else
 
@@ -258,7 +266,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("requiredCommands") );
+      temp = (String) task.get("requiredCommands");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -277,7 +286,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("forbiddenCommands") );
+      temp = (String) task.get("forbiddenCommands");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -296,7 +306,8 @@ out.print("EVENT"+event);
 
       } else if(task != null) {
 
-       out.print( task.get("registerValues") );
+       temp = (String) task.get("registerValues");
+       if(temp != null) { out.print(temp); } 
 
       }//else
 
@@ -315,7 +326,8 @@ out.print("EVENT"+event);
 
       } else if(task != null) {
 
-       out.print( task.get("memoryValues") );
+       temp = (String) task.get("memoryValues");
+       if(temp != null) { out.print(temp); } 
 
       }//else
 
@@ -333,7 +345,8 @@ out.print("EVENT"+event);
 
        } else if(task != null) {
 
-        out.print( task.get("memoryReferences") );
+        temp = (String) task.get("memoryReferences");
+        if(temp != null) { out.print(temp); } 
 
        }//else
 
@@ -353,7 +366,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("screenOutput") );
+      temp = (String) task.get("screenOutput");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
@@ -372,7 +386,8 @@ out.print("EVENT"+event);
 
      } else if(task != null) {
 
-      out.print( task.get("fileOutput") );
+      temp = (String) task.get("fileOutput");
+      if(temp != null) { out.print(temp); } 
 
      }//else
 
