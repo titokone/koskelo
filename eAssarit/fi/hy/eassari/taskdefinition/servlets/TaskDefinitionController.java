@@ -24,6 +24,8 @@ import fi.hy.eassari.taskdefinition.util.TaskTypes;
 import fi.hy.eassari.taskdefinition.util.datastructures.TaskDTO;
 import fi.hy.eassari.taskdefinition.util.datastructures.TeacherSession;
 
+import fi.helsinki.cs.koskelo.composer.*;
+
 /**
  * A controller servlet for taskdefinition view and operation control.
  * @author Vesa-Matti Mäkinen
@@ -235,11 +237,18 @@ public class TaskDefinitionController extends HttpServlet {
 				  session.setAttribute("java.util.Collection", tasks);
 				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
-			/*ADDED by HT, Koskelo-projekti, 08.11.2004*/
-			case Events.STATIC_TTK91_COMPOSE:
-                                  session.removeAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
-				  RequestDispatcher request_dispatcher = request.getRequestDispatcher("/jsp/StaticTTK91Composer.jsp")
-				  request_dispatcher.forward(request,response);
+			/*ADDED by HT, Koskelo-projekti, 08.11.2004*
+			 *Modified by EN
+			 *Assemble a statitc TTK91 task
+			 */
+			  case Events.STATIC_TTK91_SUBMIT:
+				  task = fi.helsinki.cs.koskelo.composer.TTK91TaskParser.assembleFillInTTK91Task(
+						  post, session
+						  );
+				  taskDb.saveData(task);
+				  tasks = db.getAllAuthorTasks(userId, displayLanguage);
+				  session.setAttribute("java.util.Collection", tasks);
+				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
 			  default:
 				  response.sendRedirect("http://www.helsinki.fi/cgi-bin/dump-all");
