@@ -1,4 +1,4 @@
-//package fi.helsinki.cs.koskelo.common;
+package fi.helsinki.cs.koskelo.common;
 
 import java.util.Vector;
 
@@ -424,7 +424,7 @@ public class TTK91TaskOptions {
 	    int[] pubinput = new int[strpubinput.length];
 	    for (int i=0; i < pubinput.length; ++i) {
         try {
-          pubinput[i] = Integer.parseInt(strpubinput[i]);
+	    pubinput[i] = Integer.parseInt(strpubinput[i]);
         }
         catch (NumberFormatException e) {
           System.err.println("String -> int -muunnos epäonnistui: "+e.getMessage());
@@ -439,7 +439,7 @@ public class TTK91TaskOptions {
 	    int[] hiddinput = new int[strhiddinput.length];
 	    for (int i=0; i < hiddinput.length; ++i) {
         try {
-          pubinput[i] = Integer.parseInt(strpubinput[i]);
+          hiddinput[i] = Integer.parseInt(strpubinput[i]);
         }
         catch (NumberFormatException e) {
           System.err.println("String -> int -muunnos epäonnistui: "+e.getMessage());
