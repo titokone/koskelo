@@ -339,8 +339,17 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						"util.datastructures.TaskDTO"
 						);
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
-		}
+		} else if( event == Events.SUBMIT_TASK) {
+			task = (TaskDTO)
+				this.session.getAttribute(
+						"fi.hy.taskdefinition."+
+						"util.datastructures.TaskDTO"
+						);
+			if (task != null) {
+			editTask = true;
 
+			}
+		}
 
 
 		
