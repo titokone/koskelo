@@ -42,7 +42,8 @@ public class TTK91AnalyseData{
 	private String[] answer = null;
 
 	// Virheilmoitukset
-	
+
+	private boolean errors = false;
 	private String studentCompileError = null;
 	private String teacherCompileError = null;
 	private String studentRunError = null;
@@ -82,7 +83,9 @@ public class TTK91AnalyseData{
 		compileTeacherApplication();
 		compileStudentApplication();
 		getTaskData();
+		if(!this.errors) {
 		run();
+		}
 	}
 
 
@@ -117,6 +120,7 @@ public class TTK91AnalyseData{
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
 			this.teacherCompileError = e.getMessage();
+			this.errors = true;
 			return;
 		}//catch
 
@@ -157,6 +161,7 @@ public class TTK91AnalyseData{
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
 			this.studentCompileError = e.getMessage();
+			this.errors = true;
 			return;
 		}//catch
 
@@ -208,6 +213,7 @@ public class TTK91AnalyseData{
 			// 1. simulointi
 		} catch (TTK91Exception e) {
 			this.studentRunError = e.getMessage();
+			this.errors = true;
 			return;
 		}
 
@@ -218,6 +224,7 @@ public class TTK91AnalyseData{
 				this.controlPublicInputTeacher.run(this.teacherApplication, steps);
 			} catch (TTK91Exception e) {
 				this.teacherRunError =  e.getMessage();
+				this.errors = true;
 				return;
 			}
 		}
@@ -233,6 +240,7 @@ public class TTK91AnalyseData{
 				this.controlHiddenInputStudent.run(this.studentApplication, steps);
 			} catch (TTK91Exception e) {
 				this.studentRunError = e.getMessage();
+				this.errors = true;
 				return;
 			}
 
@@ -246,6 +254,7 @@ public class TTK91AnalyseData{
 					this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
 				} catch (TTK91Exception e) {
 					teacherRunError = e.getMessage();
+					this.errors = true;
 					return;
 				}
 			}
@@ -278,20 +287,23 @@ public class TTK91AnalyseData{
 	/* Tarvitaan vielä: sopivat getterit */
 
 	public String getStudentCompileError() {
-		return studentCompileError;
+		return this.studentCompileError;
 	}
 	
 	public String getTeacherCompileError() {
-		return teacherCompileError;
+		return this.teacherCompileError;
 	}
 	
 	public String getStudentRunError() {
-		return studentRunError;
+		return this.studentRunError;
 	}
 	
 	public String getTeacherRunError() {
-		return teacherRunError;
+		return this.teacherRunError;
 	}
 
+	public boolean Errors() {
+		return this.errors;
+	}
 
 }// class
