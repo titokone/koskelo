@@ -1,5 +1,7 @@
 import javax.servlet.*;
 import java.util.Vector;
+import java.util.StringTokenizer;
+import fi.helsinki.cs.koskelo.common.*;
 
 public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
@@ -27,7 +29,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			) throws ServletException, java.io.IOException {
 
 
-		TTK91TaskOptions = new TTK91TaskOptions();
+		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
 		
 		// Nämä muuttujat ovat edellisen sivun inputin 
 		// lukemista varten parametrista req.
@@ -35,54 +37,54 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		// sen tyyppi ja syntaksi oikein.
 
 		// suoritettavien konekäskyjen maksimimäärä
-		private String reqMaxCommands = req.getParameter(
+		String reqMaxCommands = req.getParameter(
 				"max_commands"
 				);
 		// malliratkaisu
-		private String reqExampleCode;
+		String reqExampleCode;
 		// tehtävänanto
-		private String reqTaskDescription;
+		String reqTaskDescription;
 		// julkiset syötteet
-		private String reqPublicInput = req.getParameter(
+		String reqPublicInput = req.getParameter(
 				"public_input"
 				);
 		// piilotetut syötteet
-		private String reqHiddenInput = req.getParameter(
+		String reqHiddenInput = req.getParameter(
 				"hidden_input"
 				);
-		private String reqCompareMethod; // verrataanko simulaatioon
-		private String reqAcceptedSize; // miksi tämä on?
-		private String reqOptimalSize; // ratkaisun suosituskoko
-		private String reqCommands; //konekäskyt
-		private String reqRegisterValues; // pyydetyt rekisterien arvot
-		private String reqMemoryValues; //muistipaikkojen arvot
-		private String reqScreenOutput; // näytön tulosteet
-		private String reqFileOutput; // tulosteet tiedostoon
+		String reqCompareMethod; // verrataanko simulaatioon
+		String reqAcceptedSize; // miksi tämä on?
+		String reqOptimalSize; // ratkaisun suosituskoko
+		String reqCommands; //konekäskyt
+		String reqRegisterValues; // pyydetyt rekisterien arvot
+		String reqMemoryValues; //muistipaikkojen arvot
+		String reqScreenOutput; // näytön tulosteet
+		String reqFileOutput; // tulosteet tiedostoon
 
-		private int maxCommands;
-		private String exampleCode; //TODO tarkista koodin kääntyminen
-		private Strking taskDescription; // tarviiko tarkistaa?
-		private int[] publicInput; 
-		private int[] hiddenInput; // 1,2,3,5,2...
-		private int compareMethod; // 0 = static, 1 = simuloitu
-		private int acceptedSize; // 200 riviä
-		private int optimalSize; // 10 riviä
-		private String[] requiredCommands; // JUMP
-		private String[] forbiddenCommands; // EQU
-		private TTK91TaskCriteria[] registerCriteria; // R2 > 1
-		private TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
-		private int[][] screenOutput; // (1,3) (2,4) (4,3)
-		private int[][] fileOutput; // (1,3)(2,4)(4,3)
+		int maxCommands;
+		String exampleCode; //TODO tarkista koodin kääntyminen
+		String taskDescription; // tarviiko tarkistaa?
+		int[] publicInput; 
+		int[] hiddenInput; // 1,2,3,5,2...
+		int compareMethod; // 0 = static, 1 = simuloitu
+		int acceptedSize; // 200 riviä
+		int optimalSize; // 10 riviä
+		String[] requiredCommands; // JUMP
+		String[] forbiddenCommands; // EQU
+		TTK91TaskCriteria[] registerCriteria; // R2 > 1
+		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
+		int[][] screenOutput; // (1,3) (2,4) (4,3)
+		int[][] fileOutput; // (1,3)(2,4)(4,3)
 
 
 		// TODO checking of session, but no need for new one
 		
-		HttpSession session = request.getSession(false);
+		HttpSession session = req.getSession(false);
 		
 		// TODO yritetään saada parsittua saatu data
 		try { // maxCommands
-			maxCommands = (Integer.parseint(reqHiddenInput))
-				.getValue();
+			maxCommands = (new Integer(reqHiddenInput))
+				.intValue();
 			taskOptions.setMaxCommands(maxCommands);
 		} catch (Exception e) { 
 			// TODO lisää virheen palauttaminen
@@ -112,14 +114,14 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 			while(st.hasMoreTokens()){
 
-				tmp.add(Integer.parseInt(st.nextToken()));
+				tmp.add(new Integer(st.nextToken()));
 			}
 
-			publicInput = new int[tmp.length()];
+			publicInput = new int[tmp.size()];
 
 
-			for(int i = 0; i < tmp.length(); i++) {
-				publicInput[i] = (tmp.get(i)).intValue();
+			for(int i = 0; i < tmp.size(); i++) {
+				publicInput[i] = ((Integer)tmp.get(i)).intValue();
 
 			}
 
@@ -140,13 +142,13 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 			while(st.hasMoreTokens()){
 
-				tmp.add(Integer.parseInt(st.nextToken()));
+				tmp.add(new Integer(st.nextToken()));
 			}
 
-			hiddenInput = new int[tmp.length()];
+			hiddenInput = new int[tmp.size()];
 
 
-			for(int i = 0; i < tmp.length(); i++) {
+			for(int i = 0; i < tmp.size(); i++) {
 				hiddenInput[i] = ((Integer)(tmp.get(i))).intValue();
 
 			}

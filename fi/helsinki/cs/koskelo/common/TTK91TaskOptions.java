@@ -1,3 +1,5 @@
+package fi.helsinki.cs.koskelo.common;
+
 import java.util.Vector;
 
 public class TTK91TaskOptions {

@@ -1,3 +1,6 @@
+
+package fi.helsinki.cs.koskelo.common;
+
 public class TTK91TaskCriteria{
 
 	// Vakioita konstruktoria varten, m‰‰rittelev‰t vertailut
