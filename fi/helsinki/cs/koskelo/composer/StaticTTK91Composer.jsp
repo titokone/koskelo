@@ -82,7 +82,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <textarea name="taskDescription" cols="100" rows="4">
     <%
      if(syntaxError != null) {
-      =request.getAttribute("taskDescription");
+      out.print( request.getAttribute("taskDescription") );
      }//if
     %>
    </textarea>
@@ -96,7 +96,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
      value="
      <%
       if(syntaxError != null) {
-       =request.getAttribute("publicInput");
+       out.print( request.getAttribute("publicInput") );
       }//if
      %>
      "
@@ -111,7 +111,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     value="
     <%
      if(syntaxError != null) {
-      =request.getAttribute("hiddenInput");
+      out.print( request.getAttribute("hiddenInput") );
      }//if
     %>
     "
@@ -126,7 +126,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
 
     <%
      if(syntaxError != null) {
-      =request.getAttribute("exampleCode");
+      out.print( request.getAttribute("exampleCode") );
      }//if
     %>
 
@@ -140,7 +140,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     value="
     <%
      if(syntaxError != null) {
-      =request.getAttribute("maxCommands");
+      out.print( request.getAttribute("maxCommands") );
      }//if
     %>
     "
@@ -153,7 +153,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     value="
      <%
       if(syntaxError != null) {
-       =request.getAttribute("acceptedSize");
+       out.print( request.getAttribute("acceptedSize") );
       }//if
      %>
     "
@@ -165,7 +165,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     value="
      <%
       if(syntaxError != null) {
-       =request.getAttribute("taskDescription");
+       out.print( request.getAttribute("taskDescription") );
       }//if
      %>
     "
@@ -192,7 +192,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
 
     <%
      if(syntaxError != null) {
-      =request.getAttribute("requiredCommands");
+      out.print( request.getAttribute("requiredCommands") );
      }//if
     %>
 
@@ -206,7 +206,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <textarea name="forbiddenCommands" rows="4" cols="50">
     <%
      if(syntaxError != null) {
-      =request.getAttribute("forbiddenCommands");
+      out.print( request.getAttribute("forbiddenCommands") );
      }//if
     %>
    </textarea>
@@ -219,7 +219,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     <textarea name="registerValues" cols="50" rows="10">
      <%
       if(syntaxError != null) {
-       =request.getAttribute("registerValues");
+       out.print( request.getAttribute("registerValues") );
       }//if
      %>
     </textarea>
@@ -232,7 +232,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     <textarea name="memoryValues" cols="50" rows="10">
      <%
       if(syntaxError != null) {
-       =request.getAttribute("memoryValues");
+       out.print( request.getAttribute("memoryValues") );
       }//if
      %>
     </textarea>
@@ -243,7 +243,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
      value="
       <%
        if(syntaxError != null) {
-        =request.getAttribute("memoryReferences");
+        out.print( request.getAttribute("memoryReferences") );
        }//if
       %>
      "
@@ -254,11 +254,11 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "screenOutputHeader", lang)%>
    <br>
-   <textarea name="screenOutput" cols="50" rows="5">(1, 20);
+   <textarea name="screenOutput" cols="50" rows="5">
 
     <%
      if(syntaxError != null) {
-      =request.getAttribute("screenOutput");
+      out.print( request.getAttribute("screenOutput") );
      }//if
     %>
 
@@ -273,7 +273,7 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
 
     <%
      if(syntaxError != null) {
-      =request.getAttribute("fileOutput");
+      out.print( request.getAttribute("fileOutput") );
      }//if
     %>
 
