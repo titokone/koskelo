@@ -124,7 +124,7 @@ public class TTK91TaskParser {
 
   TTK91TaskCriteria memrefs = options.getMemRefCriteria();
   if(memrefs != null) {
-   newTask.set( MEMORY_REFERENCES, memrefs.toString() );
+   newTask.set( MEMORY_REFERENCES, concatMemoryReference(memrefs) );
   }//if
 
   String[] reqcomm = options.getRequiredCommands();
@@ -240,6 +240,21 @@ public class TTK91TaskParser {
 
   return inputString;
  
+ }//concatInput
+
+ private static String concatMemoryReference(TTK91TaskCriteria memrefs) {
+
+  String references = "";
+
+  try{
+   references = memrefs.getComparatorSymbol();
+   references += memrefs.getSecondComparable();
+  } catch (InvalidTTK91CriteriaException e) {
+   return "";
+  }//catch
+
+  return references;
+
  }//concatInput
 
 }//class
