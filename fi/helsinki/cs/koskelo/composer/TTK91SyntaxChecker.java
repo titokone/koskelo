@@ -622,7 +622,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			//liittyvät vertailukriteerit. 
 			//Tyyppiä TTK91TaskCriteria.
 			if(validParam(reqRegisterCriteria)) {
-				registerCriteria = parseCriteriaString(
+				registerCriteria = PARSEcRITeriaString(
 						reqRegisterCriteria
 						);
 				taskOptions.setRegisterCriterias(
@@ -808,14 +808,21 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			String[] splitted1 = output.split(";");
 			String[][] splitted2 = new String[splitted1.length][2];
+			String[] splitted3;
 			int[][] outPutTable = new int[splitted1.length][2];
+			boolean quality;
 
 			for(int i = 0; i < splitted1.length; i++) {
-				splitted1[i] = splitted1[i].replaceAll("(","");
-				splitted1[i] = splitted1[i].replaceAll(")","");
+				splitted1[i] = splitted1[i].replaceAll("\\(","");
+				splitted1[i] = splitted1[i].replaceAll("\\)","");
 				splitted1[i].trim();
 				splitted2[i] = splitted1[i].split(",");
 				splitted2[i][0].trim(); // kaiva täältä L
+
+				if(splitted2[i][0].equalsIgnoreCase("L")) {
+					quality = true;
+				}
+				
 				splitted2[i][1].trim();
 				outPutTable[i][0] = parsePostInt(
 						splitted2[i][0]
@@ -841,8 +848,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		//siivotaan kukin
 		for(int i = 0; i < tmp.length; i++) {
-			tmp[i].replaceAll("(","");
-			tmp[i].replaceAll(")","");
+			tmp[i].replaceAll("\\(","");
+			tmp[i].replaceAll("\\)","");
 			tmp[i].trim();
 		} // for
 
@@ -854,7 +861,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			if(tmp2.length > 1) { // ekassa osassa varmaan L ja toisessa ADD
 				if(tmp2[0].equalsIgnoreCase("L")) { // ok, ekassa L
 					if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
-							validateTTK91Command(tmp2[2])
+							validateTTK91Command(tmp2[1])
 					  ) {
 						// Tokassa ADD
 					} else {

@@ -81,14 +81,20 @@ public class TTK91TaskCriteria{
  }//TTK91TaskCriteria
 
 
-
+/** Asettaa kriteerin vertailuoperaattorin.
+ * @param quality true jos kriteeri on laadullinen.
+ */
+ 
  public void setQuality(boolean quality) {
 
   this.quality = quality;
 
  }//setQuality
 
-
+/** Asettaa vertailuoperaattorin.
+ * @param comparator Yksi luokan julkisista vertailuvakioista. Muiden kohdalla
+ * heitet‰‰n poikkeus
+ */
 
  public void setComparator(int comparator)
  				throws InvalidTTK91CriteriaException {
@@ -98,7 +104,10 @@ public class TTK91TaskCriteria{
 
  }//setComparator
 
-
+/** Asettaa vasemmanpuoleisen vertailtavan. Heitt‰‰ poikkeuksen jos
+ * parametrina on null, tyhj‰ tai pelkki‰ sulkuja sis‰lt‰v‰ merkkijono.
+ * @param comparable Merkkijonoesitys vertailtavasta. 
+ */
 
  public void setFirstComparable(String comparable)
              throws InvalidTTK91CriteriaException {
@@ -113,6 +122,10 @@ public class TTK91TaskCriteria{
 
  }//setFirstComparable
 
+/** Asettaa oikeanpuoleisen vertailtavan. Heitt‰‰ poikkeuksen jos
+ * parametrina on null, tyhj‰ tai pelkki‰ sulkuja sis‰lt‰v‰ merkkijono.
+ * @param comparable Merkkijonoesitys vertailtavasta. 
+ */
 
 
  public void setSecondComparable(String comparable)
@@ -128,24 +141,38 @@ public class TTK91TaskCriteria{
 
  }//setSecondComparable
 
-
- public String getFirstComparable() {
-	 return this.firstComparable;
+/** Palauttaa kriteerin laadullisuusttypin.
+ * @return true jos kriteeri on laadullinen, muuten false.
+ */
+ 
+ public boolean getQuality() {
+	 return this.quality;
  }
 
- public String getSecondComparable() {
-	 return this.firstComparable;
- }
-
+ /** Palauttaa vertailuoperaattorin.
+  * @return Vertailuoperaattorin kokonaislukuesitys, yksi m‰‰ritellyist‰
+  * julkisista kokonaislukuvakioista.
+  */
  public int getComparator() {
 	 return this.comparator;
  }
  
-
- public boolean getQuality() {
-	 return this.quality;
+ /** Palauttaa vasemmanpuoleisen vertailtavan.
+  * @return Merkkijono, joka kuvaa vertailtavaa.
+  */
+  public String getFirstComparable() {
+	 return this.firstComparable;
  }
- 
+
+ /** Palauttaa oikeanpuoleisen vertailtavan.
+  * @return Merkkijono, joka kuvaa vertailtavaa.
+  */
+ public String getSecondComparable() {
+	 return this.firstComparable;
+ }
+
+/** Tarkistaa vertailuoperaattorin k‰yv‰n arvon.
+ */
 
  private void checkComparator(int comparator)
               throws InvalidTTK91CriteriaException {
@@ -162,7 +189,8 @@ public class TTK91TaskCriteria{
  }//checkComparator
 
 
-
+/** Parsitaan merkkijonoesityksest‰ TTK91TaskCriteriaolio.
+ */
  private void parseCriteria(String criteria)
 			  throws InvalidTTK91CriteriaException {
 
@@ -206,8 +234,8 @@ public class TTK91TaskCriteria{
 
   String clean;
   clean = dirty.replaceAll("&nbsp", "");
-  clean = dirty.replaceAll("(", "");
-  clean = dirty.replaceAll(")", "");
+  clean = dirty.replaceAll("\\(", "");
+  clean = dirty.replaceAll("\\)", "");
   clean = dirty.replaceAll(";", "");
   return clean;
 
