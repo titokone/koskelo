@@ -6,7 +6,7 @@
 package fi.helsinki.cs.koskelo.displayer;
 
 import fi.hy.eassari.showtask.trainer.CacheException;
-
+//import fi.hy.eassari.displayers.*;
 
 public class StaticTTK91Displayer extends CommonDisplayer{
     
@@ -20,7 +20,7 @@ public class StaticTTK91Displayer extends CommonDisplayer{
     * @param  hiddens lomakkeen piilokent‰t String-oliona.
     * @param  allowTry kertoo tuleeko sivun loppuun vastauspainike  
     * @return teht‰v‰n esitys html-muodossa
-    * @throws CacheException Jos tulee ongelmia attribuuttien 
+    * @throws CacheException jos tulee ongelmia attribuuttien 
     *                        hakemisessa AttributeCachesta
     */
 		public String getSetting(String [] initVal, 
@@ -128,20 +128,20 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 		/**
 		 * Palauttaa tyhj‰n vastauslaatikon html-muodossa.
 		 *
-		 * @return vastauslaatikko
+		 * @return tyhj‰ vastauslaatikko html-muodossa
 		 */
 
     private String getHTMLElementAnswerBox(){
 	
 				return new String("<textarea name=\"textfield\" cols=\"50\""+ 
-													"rows=\"20\"></textarea>\"");
+													"rows=\"20\"></textarea>\"<br>");
     }//getHTMLElementAnswerBox
       
 		/**
 		 * Palauttaa vastauslaatikon, joka sis‰lt‰‰ vastauksen
 		 *
 		 * @param  answer vastaus 
-		 * @return t√§ytetyn vastauslaatikon html-muodossa
+		 * @return t‰ytetty vastauslaatikko html-muodossa
 		 */
  
     private String getHTMLElementAnswerBox(String[] answer){
@@ -155,7 +155,7 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 						answerbox.append(answer[i] +"\n");
 				}
 	
-				answerbox.append("</textarea>");
+				answerbox.append("</textarea><br>");
 				return new String(answerbox);
 		}//getHTMLElementAnswerBox
 }//class
