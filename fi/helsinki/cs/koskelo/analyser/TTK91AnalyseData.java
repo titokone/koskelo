@@ -128,7 +128,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = e.getMessage();
+			this.teacherCompileError = "Teacher compile error" + e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -138,7 +138,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = e.getMessage();
+			this.teacherCompileError = "Teacher compile error" + e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -166,6 +166,7 @@ public class TTK91AnalyseData{
 		if (src == null) {
 			this.studentCompileError = "Ratkaisua ei pystytty"+
 					" muuntamaan TTK91CompileSource-muotoon";
+			this.errors = true;
 		}//if
 
 
@@ -178,7 +179,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = e.getMessage();
+			this.studentCompileError = "Student compile error" + e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -188,7 +189,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = e.getMessage();
+			this.studentCompileError = "Student compile error" + e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -239,7 +240,7 @@ public class TTK91AnalyseData{
 			this.controlPublicInputStudent.run(this.studentApplicationPublic, steps);
 			// 1. simulointi
 		} catch (TTK91Exception e) {
-			this.studentRunError = e.getMessage();
+			this.studentRunError = "Student run error" + e.getMessage();
 			this.errors = true;
 			return;
 		}
@@ -250,7 +251,7 @@ public class TTK91AnalyseData{
 			try {
 				this.controlPublicInputTeacher.run(this.teacherApplicationPublic, steps);
 			} catch (TTK91Exception e) {
-				this.teacherRunError =  e.getMessage();
+				this.teacherRunError = "Teacher run error" +  e.getMessage();
 				this.errors = true;
 				return;
 			}
@@ -266,7 +267,7 @@ public class TTK91AnalyseData{
 			try {
 				this.controlHiddenInputStudent.run(this.studentApplicationHidden, steps);
 			} catch (TTK91Exception e) {
-				this.studentRunError = e.getMessage();
+				this.studentRunError = "Student run error" + e.getMessage();
 				this.errors = true;
 				return;
 			}
@@ -280,7 +281,7 @@ public class TTK91AnalyseData{
 				try {
 					this.controlHiddenInputTeacher.run(this.teacherApplicationHidden, steps);
 				} catch (TTK91Exception e) {
-					teacherRunError = e.getMessage();
+					teacherRunError = "Teacher run error" + e.getMessage();
 					this.errors = true;
 					return;
 				}
