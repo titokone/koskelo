@@ -339,7 +339,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		} catch (Exception e) {
 
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91maxcommandssyntaxerror",
+						lang
+						)
+
+				   );
 			return;
 
 		}// catch
@@ -361,7 +369,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 		} catch (Exception e) {
 
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91examplecodesyntaxerror",
+						lang
+						)
+				   );
 			return;
 
 		}
@@ -377,7 +392,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					);
 
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91taskdescriptionsyntaxerror",
+						lang
+						)
+
+				   );
 			return;
 		}
 
@@ -389,7 +412,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91publicinputsyntaxerror",
+						lang
+						)
+				   );
 			return;
 		}
 
@@ -401,7 +431,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91hiddeninputsyntaxerror",
+						lang
+						)
+				   );	
 			return;
 		}
 
@@ -414,21 +451,33 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if(validParam(reqCompareMethod)) {
 				compareMethod = parsePostInt(reqCompareMethod);
-			
-				if(
-						compareMethod == 0 &&
-						!validParam(exampleCode) {
-						throw new Exception(
-							"Required simulation"+
-							"with no code"
+
+				if(compareMethod == 0 && !validParam(exampleCode) {
+
+					returnError(this.staticResponse,
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91missingexamplecodeerror",
+							lang
+							)
 						);
-					
-					}
-			}
-		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
-			return;
-		}
+					return;
+				}
+
+				}
+
+				} catch (Exception e) {
+					returnError(this.staticResponse, 
+						cache.getAttribute(
+							"D",
+							"ttk91syntaxchecker",
+							"ttk91comparemethodsyntaxerror", 
+							lang
+							)
+						);
+					return;
+				}
 
 		try { //  acceptedSize eli maksimipituus ohjelmalle,
 			// joka vielä kuitenkin hyväksytään
@@ -438,7 +487,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				taskOptions.setAcceptedSize(acceptedSize);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91acceptedsizesyntaxerror", 
+						lang
+						)
+				   );
 			return;
 		}
 
@@ -449,7 +505,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				taskOptions.setOptimalSize(optimalSize);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91optimalsizesyntaxerror", 
+						lang
+						)
+				   );
 			return;
 
 		}
@@ -471,7 +534,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91memoryreferencessyntaxerror", 
+						lang
+						)
+				   );
 			return;
 		}
 
@@ -489,7 +559,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91requiredcommandssyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 		}
 
@@ -504,7 +581,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse, 
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91forbiddencommandssyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 		}
 
@@ -523,7 +607,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91memoryvaluesyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 		}
 
@@ -539,7 +630,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91registervaluesyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 		}
 
@@ -556,7 +654,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse, 
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91screenoutputsyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 		}
 
@@ -572,7 +677,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, "foo");
+			returnError(this.staticResponse,
+					cache.getAttribute(
+						"D",
+						"ttk91syntaxchecker",
+						"ttk91fileoutputsyntaxerror", 
+						lang
+						) 
+				   );
 			return;
 
 		}
@@ -636,9 +748,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if(code.indexOf("[")> -1) {
 				if(
-				(code.indexOf("[") < code.indexOf("]"))&&
-				(code.indexOf("[") == code.lastIndexOf("[")) &&
-				(code.indexOf("]") == code.lastIndexOf("]"))
+						(code.indexOf("[") < code.indexOf("]"))&&
+						(code.indexOf("[") == code.lastIndexOf("[")) &&
+						(code.indexOf("]") == code.lastIndexOf("]"))
 				  ){
 					return;
 				}
