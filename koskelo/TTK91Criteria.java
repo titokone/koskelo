@@ -2,7 +2,7 @@ public class TTK91Criteria{
 
 	private int comparison;
 	private String firstComparable;
-	private String secondComparableB;
+        private String secondComparableB; //Tänne kommentti
 	
 
 
@@ -51,6 +51,6 @@ public class TTK91Criteria{
 	
 	private void parseCriteria( String criteria ) {
 
-	}//patseCriteria
+	}//parseCriteria
 	
 }// class
