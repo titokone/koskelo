@@ -292,12 +292,12 @@ public final class TTK91AnalyserExtraUtils {
 	public static boolean checkSimulatedMemoryCriteria(
 			TTK91TaskCriteria criteria,
 			HashMap studentPublicSymbolTable,
-			HashMap teacherPublicSymbolTable,
 			HashMap studentHiddenSymbolTable,
+			HashMap teacherPublicSymbolTable,
 			HashMap teacherHiddenSymbolTable,
 			MemoryLine[] studentPublicMemoryLines,
-			MemoryLine[] teacherPublicMemoryLines,
 			MemoryLine[] studentHiddenMemoryLines,
+			MemoryLine[] teacherPublicMemoryLines,
 			MemoryLine[] teacherHiddenMemoryLines
 			) {
 	
