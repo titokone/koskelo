@@ -813,21 +813,31 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private int[][] parseOutputString(String output) 
 		throws Exception{
 
-			String[] splitted1 = output.split(";");
-			String[][] splitted2 = new String[splitted1.length][2];
+                  	//(L,1,10);(2,30);
+	                String[] splitted1 = output.split(";");
+			//splitted1_0["(L,1,10)"] ja slitted1_1["(2,30)"]
+			String[][] splitted2 = new String[splitted1.length][];
 			String[] splitted3;
-			int[][] outPutTable = new int[splitted1.length][2];
+			int[][] outPutTable = new int[splitted1.length][];
 			boolean quality;
 
 			for(int i = 0; i < splitted1.length; i++) {
+
 				splitted1[i] = splitted1[i].replaceAll("\\(","");
+				//splitted1_0["L,1,10)"]
+
 				splitted1[i] = splitted1[i].replaceAll("\\)","");
+                                //splitted1_0["L,1,10"]
+
 				splitted1[i].trim();
 				splitted2[i] = splitted1[i].split(",");
+                                //splitted2_0["L"] ja splitted2_1["1"] ja INDEX_OUT_OF_BOUNDS
+
 				splitted2[i][0].trim(); // kaiva t‰‰lt‰ L
+				//Jos vain (1,10) ? Etsit‰‰n olematonta laatua
 
 				if(splitted2[i][0].equalsIgnoreCase("L")) {
-					quality = true;
+				    quality = true; // T‰ll‰ ei n‰kˆj‰‰n tehd‰ yht‰‰n mit‰‰n (?)
 				}
 				
 				splitted2[i][1].trim();
@@ -848,36 +858,53 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			String commandString
 			) throws Exception {
 
-		String[] tmp = commandString.split(";");
+                //Esimerkki stringi: "(L, JUMP); (LOAD);"
 
+	        //H‰vitet‰‰n kaikki whitespacet
+	        String cleanString = commandString.replaceAll("\\s","");
+         	//"(L,JUMP);(LOAD)";
 
-		// t‰ss‰ vaiheessa joko (ADD) tai (L,ADD)
+		String[] tmp = cleanString.split(";");
+		//tmp1_0["(L,JUMP) "] ja tmp1_1["(LOAD)"]
 
-		//siivotaan kukin
+		//Siivotaan sulutus
 		for(int i = 0; i < tmp.length; i++) {
-			tmp[i].replaceAll("\\(","");
-			tmp[i].replaceAll("\\)","");
-			tmp[i].trim();
-		} // for
 
-		// nyt joko ADD tai L,ADD
+			tmp[i] = tmp[i].replaceAll("\\(","");
+		        //tmp1["L,JUMP) "] ja tmp1_1["LOAD)"]
+
+			tmp[i] = tmp[i].replaceAll("\\)","");
+			//tmp1["L,JUMP"] ja  tmp1_1["LOAD"]
+
+		}// for
+
 		for(int i = 0; i < tmp.length; i++) {
 
 			String[] tmp2 = tmp[i].split(",");
+			//tmp2_0["L"] JA tmp2_1["JUMP"]
 
 			if(tmp2.length > 1) { // ekassa osassa varmaan L ja toisessa ADD
+
 				if(tmp2[0].equalsIgnoreCase("L")) { // ok, ekassa L
-					if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
-							validateTTK91Command(tmp2[1])
-					  ) {
-						// Tokassa ADD
+
+					if( fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
+							validateTTK91Command(tmp2[1]) ) {
+
+					  // Oikea k‰sky oli toisessa alkiossa
+
 					} else {
-						throw new Exception("Invalid TTK-91 command");
+
+					    //Ei ollut TTK91-k‰sky
+					    throw new Exception("Invalid TTK-91 command");
+
 					} // if-else
+
 				} else {
+
 					// hups, eka ei ollutkaan L
-					throw new Exception("Invalid quiality part");
-				}
+					throw new Exception("Invalid quality part");
+
+				}//else
 
 			} else { // ei pilkkua joiten pit‰isi olla pelkk‰ k‰sky
 				if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
@@ -895,10 +922,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// merkkijonoja muutettiin v‰lill‰. Ja koska p‰‰stiin t‰nne
 		// siit‰ ei seurannut mit‰‰n kamalaa. Trimmataan viel‰ ylim‰‰r‰inen
 		// whitespace pois.
-		tmp = commandString.split(";");
-		for(int i = 0; i < tmp.length; i++) {
-			tmp[i].trim();
-		}
+		
+	        //H‰vitet‰‰n kaikki whitespacet
+	        cleanString  = commandString.replaceAll("\\s","");
+		
+		tmp = cleanString.split(";");
 
 		return tmp;
 
