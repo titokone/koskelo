@@ -4,7 +4,6 @@
 ******************************************************************/
 
 package fi.helsinki.cs.koskelo.common;
-
 import java.lang.String.*;
 
 public class TTK91TaskCriteria{
@@ -33,7 +32,7 @@ public class TTK91TaskCriteria{
 
  public TTK91TaskCriteria() {
 
-  this.comparator = this.TTK91Constant.INVALID;
+  this.comparator = TTK91Constant.INVALID;
   this.firstComparable = null;
   this.secondComparable = null;
   this.quality = false;
@@ -264,8 +263,8 @@ public class TTK91TaskCriteria{
  private void checkComparator(int comparator)
               throws InvalidTTK91CriteriaException {
 
-  if(comparator < this.TTK91Constant.LESS ||
-     comparator > this.TTK91Constant.NOTCOMPARABLE) {
+  if(comparator < TTK91Constant.LESS ||
+     comparator > TTK91Constant.NOTCOMPARABLE) {
 
    throw new InvalidTTK91CriteriaException("Invalid comparator");
 
@@ -409,7 +408,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.LESSEQ);
+   setComparator(TTK91Constant.LESSEQ);
    return;
   }//if
 
@@ -417,7 +416,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.LESSEQ);
+   setComparator(TTK91Constant.LESSEQ);
    return;
   }//if
 
@@ -425,7 +424,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.LESS);
+   setComparator(TTK91Constant.LESS);
    return;
   }//if
 
@@ -433,7 +432,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.GREATEREQ);
+   setComparator(TTK91Constant.GREATEREQ);
    return;
   }//if
 
@@ -441,7 +440,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.GREATEREQ);
+   setComparator(TTK91Constant.GREATEREQ);
    return;
   }//if
 
@@ -449,7 +448,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.GREATER);
+   setComparator(TTK91Constant.GREATER);
    return;
   }//if
 
@@ -457,7 +456,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.NOTEQUAL);
+   setComparator(TTK91Constant.NOTEQUAL);
    return;
   }//if
 
@@ -465,7 +464,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.NOTEQUAL);
+   setComparator(TTK91Constant.NOTEQUAL);
    return;
   }//if
 
@@ -473,7 +472,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.EQUAL);
+   setComparator(TTK91Constant.EQUAL);
    return;
   }//if
 
@@ -481,7 +480,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.TTK91Constant.EQUAL);
+   setComparator(TTK91Constant.EQUAL);
    return;
   }//if
 
