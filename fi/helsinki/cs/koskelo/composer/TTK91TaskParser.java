@@ -92,10 +92,10 @@ public class TTK91TaskParser {
   TTK91TaskCriteria[] mc = options.getMemoryCriterias();
   newTask.set( MEMORY_VALUES, concatCriterias(mc) );
 
-  int[][] soc = options.getScreenOutputCriterias();
+  TTK91TaskCriteria[] soc = options.getScreenOutputCriterias();
   newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
 
-  int[][] foc = options.getFileOutputCriterias();
+  TTK91TaskCriteria[] foc = options.getFileOutputCriterias();
   newTask.set( FILE_OUTPUT, concatCriterias(foc) );
 
   String code = options.getExampleCode();
@@ -204,6 +204,7 @@ public class TTK91TaskParser {
 
  }//concatCriterias
 
+ /*
  private static String concatCriterias(int[][] criterias) {
 
      StringBuffer sb = new StringBuffer();
@@ -229,7 +230,8 @@ public class TTK91TaskParser {
      return sb.toString();
 
  }//concatCriterias
-
+*/
+ 
  private static String concatCommands(String[] commands) {
 
   String commandString = "";
