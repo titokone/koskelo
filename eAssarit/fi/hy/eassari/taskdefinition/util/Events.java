@@ -33,4 +33,15 @@ public class Events {
 	public static final int LOGIN = 25;
 	public static final int TEST = 26;
 
+        //Codes 27-35 added by HT, Koskelo-project, 23.10.2004
+        public static final int STATIC_TTK91_COMPOSE = 27;
+        public static final int STATIC_TTK91_EDIT = 28;
+        public static final int STATIC_TTK91_SUBMIT = 29;
+        public static final int FILLIN_TTK91_COMPOSE = 30;
+        public static final int FILLIN_TTK91_EDIT = 31;  
+        public static final int FILLIN_TTK91_SUBMIT = 32; 
+        public static final int DYNAMIC_TTK91_COMPOSE = 33;
+        public static final int DYNAMIC_TTK91_EDIT = 34;  
+        public static final int DYNAMIC_TTK91_SUBMIT = 35; 
+
 }
