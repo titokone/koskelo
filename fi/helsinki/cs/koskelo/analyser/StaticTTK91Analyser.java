@@ -389,6 +389,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	
     compareMethod = taskOptions.getCompareMethod();
 
+    System.err.println("Publicinput oli: " +publicInput);
+    System.err.println("HiddenInput oli: " +hiddenInput);
     System.err.println("run() alku: compareMethod: "+compareMethod);
 
     /* Koska titokoneesta metodilla .getCPU() saadaan
