@@ -44,7 +44,7 @@ public final class TTK91Constant {
 	public static final int GREATEREQ = 3; // >=
 	/** == */
 	public static final int EQUAL = 4; // =
-	/** \!= Erisuuri */
+	/** !\= Erisuuri */
 	public static final int NOTEQUAL = 5; // !=
 	/** , . Ei vertailua */
 	public static final int NOTCOMPARABLE = 6; // Tulosteita varten joissa
