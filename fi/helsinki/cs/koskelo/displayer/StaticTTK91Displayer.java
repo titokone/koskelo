@@ -14,6 +14,7 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 	 * Konstruktori, joka kutsuu yläluokan CommonAnalyser
 	 * konstruktoria.
 	 */
+
 	public StaticTTK91Displayer() {
 		super();
 	}//StaticTTK91Displayer 
@@ -35,6 +36,7 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 	 * @throws CacheException jos tulee ongelmia attribuuttien 
 	 *                        hakemisessa AttributeCachesta
 	 */
+
 	public String getSetting(String [] initVal, 
 													 String params, 
 													 String hiddens,  
@@ -43,17 +45,19 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		String taskDescription; // tehtävänanto
 		String input;           // syötteet
 		String inputHeader;     // syötteen otsikko
-    StringBuffer setting = new StringBuffer();  // kerätään palautettava sivu
+    StringBuffer setting = new StringBuffer(); // kerätään palautettava sivu
 
 		/*
 		 * Lisätään piilokenttä tehtäväntyypille
 		 */
+
 		hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
 								+"value=\"staticttk91task\">");
 
 		/*
 		 * Haetaan tehtävänanto, syötteet ja syötteen otsikko.
 		 */
+
 		taskDescription = 
 			cache.getAttribute("T", taskid, "taskDescription", language);
 		input = 
@@ -65,6 +69,7 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		/*
 		 * Lomake alkaa
 		 */
+
 		setting.append("<form action=" + TARGETSERVLET + 
 									 " method=\"post\" name=\"staticttk91task\"" +
 									 "id=\"staticttk91task\">");
@@ -72,6 +77,7 @@ public class StaticTTK91Displayer extends CommonDisplayer {
     /*   
 		 * Lisätään tehtävänanto ja syötteet
 		 */
+
 		setting.append(TTK91DisplayerUtils.getHTMLElementTask(taskDescription));
 		setting.append(TTK91DisplayerUtils.getHTMLElementInput(inputHeader, 
 																													 input));
@@ -91,11 +97,13 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		/*
 		 * Lisätään analyserin tarvitsemat piilokentät lomakkeeseen
 		 */
+
 		setting.append(hiddens);
 		
 		/*
 		 * Jos tehtävän lähetys sallitaan, luodaan lähetä-nappi
 		 */
+
 		if (allowTry) {
 			setting.append(super.getButton());
 		}
@@ -103,6 +111,7 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 		/*
 		 * Lomake loppuu
 		 */
+
 		setting.append("</form>");
 		return new String(setting);
 

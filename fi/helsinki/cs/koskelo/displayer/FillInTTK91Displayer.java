@@ -36,6 +36,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 	 * @throws CacheException jos tulee ongelmia attribuuttien 
 	 *                        hakemisessa AttributeCachesta
 	 */
+
 	public String getSetting(String [] initVal, 
 													 String params, 
 													 String hiddens,  
@@ -52,6 +53,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		/*
 		 * Haetaan tehtävänanto, syötteet, syötteen otsikko ja malliratkaisu.
 		 */
+
 		taskDescription = 
 			cache.getAttribute("T", taskid, "taskDescription", language);
 		input = 
@@ -65,6 +67,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		/*
 		 * Lomake alkaa
 		 */
+
 		setting.append("<form action=" + TARGETSERVLET + 
 									 " method=\"post\" name=\"fillinttk91task\"" +
 									 "id=\"fillinttk91task\">");
@@ -72,6 +75,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
     /*   
 		 * Lisätään lomakkeeseen tehtävänanto ja syötteet
 		 */
+
 		setting.append(TTK91DisplayerUtils.getHTMLElementTask(taskDescription));
 		setting.append(TTK91DisplayerUtils.getHTMLElementInput(inputHeader, input));
 
@@ -83,7 +87,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		 * laitetaan laatikkoon.
 		 */
 
-		setting.append(getHTMLElementBeforeEmpty(exampleCode, COLS));
+		setting.append(getHTMLElementBeforeEmpty(exampleCode));
 
 		if (initVal == null) {
 			setting.append(TTK91DisplayerUtils.getHTMLElementAnswerBox(ROWS, COLS));
@@ -92,16 +96,18 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 																																 ROWS, COLS));
 		}
 		
-		setting.append(getHTMLElementAfterEmpty(exampleCode, COLS));
+		setting.append(getHTMLElementAfterEmpty(exampleCode));
 		
 		/*
 		 * Lisätään analyserin tarvitsemat piilokentät lomakkeeseen
 		 */
+
 		setting.append(hiddens);
 		
 		/*
 		 * Jos tehtävän lähetys sallitaan, luodaan lähetä-nappi
 		 */
+
 		if (allowTry) {
 			setting.append(super.getButton());
 		}
@@ -109,6 +115,7 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		/*
 		 * Lomake loppuu
 		 */
+
 		setting.append("</form>");
 		return new String(setting);
 
@@ -118,15 +125,15 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 	 * Luo sen osan mallikoodista, joka tulee ennen aukkoa.
 	 *
 	 * @param exampleCode mallivastaus
-	 * @param cols tekstikentän leveys
 	 * @return elementti html-muodossa
 	 */  
-	private String getHTMLElementBeforeEmpty(String exampleCode, int cols){
+
+	private String getHTMLElementBeforeEmpty(String exampleCode){
 		
 		String beginSeparator = "[";
 		StringBuffer result = new StringBuffer();
 
-		result.append("<textarea cols =\"" +cols +"\" readonly>");
+		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
 		int index = exampleCode.indexOf(beginSeparator);
 		result.append(exampleCode.substring(0,index));
 		result.append("</textarea><br>");
@@ -138,17 +145,17 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 	 * Luo sen osan mallikoodista, joka tulee aukkon jälkeen.
 	 *
 	 * @param exampleCode mallivastaus
-	 * @param cols tekstikentän leveys
 	 * @return elementti html-muodossa
 	 */  
-	private String getHTMLElementAfterEmpty(String exampleCode, int cols){
+
+	private String getHTMLElementAfterEmpty(String exampleCode){
 
 		String endSeparator = "]";
 		StringBuffer result = new StringBuffer();
 
-		result.append("<textarea cols =\"" +cols +"\" readonly>");
+		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
 		int index = exampleCode.indexOf(endSeparator);
-		result.append(exampleCode.substring(index+2));
+		result.append(exampleCode.substring(index+1));
 		result.append("</textarea><br>");
 
 		return new String(result);
