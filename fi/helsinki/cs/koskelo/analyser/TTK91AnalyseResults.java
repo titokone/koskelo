@@ -258,7 +258,6 @@ public class TTK91AnalyseResults{
     public Boolean getMemoryReferencesQuality() {
 	    return this.memoryReferencesQualityCriteria;
     }
-
 	
     public int[] getRegisterValues() {
 	   return this.registers;
