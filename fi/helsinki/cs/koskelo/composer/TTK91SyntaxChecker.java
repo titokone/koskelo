@@ -294,6 +294,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// Yritet‰‰n parsia kokonaisluku eventist‰.
 
+		
 		try { // event
 			event = parsePostInt(reqEvent);
 		} catch (Exception e) {
@@ -317,11 +318,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		if (task != null) {
 			editTask = true;
-		}//if
+		} else {
+			editTask = false;
+		}
 
 		if(event == Events.STATIC_TTK91_SUBMIT){
 
+			fillIn = false;
 			// donothing
+			staticResponse = "/jsp/StaticTTK91Composer.jsp";
 
 		} else if(event == Events.FILLIN_TTK91_SUBMIT) {
 
@@ -380,7 +385,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				taskOptions.setExampleCode(exampleCode);
 
 
-			}
+			 } else if( fillIn) {
+				 throw new Exception("Missing examplecode");
+			 }
 		} catch (Exception e) {
 
 			returnError(this.staticResponse,
