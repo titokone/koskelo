@@ -28,13 +28,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	private String taskID;
 	private String language;
 	private ParameterString initP;
-	private TTK91Core controlPublicInputStudent; 
-	private TTK91Core controlPublicInputTeacher; 
-	private TTK91Core controlHiddenInputStudent; 
-	private TTK91Core controlHiddenInputTeacher; 
-	private TTK91TaskOptions taskOptions;
-	private TTK91Application studentApplication;
-	private TTK91Application teacherApplication;
+// k‰yt‰nnˆn toteutus Control.java
+	private TTK91Core controlPublicInputStudent; // publicinputeilla tai ilman unputteja opiskelijan vastaus
+	private TTK91Core controlPublicInputTeacher; // publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+	private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
+	private TTK91Core controlHiddenInputTeacher; // hiddeninputeilla jos ovat m‰‰ritelty malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+	private TTK91TaskOptions taskOptions;        // taskoptions
+	private TTK91Application studentApplication; // opiskelijan vastaus
+	private TTK91Application teacherApplication; // malliratkaisu
 	private TTK91AnalyseResults results; //Uusi luokka.
 
 	/**
@@ -215,7 +216,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 			publicInput = parseInputString(publicInputTable);
 			this.studentApplication.setKbd(publicInput);
-			
+
 			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 				this.teacherApplication.setKbd(publicInput);
 			}
@@ -224,7 +225,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		this.controlPublicInputStudent = new TTK91Core(null, null);
 		this.controlPublicInputStudent.run(this.teacherApplication, steps);
 		// 1. simulointi
-		
+
 		if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 			// 1. simulointi malliratkaisua
 			this.controlPublicInputTeacher = new TTK91Core(null, null);
@@ -235,15 +236,15 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		if(hiddenInput != null) {
 			// mahdollinen 2. simulointi opiskelijan ratkaisusta
 			hiddenInput = parseInputString(publicInputTable);
-			
+
 			this.controlHiddenInputStudent = new TTK91Core(null, null);
 			this.studentApplication.setKbd(publicInput);
 			this.controlHiddenInputStudent.run(this.studentApplication, steps);
-		
+
 			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 				// simuloidaa malliratkaisu
 				// 2. simulointi malliratkaisua
-				
+
 				this.controlHiddenInputTeacher = new TTK91Core(null, null);
 				this.teacherApplication.setKbd(publicInput);
 				this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
@@ -252,17 +253,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		} 
 
 	}//run
-
-	private String parseInputString(int[] inputTable) {
-
-		String input = "";
-
-		for(int i = 0; i < inputTable.length; i++) {
-			intput = input + inputTable[i];
-		}
-
-		return input;
-	}
 
 
 	private void generalAnalysis() {
@@ -301,5 +291,20 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		//TIEDOSTON TULOSTEET
 
 	}//analyseOutput
+
+	/** Tehd‰‰n int[]-taulukosta merkkijono 1,2,3,4. T‰m‰ siksi,
+	 * koska titokoneen setKbd ei osaa lukea int[]-taulua.
+	 */
+	private String parseInputString(int[] inputTable) {
+
+		String input = "";
+
+		for(int i = 0; i < inputTable.length; i++) {
+			intput = input + inputTable[i];
+		}
+
+		return input;
+	}
+
 
 } // StaticTTK91Analyser
