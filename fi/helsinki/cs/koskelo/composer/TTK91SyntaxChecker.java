@@ -28,20 +28,41 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			HttpServletRequest req,
 			HttpServletResponse res
 			) throws ServletException, java.io.IOException {
+// TODO kunnollinen javadoc näistä muuttujista
+		// Nämä muuttuja ovat ne jotka tungetaan 
+		// sitten siihen TaskOptionsiin.
+		// Ettei sitten tehdä sitä muunnosta siinä set-metodissa.
+
+		String exampleCode; //TODO tarkista koodin kääntyminen
+		String taskDescription; // tarviiko tarkistaa?
+		String[] requiredCommands; // JUMP
+		String[] forbiddenCommands; // EQU
+		int compareMethod; // 0 = static, 1 = simuloitu
+		int maxCommands;
+		int acceptedSize; // 200 riviä
+		int optimalSize; // 10 riviä
+		int memoryReferences;
+		int[][] screenOutput; // (1,3) (2,4) (4,3)
+		int[][] fileOutput; // (1,3)(2,4)(4,3)
+		int[] publicInput; 
+		int[] hiddenInput; // 1,2,3,5,2...
+		TTK91TaskCriteria[] registerCriteria; // R2 > 1
+		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
+
 
 
 		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
-		
+
 		// Nämä muuttujat ovat edellisen sivun inputin 
 		// lukemista varten parametrista req.
 		// Jokainen arvo tarkistetaan siten että katsotaan onko
 		// sen tyyppi ja syntaksi oikein.
 
 		// suoritettavien konekäskyjen maksimimäärä
-	
+
 		String reqEvent = req.getParameter(
 				"event");
-		
+
 		String reqMaxCommands = req.getParameter(
 				"maxCommands"
 				);
@@ -65,7 +86,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqCompareMethod = req.getParameter(
 				"compareMethod"
 				);
-		
+
 		// miksi tämä on?
 		String reqAcceptedSize = req.getParameter(
 				"acceptedSize"
@@ -82,12 +103,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqForbiddenCommands = req.getParameter(
 				"forbiddenCommands"
 				);
-		
+
 		// pyydetyt rekisterien arvot
 		String reqRegisterValues = req.getParameter(
 				"registerValues"
 				);
-		
+
 		//muistipaikkojen arvot
 		String reqMemoryValues = req.getParameter(
 				"memoryValues"
@@ -96,58 +117,37 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqMemoryReferences = req.getParameter(
 				"memoryReferences"
 				);
-		
+
 		// näytön tulosteet
 		String reqScreenOutput = req.getParameter(
 				"screenOutput"
 				); 
-		
+
 		// tulosteet tiedostoon
 		String reqFileOutput = req.getParameter(
 				"fileOutput"
 				); 
-		
-
-		String exampleCode; //TODO tarkista koodin kääntyminen
-		String taskDescription; // tarviiko tarkistaa?
-		String[] requiredCommands; // JUMP
-		String[] forbiddenCommands; // EQU
-		int compareMethod; // 0 = static, 1 = simuloitu
-		int maxCommands;
-		int acceptedSize; // 200 riviä
-		int optimalSize; // 10 riviä
-		int memoryReferences;
-		int[][] screenOutput; // (1,3) (2,4) (4,3)
-		int[][] fileOutput; // (1,3)(2,4)(4,3)
-		int[] publicInput; 
-		int[] hiddenInput; // 1,2,3,5,2...
-		TTK91TaskCriteria[] registerCriteria; // R2 > 1
-		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
 
 
 		// TODO checking of session, but no need for new one
-		
+
 		HttpSession session = req.getSession(false);
 
 
 		// TODO nämä omiksi privametodeikseen
-		
+
 		try { 
 			// maxCommands ei voi olla null
 			// TODO konffattava oletusarvo
-			
+
 			if(reqMaxCommands != null) {
-			
 				maxCommands = parsePostInt(reqMaxCommands);
-			
 			} else {
-			
 				maxCommands = 10000;
-			
 			}
-			
+
 			taskOptions.setMaxCommands(maxCommands);
-		
+
 		} catch (Exception e) { 
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -162,7 +162,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			exampleCode = reqExampleCode;
 			taskOptions.setExampleCode(exampleCode);
-		
+
 		} catch (Exception e) {
 
 		}
@@ -174,20 +174,20 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			taskDescription = reqTaskDescription;
 			taskOptions.setTaskDescription(taskDescription);
-			
+
 		} catch (Exception e) {
 
 		}
 
 		try { // publicInput
-			
+
 			if(reqPublicInput != null) {
 				publicInput = parseInputString(reqPublicInput);	
 				taskOptions.setPublicInput(publicInput);
 			}
 
 		} catch (Exception e) {
-			
+
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, res);
@@ -195,27 +195,27 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // hiddenInput
-			
+
 			if(reqHiddenInput != null) {
 				hiddenInput = parseInputString(reqHiddenInput); 
 				taskOptions.setHiddenInput(hiddenInput);
 			}
-		
+
 		} catch (Exception e) {
-		
+
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, res);
-		
+
 		}
-	
+
 		try { // compareMethod
 
 			if(reqCompareMethod != null) {
 				compareMethod = parsePostInt(reqCompareMethod);
 			}
 
-			
+
 		} catch (Exception e) {
 
 			// TODO virheen palautus.
@@ -226,11 +226,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { //  acceptedSize
 			if(reqAcceptedSize != null) {
 				acceptedSize = parsePostInt(reqAcceptedSize);
-			
-				taskOptions.setAcceptedSize(acceptedSize);
-			
-			}
 
+				taskOptions.setAcceptedSize(acceptedSize);
+
+			}
 		} catch (Exception e) {
 
 		}
@@ -238,13 +237,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // optimalSize
 			if(reqOptimalSize != null) {
+
 				optimalSize = parsePostInt(reqOptimalSize);
-				
 				taskOptions.setOptimalSize(optimalSize);
 			}
-
-
-			
 		} catch (Exception e) {
 
 		}
@@ -253,6 +249,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if( reqRequiredCommands != null) {
 
+				// TODO privametodi joka tarkistaa nämä
+				// TTK91-käskyiksi
 				requiredCommands = reqRequiredCommands.split(
 						","
 						);
@@ -262,7 +260,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 
 			}
-			
+
 		} catch (Exception e) {
 
 		}
@@ -271,6 +269,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if( reqForbiddenCommands != null) {
 
+				// TODO privametodi joka tarkistaa nämä TTK91
+				// käskyiksi
 				forbiddenCommands = reqForbiddenCommands.split(
 						","
 						);
@@ -297,27 +297,27 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} catch (Exception e) {
 
 		}
-	
+
 		try { // screenOutput
 
 		} catch (Exception e) {
 
 		}
-		
-		
+
+
 		try { // fileOutput
 
 		} catch (Exception e) {
 
 		}
-		
+
 		session.setAttribute("TTK91TaskOptions", taskOptions);
 
 		res.setContentType ("text/html");
 		ServletOutputStream out = res.getOutputStream();
 		out.print(feedbackForm());
 
-		
+
 	} // doPost
 
 
@@ -356,7 +356,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private String feedbackForm() {
 
 		// TODO language!!
-		
+
 		String page = "<html>";
 
 		// head
@@ -368,13 +368,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"</head>"
 			   );
 		// body
-		
+
 		page.concat(
 				"<body bgcolor=\"#FFFFFF\">"
 
 			   );
 		// title
-		
+
 		page.concat(
 				"<h1>Opiskelijalle annettavat palautteet</h1>"
 			   );
@@ -424,29 +424,29 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		page.concat(
 				"<p>Ohjelmassa kielletyt k&auml;skyt</p>\n" +
 				feedbackBox("forbiddenCommands")
-				);
+			   );
 
 		page.concat(
 				"<p>Rekisterien sis&auml;lt&ouml;</p>" +
 				feedbackBox("register")
 			   );
-		
+
 		page.concat(
 				"  <p>Muistipaikkojen ja muuttujien"+
 				"sis&auml;lt&ouml;</p>" +
 				feedbackBox("memory")
 			   );
-		
+
 		page.concat(
 				"<p>Muistiviitteiden m&auml;&auml;r&auml;</p>" +
 				feedbackBox("memoryReferences")
 			   );
-		
+
 		page.concat(
 				"<p>Tulosteet n&auml;yt&ouml;lle</p>" +
 				feedbackBox("screenOutput")
 			   );
-		
+
 		page.concat(
 				"  <p>Tulosteet tiedostoon</p>" +
 				feedbackBox("fileOutput")
@@ -461,7 +461,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			   );
 
 		page.concat("</form></body></html>");
-				
+
 
 		return page;
 	}
@@ -497,10 +497,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 */
 
 	private String[] parsePostText(String s) {
-		
+
 		String[] foo = new String[2];
 		foo[0] = "bar";
-		
+
 		return foo;
 	}//parsePostText
 
