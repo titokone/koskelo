@@ -9,9 +9,12 @@ public class CriteriaTest extends TestCase {
 	private TTK91TaskCriteria a;
 	private TTK91TaskCriteria b;
 	private TTK91TaskCriteria c;
+	private TTK91TaskCriteria cb;
 	private TTK91TaskCriteria d;
+	private TTK91TaskCriteria db;
 	private TTK91TaskCriteria e;
 	private TTK91TaskCriteria f;
+	private TTK91TaskCriteria fb;
 	private TTK91TaskCriteria g;
 	private TTK91TaskCriteria al;
 	private TTK91TaskCriteria bl;
@@ -25,9 +28,12 @@ public class CriteriaTest extends TestCase {
 		a = new TTK91TaskCriteria("(A < B);");
 		b = new TTK91TaskCriteria("(A > B);");
 		c = new TTK91TaskCriteria("(A <= B);");
-		d = new TTK91TaskCriteria("(A >= B);");
+		d = new TTK91TaskCriteria("(A => B);");
+		cb = new TTK91TaskCriteria("(A =< B);");
+		db = new TTK91TaskCriteria("(A >= B);");
 		e = new TTK91TaskCriteria("(A != B);");
 		f = new TTK91TaskCriteria("(A == B);");
+		fb = new TTK91TaskCriteria("(A = B);");
 		al = new TTK91TaskCriteria("(L, A < B);");
 		bl = new TTK91TaskCriteria("(L ,A > B);");
 		cl = new TTK91TaskCriteria("(L,A <= B);");
@@ -51,6 +57,16 @@ public class CriteriaTest extends TestCase {
 		Assert.assertFalse(a.getQuality());
 
 		
+	}
+
+	public void testString() {
+
+		Assert.assertEquals(a.toString(), "(A<B);");
+		Assert.assertEquals(b.toString(), "(A>B);");
+		Assert.assertEquals(c.toString(), "(A<=B);");
+		Assert.assertEquals(d.toString(), "(A>=B);");
+		Assert.assertEquals(e.toString(), "(A!=B);");
+		Assert.assertEquals(e.toString(), "(A==B);");
 	}
 
 	public void testLessContructors() {
@@ -158,6 +174,12 @@ public class CriteriaTest extends TestCase {
 		Assert.assertFalse(d.getComparator() == e.getComparator());
 		Assert.assertFalse(d.getComparator() == f.getComparator());
 		Assert.assertFalse(e.getComparator() == f.getComparator());
+
+
+		Assert.assertTrue(c.getComparator() == cb.getComparator());
+		Assert.assertTrue(d.getComparator() == db.getComparator());
+		
+		Assert.assertTrue(f.getComparator() == fb.getComparator());
 	}
 
 	/*	public static void main(String args[]) throws Exception{
