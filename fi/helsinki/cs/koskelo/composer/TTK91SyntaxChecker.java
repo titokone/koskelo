@@ -13,7 +13,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 	private HttpSession session;
-	
+
 	/** Kutsuu doPostia parametreillaan. Yhteensopivuuden vuoksi.
 	 *
 	 */
@@ -43,7 +43,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.req = req;
 		this.res = res;
-		
+
 		String exampleCode; //TODO tarkista koodin kääntyminen
 		String taskDescription; // tarviiko tarkistaa?
 		String[] requiredCommands; // JUMP
@@ -72,72 +72,72 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// suoritettavien konekäskyjen maksimimäärä
 
 		String reqEvent = this.req.getParameter(
-				"event");
+				"event").trim();
 
 		String reqMaxCommands = this.req.getParameter(
 				"maxCommands"
-				);
+				).trim();
 		// malliratkaisu
 		String reqExampleCode = this.req.getParameter(
 				"exampleCode"
-				);
+				).trim();
 		// tehtävänanto
 		String reqTaskDescription = this.req.getParameter(
 				"taskDescription"
-				);
+				).trim();
 		// julkiset syötteet
 		String reqPublicInput = this.req.getParameter(
 				"publicInput"
-				);
+				).trim();
 		// piilotetut syötteet
 		String reqHiddenInput = this.req.getParameter(
 				"hiddenInput"
-				);
+				).trim();
 		// verrataanko simulaatioon
 		String reqCompareMethod = this.req.getParameter(
 				"compareMethod"
-				);
+				).trim();
 
 		// miksi tämä on?
 		String reqAcceptedSize = this.req.getParameter(
 				"acceptedSize"
-				);
+				).trim();
 		// ratkaisun suosituskoko
 		String reqOptimalSize = this.req.getParameter(
 				"optimalSize"
-				);
+				).trim();
 		// kielletyt konekäskyt
 		String reqRequiredCommands = this.req.getParameter(
 				"requiredCommands"
-				);
+				).trim();
 		// vaaditut konekäskyt
 		String reqForbiddenCommands = this.req.getParameter(
 				"forbiddenCommands"
-				);
+				).trim();
 
 		// pyydetyt rekisterien arvot
 		String reqRegisterValues = this.req.getParameter(
 				"registerValues"
-				);
+				).trim();
 
 		//muistipaikkojen arvot
 		String reqMemoryValues = this.req.getParameter(
 				"memoryValues"
-				);
+				).trim();
 		// Muistiviittaukset
 		String reqMemoryReferences = this.req.getParameter(
 				"memoryReferences"
-				);
+				).trim();
 
 		// näytön tulosteet
 		String reqScreenOutput = this.req.getParameter(
 				"screenOutput"
-				);
+				).trim();
 
 		// tulosteet tiedostoon
 		String reqFileOutput = this.req.getParameter(
 				"fileOutput"
-				);
+				).trim();
 
 
 		// TODO checking of session, but no need for new one
@@ -170,12 +170,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
 
-		if(validParam(reqExampleCode)){
-			exampleCode = reqExampleCode;
-			taskOptions.setExampleCode(exampleCode);
+			if(validParam(reqExampleCode)){
+				exampleCode = reqExampleCode;
+				taskOptions.setExampleCode(exampleCode);
 			}
 		} catch (Exception e) {
-			
+
 			returnError(this.staticResponse, "foo");
 			return;
 
@@ -185,12 +185,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO vaaditaanko?
 			// TODO dynaamisen tehtävän syntaksin tarkistaminen
 			// TODO dynaamisen tehtävän vertailu mallikoodiin
-			
-		if(validParam(reqTaskDescription)) {
-			taskDescription = reqTaskDescription;
-			taskOptions.setTaskDescription(taskDescription);
 
-		}
+			if(validParam(reqTaskDescription)) {
+				taskDescription = reqTaskDescription;
+				taskOptions.setTaskDescription(taskDescription);
+
+			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -340,20 +340,19 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 	private void returnError(String target, String error) 
-	throws ServletException, java.io.IOException{
-	
-		this.session.setAttribute("TTK91ERROR", error);
-		this.req.getRequestDispatcher(target).
-			forward(this.req, this.res);
-	}
+		throws ServletException, java.io.IOException{
+
+			this.session.setAttribute("TTK91ERROR", error);
+			this.req.getRequestDispatcher(target).
+				forward(this.req, this.res);
+		}
 
 	private int[] parseInputString(String input)
 		throws Exception {
 
 
 			StringTokenizer st = new StringTokenizer(
-					input, ","
-					);
+					input, ",");
 
 			Vector tmp = new Vector();
 			int[] retInput;
@@ -405,7 +404,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private boolean validParam(String s){
 		return (s != null && !s.equals(""));
 	}
-	
+
 	private String feedbackForm() {
 
 		// TODO language!!
