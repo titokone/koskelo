@@ -502,6 +502,11 @@ public final class TTK91AnalyserExtraUtils {
 	    //	    System.err.println("slot: "+slot);
 	    //	    System.err.println("value: "+value);
 
+	    if( slot >= output.length || slot < 0) {
+		    return false;
+	    }
+
+			    
 	    return compare(
 			    output[slot],
 			    TTK91Constant.EQUAL,
