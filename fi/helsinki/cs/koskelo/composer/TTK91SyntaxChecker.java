@@ -40,9 +40,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			HttpServletResponse res
 			) throws ServletException, java.io.IOException {
 		// TODO kunnollinen javadoc näistä muuttujista
-		// Nämä muuttuja ovat ne jotka tungetaan
-		// sitten siihen TaskOptionsiin.
-		// Ettei sitten tehdä sitä muunnosta siinä set-metodissa.
 
 		this.req = req;
 		this.res = res;
@@ -82,24 +79,28 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqExampleCode = this.req.getParameter(
 				"exampleCode"
 				).trim();
+		
 		// tehtävänanto
 		String reqTaskDescription = this.req.getParameter(
 				"taskDescription"
 				).trim();
+		
 		// julkiset syötteet
 		String reqPublicInput = this.req.getParameter(
 				"publicInput"
 				).trim();
+		
 		// piilotetut syötteet
 		String reqHiddenInput = this.req.getParameter(
 				"hiddenInput"
 				).trim();
+		
 		// verrataanko simulaatioon
 		String reqCompareMethod = this.req.getParameter(
 				"compareMethod"
 				).trim();
-
-		// miksi tämä on?
+		
+		// ratkaisun hyväksymiskoko
 		String reqAcceptedSize = this.req.getParameter(
 				"acceptedSize"
 				).trim();
@@ -117,13 +118,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				).trim();
 
 		// pyydetyt rekisterien arvot
-		String reqRegisterValues = this.req.getParameter(
-				"registerValues"
+		String reqRegisterCriteria = this.req.getParameter(
+				"registerCriteria"
 				).trim();
 
 		//muistipaikkojen arvot
-		String reqMemoryValues = this.req.getParameter(
-				"memoryValues"
+		String reqMemoryCriteria = this.req.getParameter(
+				"memoryCriteria"
 				).trim();
 		// Muistiviittaukset
 		String reqMemoryReferences = this.req.getParameter(
@@ -144,13 +145,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// TODO checking of session, but no need for new one
 
 		this.session = this.req.getSession(false);
-
-
-		// TODO nämä omiksi privametodeikseen
-
 		try {
 			// maxCommands ei voi olla null
-			// TODO konffattava oletusarvo
 
 			if(validParam(reqMaxCommands)) {
 				maxCommands = parsePostInt(reqMaxCommands);
@@ -161,7 +157,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			taskOptions.setMaxCommands(maxCommands);
 
 		} catch (Exception e) {
-			// TODO lisää virheen palauttaminen
 			returnError(this.staticResponse, "foo");
 			return;
 		}// catch
@@ -192,6 +187,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				taskOptions.setTaskDescription(taskDescription);
 
 			}
+			
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -296,7 +292,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		try { // memoryCriteria
-			if(validParam(reqMemoryCriteria) {
+			if(validParam(reqMemoryCriteria)) {
 				memoryCriteria = parseCriteriaString(
 					reqMemoryCriteria
 					);
@@ -311,7 +307,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // registerCriteria
-			if(validParam(reqRegisterCriteria) {
+			if(validParam(reqRegisterCriteria)) {
 				registerCriteria = parseCriteriaString(
 					reqRegisterCriteria
 					);
@@ -441,7 +437,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		for(int i = 0; i < tmp.length; i++) {
 
-			if(	fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
+			if(fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
 					validateTTK91Command(tmp[i])
 			  ) {
 				// ok!
@@ -455,15 +451,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	}// validTTK91Commands
 
 
-	private TTK91Criteria[] parseCriteriaString(String criteriaString) 
+	private TTK91TaskCriteria[] parseCriteriaString(String criteriaString) 
 		throws InvalidTTK91CriteriaException{
 
 		String[] tmp = criteriaString.split(";");
 		
-		TTK91Critria[] criterias = new TTK91Criteria[tmp.length];
+		TTK91TaskCriteria[] criterias = new TTK91TaskCriteria[tmp.length];
 		
 		for(int i = 0; i < tmp.length; i++) {
-			criterias[i] = new TTK91Criteria(tmp[i]);
+			criterias[i] = new TTK91TaskCriteria(tmp[i]);
 		} // for
 		
 		return criterias;
