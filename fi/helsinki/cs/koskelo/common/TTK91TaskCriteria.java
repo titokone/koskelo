@@ -129,6 +129,23 @@ public class TTK91TaskCriteria{
  }//setSecondComparable
 
 
+ public String getFirstComparable() {
+	 return this.firstComparable;
+ }
+
+ public String getSecondComparable() {
+	 return this.firstComparable;
+ }
+
+ public int getComparator() {
+	 return this.comparator;
+ }
+ 
+
+ public boolean getQuality() {
+	 return this.quality;
+ }
+ 
 
  private void checkComparator(int comparator)
               throws InvalidTTK91CriteriaException {
