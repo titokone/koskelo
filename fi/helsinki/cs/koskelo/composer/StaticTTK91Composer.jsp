@@ -44,8 +44,8 @@ TaskDTO task = null;
 String syntaxErrorMsg = null;
 boolean syntaxError = false;
 
-String temp; //Parametrin != null välitarkistukseen
-String[] oldValues; //Käytetään editissä kriteerien rivittämiseen.
+String temp = null; //Parametrin != null välitarkistukseen
+String[] oldValues = null; //Käytetään editissä kriteerien rivittämiseen.
 
 try {
  event = ( (Integer)request.getAttribute("event") ).intValue();
@@ -253,14 +253,38 @@ task = (TaskDTO)
    >
   </p>
 
+  <%
+    if(syntaxError == true) {
+      temp = request.getParameter("compareMethod");
+    } else if(task != null) {
+      temp = (String) task.get("compareMethod");
+    }//else
+    if(temp == null) {temp = ""+TTK91Constant.COMPARE_TO_STATIC;}
+  %>
+
   <p>
-    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_SIMULATED%>">
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_SIMULATED%>"
+     <%
+       if( temp.equals(""+TTK91Constant.COMPARE_TO_SIMULATED) ) {
+         out.print("checked");
+       }//if
+     %>
+    >
+
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod1Header", lang)%>
   </p>
-  
+
   <p> 
-    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_STATIC%>" checked>
+
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_STATIC%>"
+     <%
+       if( temp.equals(""+TTK91Constant.COMPARE_TO_STATIC) ) {
+         out.print("checked");
+       }//if
+     %>
+    >
+
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
