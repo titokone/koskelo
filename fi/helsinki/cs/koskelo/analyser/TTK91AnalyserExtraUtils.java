@@ -462,9 +462,80 @@ public final class TTK91AnalyserExtraUtils {
 	return to;
     }
     
-    public static boolean checkOutputCriteria(TTK91TaskCriteria crit, int[] output, int[] compareOutput) {
-	System.err.println("\n********************************\ncheckOutputCriteria not implemented\n************************************");
-	return false;
+
+    public static boolean checkOutputCriteria(
+		    TTK91TaskCriteria crit,
+		    int[] output
+		    ) {
+
+	    int slot = 0;
+	    int value = 0;
+
+	    try{
+		    slot = Integer.parseInt(crit.getFirstComparable());
+		    value = Integer.parseInt(crit.getSecondComparable());
+
+	    } catch (NumberFormatException nfe) {
+
+		    return false;
+	    }
+	    
+
+	    return compare(
+			    output[slot],
+			    TTK91Constant.EQUAL,
+			    value
+			    );
+    }
+
+    
+    public static boolean checkOutputCriteria(
+		    TTK91TaskCriteria crit, 
+		    int[] output, 
+		    int[] compareOutput
+		    ) {
+    
+	if(compareOutput == null) {
+		return checkOutputCriteria(
+				crit,
+				output
+				);
+	}
+    
+
+	int studentSlot = 0;
+	int teacherSlot = 0;
+
+	try {
+    		    studentSlot = Integer.parseInt(crit.getFirstComparable());
+		    teacherSlot = Integer.parseInt(crit.getSecondComparable());
+	
+	} catch (NumberFormatException nfe) {
+		
+		return false;
+	
+	}
+
+	if( 
+			!(
+				(studentSlot >= 0) &&
+				(teacherSlot >= 0) &&
+				(studentSlot < output.length) &&
+				(teacherSlot < compareOutput.length)
+			)
+			) {
+		return false;
+	}
+	
+	
+	return compare(
+			output[studentSlot],
+			TTK91Constant.EQUAL,
+			compareOutput[teacherSlot]
+			);
+	
+
+
     }
 
 }
