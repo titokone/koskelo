@@ -31,7 +31,7 @@ public final class TTK91Constant {
 
     // eAssarin virhekoodit
     public static final int FATAL_ERROR = 2;
-    //    public static final int ERROR = 1; <-- tätä ei taideta käyttää missään, eikä taida olla varsinaisesti edes määritelty
+    public static final int ERROR = 1; 
     public static final int NO_ERROR = 0;
 
 }
