@@ -6,6 +6,9 @@ import javax.servlet.http.*;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import fi.helsinki.cs.koskelo.common.*;
+import fi.hy.eassari.taskdefinition.util.*;
+import fi.hy.eassari.taskdefinition.datastructures.*;
+import fi.hy.eassari.showtask.trainer.TaskBase;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
@@ -59,8 +62,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		int[] hiddenInput; // 1,2,3,5,2...
 		TTK91TaskCriteria[] registerCriteria; // R2 > 1
 		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
-
-
 
 		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
 
@@ -138,7 +139,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String reqFileOutput = this.req.getParameter(
 				"fileOutput"
 				).trim();
-
+		
 
 		// TODO checking of session, but no need for new one
 
@@ -221,9 +222,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // compareMethod
-
+			// fixme: not like this
 			if(validParam(reqCompareMethod)) {
-				compareMethod = parsePostInt(reqCompareMethod);
+				compareMethod = 1;
 			}
 
 
@@ -438,7 +439,32 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"../../eAssari/taskDefinition/controller"+
 				"\">\n"
 				);
-
+		
+		// hidden input. Yuk.
+		page = page.concat(
+				" <input name=\"event\""+
+				" type=\"hidden\" id=\"event\""+
+				" value =\""+
+				Events.STATIC_TTK91_SUBMIT+
+				"\" />"
+				);
+			// hidden input. Yuk.
+		page = page.concat(
+				" <input name=\"taskid\""+
+				" type=\"hidden\" id=\"taskid\""+
+				" value =\""+
+				req.getParameter("taskid")+
+				"\" />"
+				);
+		
+		page = page.concat(
+				" <input name=\"taskname\""+
+				" type=\"hidden\" id=\"taskname\""+
+				" value =\""+
+				req.getParameter("taskname")+
+				"\" />"
+				);
+		
 		page = page.concat(
 				"  <table width=\"450\" border=\"0\">"+
 				"   <tr>"+
