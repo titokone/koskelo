@@ -81,76 +81,76 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// suoritettavien konekäskyjen maksimimäärä
 
 		String reqEvent = this.req.getParameter(
-				"event").trim();
+				"event");
 
 		String reqMaxCommands = this.req.getParameter(
 				"maxCommands"
-				).trim();
+				);
 		// malliratkaisu
 		String reqExampleCode = this.req.getParameter(
 				"exampleCode"
-				).trim();
+				);
 
 		// tehtävänanto
 		String reqTaskDescription = this.req.getParameter(
 				"taskDescription"
-				).trim();
+				);
 
 		// julkiset syötteet
 		String reqPublicInput = this.req.getParameter(
 				"publicInput"
-				).trim();
+				);
 
 		// piilotetut syötteet
 		String reqHiddenInput = this.req.getParameter(
 				"hiddenInput"
-				).trim();
+				);
 
 		// verrataanko simulaatioon
 		String reqCompareMethod = this.req.getParameter(
 				"compareMethod"
-				).trim();
+				);
 
 		// ratkaisun hyväksymiskoko
 		String reqAcceptedSize = this.req.getParameter(
 				"acceptedSize"
-				).trim();
+				);
 		// ratkaisun suosituskoko
 		String reqOptimalSize = this.req.getParameter(
 				"optimalSize"
-				).trim();
+				);
 		// kielletyt konekäskyt
 		String reqRequiredCommands = this.req.getParameter(
 				"requiredCommands"
-				).trim();
+				);
 		// vaaditut konekäskyt
 		String reqForbiddenCommands = this.req.getParameter(
 				"forbiddenCommands"
-				).trim();
+				);
 
 		// pyydetyt rekisterien arvot
 		String reqRegisterCriteria = this.req.getParameter(
 				"registerCriteria"
-				).trim();
+				);
 
 		//muistipaikkojen arvot
 		String reqMemoryCriteria = this.req.getParameter(
 				"memoryCriteria"
-				).trim();
+				);
 		// Muistiviittaukset
 		String reqMemoryReferences = this.req.getParameter(
 				"memoryReferences"
-				).trim();
+				);
 
 		// näytön tulosteet
 		String reqScreenOutput = this.req.getParameter(
 				"screenOutput"
-				).trim();
+				);
 
 		// tulosteet tiedostoon
 		String reqFileOutput = this.req.getParameter(
 				"fileOutput"
-				).trim();
+				);
 
 
 		// TODO checking of session, but no need for new one
@@ -162,7 +162,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					"fi.hy.taskdefinition."+
 					"util.datastructures.TeacherSession"
 					);
-		if (setting != null){
+		if (settings != null){
 			lang = settings.getSelectedLanguageId();
 		}
 		
@@ -423,19 +423,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		throws Exception {
 
 
-			StringTokenizer st = new StringTokenizer(input, ",");
-
-			Vector tmp = new Vector();
+			String[] tmp = input.split(",");
 			int[] retInput;
-
-			while(st.hasMoreTokens()){
-				tmp.add(st.nextToken());
-			}// while
+			retInput = new int[tmp.length];
 			
-			retInput = new int[tmp.size()];
-			
-			for(int i = 0; i < tmp.size(); i++) {
-				retInput[i] = parsePostInt((String)tmp.get(i));
+			for(int i = 0; i < tmp.length; i++) {
+				retInput[i] = parsePostInt(tmp[i].trim());
 			} // for
 
 			return retInput;
@@ -508,7 +501,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				];
 
 			for(int i = 0; i < tmp.length; i++) {
-				criterias[i] = new TTK91TaskCriteria(tmp[i]);
+				criterias[i] = new TTK91TaskCriteria(
+						tmp[i].trim()
+						);
 			} // for
 
 			return criterias;
@@ -516,7 +511,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}//parseCriteriaString
 
 	private boolean validParam(String s){
-		return (s != null && !s.equals(""));
+		return (s != null && !(s.trim()).equals(""));
 	}//validParam
 
 	private String feedbackForm() {
