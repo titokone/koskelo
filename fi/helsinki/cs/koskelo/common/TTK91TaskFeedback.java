@@ -7,195 +7,197 @@ package fi.helsinki.cs.koskelo.common;
 
 public class TTK91TaskFeedback {
 
-	private String acceptedSizePos;
-	private String acceptedSizeNeg;
+	private String acceptedSizePositive;
+	private String acceptedSizeNegative;
+	private String acceptedSizeQuality;
 
-	private String optimalSizePos;
-	private String optimalSizeNeg;
+	private String optimalSizePositive;
+	private String optimalSizeNegative;
+	private String optimalSizeQuality;
 
-	private String requiredComPos;
-	private String requiredComNeg;
+	private String requiredComPositive;
+	private String requiredComNegative;
+	private String optimalSizeQuality;
 
-	private String forbiddenComPos;
-  private String forbiddenComNeg;
+	private String forbiddenComPositive;
+  private String forbiddenComNegative;
+	private String forbiddenComQuality;
 
-	private String registerPos;
-	private String registerNeg;
+	private String registerPositive;
+	private String registerNegative;
+	private String registerQuality;
 
-	private String memoryPos;
-	private String memoryNeg;
+	private String memoryPositive;
+	private String memoryNegative;
+	private String memoryQuality
 
-	private String memoryRefPos;
-	private String memoryRefNeg;
+	private String memoryRefPositive;
+	private String memoryRefNegative;
+	private String memoryRefQuality;
 
-	private String screenOutPos;
-	private String screenOutNeg;
+	private String screenOutPositive;
+	private String screenOutNegative;
+	private String screenOutQuality;
 
-	private String fileOutPos;
-	private String fileOutNeg;
-	
+	private String fileOutPositive;
+	private String fileOutNegative;
+	private String fileOutQuality;
+
+
+	/**
+	 * Set-metodit
+	 */
 	
 	/**
-	 * Asettaa positiiven palautteen ohjelman maksimikoosta.
+	 * Asettaa positiiven, negatiivisen ja laadullisen 
+	 * palautteen ohjelman maksimikoosta.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute 
+	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setAcceptedSizeFeedbackPositive(String positive) {
-		this.acceptedSizePos = positive;
+	public void setAcceptedSizeFeedback(String positive,
+																			String negative,
+																			String quality) {
+		this.acceptedSizePositive = positive;
+		this.acceptedSizeNegative = negative;
+		this.acceptedSizeQuality = quality;
 	}//setAcceptedSizeFeedback
 
-	/**
-	 * Asettaa negatiivisen palautteen ohjelman maksimikoosta.
-	 *
-	 * @param negative kriteeriin liittyvä negatiivinen palaute
-	 */
-	public void setAcceptedSizeFeedbackNegative(String negative) {
-		this.acceptedSizeNeg = negative;
-	}//setAcceptedSizeFeedbackNegative
 
 	/**
-	 * Asettaa positiivisen palautteen ohjelman optimaalisesta koosta.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen  
+	 * palautteen ohjelman optimaalisesta koosta.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setOptimalSizeFeedbackPositive(String positive) {
-		this.optimalSizePos = positive;
-	}//setOptimalSizeFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen ohjelman optimaalisesta koosta.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setOptimalSizeFeedbackNegative(String negative) {
-		this.optimalSizeNeg = negative;
-	}//setOptimalSizeFeedbackNegative
+	public void setOptimalSizeFeedback(String positive,
+																		 String negative,
+																		 String quality) {
+		this.optimalSizePositive = positive;
+		this.optimalSizeNegative = negative;
+		this.optimalSizeQuality = quality;
+	}//setOptimalSizeFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen ohjelman vaadituista käskyistä.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen ohjelman vaadituista käskyistä.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setRequiredCommandsFeedbackPositive(String positive) {
-		this.requiredComPos = positive;
-	}//setRequiredCommandsFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen ohjelman vaadituista käskyistä.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setRequiredCommandsFeedbackNegative(String negative) {
-		this.requiredComNeg = negative;
-	}//setRequiredCommandsFeedbackNegative
+	public void setRequiredCommandsFeedback(String positive,
+																					String negative,
+																					String quality) {
+		this.requiredComPositive = positive;
+		this.requiredComNegative = negative;
+		this.requiredComQuality = quality;
+	}//setRequiredCommandsFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen ohjelman kielletyistä käskyistä.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen ohjelman kielletyistä käskyistä.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setForbiddenCommandsFeedbackPositive(String positive) {
-		this.forbiddenComPos = positive;
-	}//setForbiddenCommandsFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen ohjelman kielletyistä käskyistä.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setForbiddenCommandsFeedbackNegative(String negative) {
-		this.forbiddenComNeg = negative;
-	}//setForbiddenCommandsFeedbackNegative
+	public void setForbiddenCommandsFeedback(String positive,
+																					 String negative,
+																					 String quality) {
+		this.forbiddenComPositive = positive;
+		this.forbiddenComNegative = negative;
+		this.forbiddenComQuality = quality;
+	}//setForbiddenCommandsFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen rekistereistä.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen rekistereistä.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setRegisterFeedbackPositive(String positive) {
-		this.registerPos = positive;
-	}//setRegisterFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen rekistereistä.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setRegisterFeedbackNegative(String negative) {
-		this.registerNeg = negative;
-	}//setRegisterFeedbackNegative
+	public void setRegisterFeedback(String positive,
+																	String negative,
+																	String quality) {
+		this.registerPositive = positive;
+		this.registerNegative = negative;
+		this.registerQuality = quality;
+	}//setRegisterFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen muistipaikoista ja muuttujista.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen muistipaikoista ja muuttujista.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
+	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setMemoryFeedbackPositive(String positive) {
-		this.memoryPos = positive;
-	}//setMemoryFeedbackPositive
+	public void setMemoryFeedback(String positive,
+																String negative,
+																String quality) {
+		this.memoryPositive = positive;
+		this.memoryNegative = negative;
+		this.memoryQuality = quality;
+	}//setMemoryFeedback
 	
 	/**
-	 * Asettaa negatiivisen palautteen muistipaikoista ja muuttujista.
-	 *
-	 * @param negative kriteeriin liittyvä negatiivinen palaute
-	 */
-	public void setMemoryFeedbackNegative(String negative) {
-		this.memoryNeg = negative;
-	}//setMemoryFeedbackNegative
-	
-	/**
-	 * Asettaa positiivisen palautteen muistiviitteiden määrästä.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen muistiviitteiden määrästä.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setMemoryReferencesFeedbackPositive(String positive) {
-		this.memoryRefPos = positive;
-	}//setMemoryReferencesFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen muistiviitteiden määrästä.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setMemoryReferencesFeedbackNegative(String negative) {
-		this.memoryRefNeg = negative;
-	}//setMemoryReferencesFeedbackNegative
+	public void setMemoryReferencesFeedback(String positive
+																					String negative
+																					String quality) {
+		this.memoryRefPositive = positive;
+		this.memoryRefNegative = negative;
+		this.memoryRefQuality = quality;
+	}//setMemoryReferencesFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen näytön tulosteista.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen näytön tulosteista.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
-	 */
-	public void setScreenOutputFeedbackPositive(String positive) {
-		this.screenOutPos = positive;
-	}//setScreenOutputFeedbackPositive
-
-	/**
-	 * Asettaa negatiivisen palautteen näytön tulosteista.
-	 *
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setScreenOutputFeedbackNegative(String negative) {
-		this.screenOutNeg = negative;
-	}//setScreenOutputFeedbackNegative
+	public void setScreenOutputFeedback(String positive,
+																			String negative,
+																			String quality) {
+		this.screenOutPositive = positive;
+		this.screenOutNegative = negative;
+		this.screenOutQuality = quality;
+	}//setScreenOutputFeedback
 
 	/**
-	 * Asettaa positiivisen palautteen tiedoston tulosteista.
+	 * Asettaa positiivisen, negatiivisen ja laadullisen 
+	 * palautteen tiedoston tulosteista.
 	 *
 	 * @param positive kriteeriin liittyvä positiivinen palaute
+	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setFileOutputFeedbackPositive(String positive) {
-		this.fileOutPos = positive;
-	}//setFileOutputFeedbackPositive
+	public void setFileOutputFeedback(String positive,
+																		String negative,
+																		String quality) {
+		this.fileOutPositive = positive;
+		this.fileOutNegative = negative;
+		this.fileOutQuality = quality;
+	}//setFileOutputFeedback
+
 
 	/**
-	 * Asettaa negatiivisen palautteen tiedoston tulosteista.
-	 *
-	 * @param negative kriteeriin liittyvä negatiivinen palaute
+	 * Get-metodit.
 	 */
-	public void setFileOutputFeedbackNegative(String negative) {
-		this.fileOutNeg = negative;
-	}//setFileOutputFeedbackNegative
+
 
 	/**
 	 * Antaa positiivisen palautteen maksimikoosta.
@@ -203,7 +205,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getAcceptedSizeFeedbackPositive() {
-		return this.acceptedSizePos;
+		return this.acceptedSizePositive;
 	}//getMaxSizeFeedbackPositive
 
 	/**
@@ -212,8 +214,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getAcceptedSizeFeedbackNegative() {
-		return this.acceptedSizeNeg;
+		return this.acceptedSizeNegative;
 	}//getMaxSizeFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen maksimikoosta.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getAcceptedSizeFeedbackQuality() {
+		return this.acceptedSizeQuality;
+	}//getMaxSizeFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen optimaalisesta koosta.
@@ -221,7 +232,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getOptimalSizeFeedbackPositive() {
-		return this.optimalSizePos;
+		return this.optimalSizePositive;
 	}//getOptimalSizeFeedbackPositive
 	
 	/**
@@ -230,8 +241,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */ 
 	public String getOptimalSizeFeedbackNegative() {
-		return this.optimalSizeNeg;
+		return this.optimalSizeNegative;
 	}//getOptimalSizeFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen optimaalisesta koosta.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */ 
+	public String getOptimalSizeFeedbackQuality() {
+		return this.optimalSizeQuality;
+	}//getOptimalSizeFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen vaadituista käskyistä.
@@ -239,7 +259,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getRequiredCommandsFeedbackPositive() {
-		return this.requiredComPos;
+		return this.requiredComPositive;
 	}//getRequiredCommandsFeedbackPositive
 
 	/**
@@ -248,8 +268,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getRequiredCommandsFeedbackNegative() {
-		return this.requiredComNeg;
+		return this.requiredComNegative;
 	}//getRequiredCommandsFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen vaadituista käskyistä.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getRequiredCommandsFeedbackQuality() {
+		return this.requiredComQuality;
+	}//getRequiredCommandsFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen kielletyistä käskyistä.
@@ -257,7 +286,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getForbiddenCommandsFeedbackPositive() {
-		return this.forbiddenComPos;
+		return this.forbiddenComPositive;
 	}//getForbiddenCommandsFeedbackPositive
 
 	/**
@@ -266,8 +295,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getForbiddenCommandsFeedbackNegative() {
-		return this.forbiddenComNeg;
+		return this.forbiddenComNegative;
 	}//getForbiddenCommandsFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen kielletyistä käskyistä.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getForbiddenCommandsFeedbackQuality() {
+		return this.forbiddenComQuality;
+	}//getForbiddenCommandsFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen rekistereistä.
@@ -275,7 +313,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getRegisterFeedbackPositive() {
-		return this.registerPos;
+		return this.registerPositive;
 	}//getRegisterFeedbackPositive
 
 	/**
@@ -284,8 +322,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */ 
 	public String getRegisterFeedbackNegative() {
-		return this.registerNeg;
+		return this.registerNegative;
 	}//getRegisterFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen rekistereistä.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */ 
+	public String getRegisterFeedbackQuality() {
+		return this.registerQuality;
+	}//getRegisterFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen muistipaikoista ja muuttujista.
@@ -293,7 +340,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getMemoryFeedbackPositive() {
-		return this.memoryPos;
+		return this.memoryPositive;
 	}//getMemoryFeedbackPositive
 
 	/**
@@ -302,8 +349,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getMemoryFeedbackNegative() {
-		return this.memoryNeg;
+		return this.memoryNegative;
 	}//getMemoryFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen muistipaikoista ja muuttujista.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getMemoryFeedbackQuality() {
+		return this.memoryQuality;
+	}//getMemoryFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen muistiviitteiden määrästä.
@@ -311,7 +367,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getMemoryReferencesFeedbackPositive() {
-		return this.memoryRefPos;
+		return this.memoryRefPositive;
 	}//getMemoryReferencesFeedbackPositive
 
 	/**
@@ -320,8 +376,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getMemoryReferencesFeedbackNegative() {
-		return this.memoryRefNeg;
+		return this.memoryRefNegative;
 	}//getMemoryReferencesFeedbackNegative
+
+		/**
+	 * Antaa laadullisen palautteen muistiviitteiden määrästä.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getMemoryReferencesFeedbackQuality() {
+		return this.memoryRefQuality;
+	}//getMemoryReferencesFeedbackQuality
 	
 	/**
 	 * Antaa positiivisen palautteen näytön tulosteista.
@@ -329,7 +394,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getScreenOutputFeedbackPositive() {
-		return this.screenOutPos;
+		return this.screenOutPositive;
 	}//getScreenOutputFeedbackPositive
 	
 	/**
@@ -338,8 +403,17 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getScreenOutputFeedbackNegative() {
-		return this.screenOutNeg;
+		return this.screenOutNegative;
 	}//getScreenOutputFeedbackNegative
+
+	/**
+	 * Antaa laadullisen palautteen näytön tulosteista.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */
+	public String getScreenOutputFeedbackQuality() {
+		return this.screenOutQuality;
+	}//getScreenOutputFeedbackQuality
 
 	/**
 	 * Antaa positiivisen palautteen tiedoston tulosteista.
@@ -347,7 +421,7 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */
 	public String getFileOutputFeedbackPositive() {
-		return this.fileOutPos;
+		return this.fileOutPositive;
 	}//getFileOutputFeedbackPositive
 
 	/**
@@ -356,7 +430,16 @@ public class TTK91TaskFeedback {
 	 * @return kriteeriin liittyvä palaute
 	 */ 
 	public String getFileOutputFeedbackNegative() {
-		return this.fileOutNeg;
+		return this.fileOutNegative;
 	}//getFileOutputFeedbackNegative
+	
+	/**
+	 * Antaa laadullisen palautteen tiedoston tulosteista.
+	 *
+	 * @return kriteeriin liittyvä palaute
+	 */ 
+	public String getFileOutputFeedbackQuality() {
+		return this.fileOutQuality;
+	}//getFileOutputFeedbackQuality
 
 }//class
