@@ -866,125 +866,73 @@ public class StaticTTK91Analyser extends CommonAnalyser {
    * @return virhetilanteessa palauteolio
    */
    
-  private Feedback analyseOutput(TTK91TaskOptions taskOptions,
-                                 Application studentApp) {
-
-    TTK91TaskCriteria[] screenOut;
-    TTK91TaskCriteria[] fileOut;
+  private Feedback analyseOutput(TTK91TaskCriteria[] outCrits,
+                                 String[] publicOutputs,
+				 String[] hiddenOutputs,
+				 boolean analysingCrt, 
+				 Boolean analyseResult) {
+      
+//     TTK91TaskCriteria[] screenOut;
+//     TTK91TaskCriteria[] fileOut;
     
-    if (taskOptions != null) {
-      screenOut = taskOptions.getScreenOutputCriterias();
-      fileOut = taskOptions.getFileOutputCriterias();
-    }
-    else {
-      return new Feedback(TTK91Constant.FATAL_ERROR, "analyseOutput(): "+
-                          "taskoptions null");
-    }
+//     if (taskOptions != null) {
+//       screenOut = taskOptions.getScreenOutputCriterias();
+//       fileOut = taskOptions.getFileOutputCriterias();
+//     }
+//     else {
+//       return new Feedback(TTK91Constant.FATAL_ERROR, "analyseOutput(): "+
+//                           "taskoptions null");
+//     }
 
-    if ((screenOut == null) && (fileOut == null)) {
-      return null; // ei kriteerejä, palataan
-    }
+//     if ((screenOut == null) && (fileOut == null)) {
+//       return null; // ei kriteerejä, palataan
+//     }
 
-    String separator = System.getProperty("line.separator", "\n");
+      if (outCrits == null) {
+	  return null; // ei kriteerejä, palataan
+      }
+      if (publicOutputs == null || analyseResult == null) {
+	  return new Feedback(TTK91Constant.FATAL_ERROR, "analyseOutput(): "+
+			      "Virhe tulosteiden analysoinnissa");
+      }
+      String separator = System.getProperty("line.separator", "\n");
     
-    // outputtien parsinta
+      // outputtien parsinta
 
-    String[] studentPubScrOutArr = null;
-    String[] studentHidScrOutArr = null;
-    String[] teacherPubScrOutArr = null;
-    String[] teacherHidScrOutArr = null;
-    String[] studentPubFileOutArr = null;
-    String[] studentHidFileOutArr = null;
-    String[] teacherPubFileOutArr = null;
-    String[] teacherHidFileOutArr = null;
+      String publicOutArr = null;
+      String hiddenOutArr = null;
 
-    int[] studentPubScrOutInt = null;
-    int[] studentHidScrOutInt = null;
-    int[] teacherPubScrOutInt = null;
-    int[] teacherHidScrOutInt = null;
-    int[] studentPubFileOutInt = null;
-    int[] studentHidFileOutInt = null;
-    int[] teacherPubFileOutInt = null;
-    int[] teacherHidFileOutInt = null;
+      int[] publicOutInt = null;
+      int[] hiddenOutInt = null;
 
+      if (publicOutputs != null) {
+	  publicOutArr = publicOutputs.split(separator);
+	  publicOutInt = new int[publicOutArr.length];
+	  Feedback fb = 
+	      parseOutputArrays(publicOutArr, publicOutInt);
+	  if (fb != null) {
+	      return fb;
+	  }
+      }
 
-     if (studentPublicScreenOut != null) {
-       studentPubScrOutArr = studentPublicScreenOut.split(separator);
-       studentPubScrOutInt = new int[studentPubScrOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(studentPubScrOutArr, studentPubScrOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (studentHiddenScreenOut != null) {
-       studentHidScrOutArr = studentHiddenScreenOut.split(separator);
-       studentHidScrOutInt = new int[studentHidScrOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(studentHidScrOutArr, studentHidScrOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (teacherPublicScreenOut != null) {
-       teacherPubScrOutArr = teacherPublicScreenOut.split(separator);
-       teacherPubScrOutInt = new int[teacherPubScrOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(teacherPubScrOutArr, teacherPubScrOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (teacherHiddenScreenOut != null) {
-       teacherHidScrOutArr = teacherHiddenScreenOut.split(separator);
-       teacherHidScrOutInt = new int[teacherHidScrOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(teacherHidScrOutArr, teacherHidScrOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (studentPublicFileOut != null) {
-       studentPubFileOutArr = studentPublicFileOut.split(separator);
-       studentPubFileOutInt = new int[studentPubFileOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(studentPubFileOutArr, studentPubFileOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (studentHiddenFileOut != null) {
-       studentHidFileOutArr = studentHiddenFileOut.split(separator);
-       studentHidFileOutInt = new int[studentHidFileOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(studentHidFileOutArr, studentHidFileOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (teacherPublicFileOut != null) {
-       teacherPubFileOutArr = teacherPublicFileOut.split(separator);
-       teacherPubFileOutInt = new int[teacherPubFileOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(teacherPubFileOutArr, teacherPubFileOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
-     if (teacherHiddenFileOut != null) {
-       teacherHidFileOutArr = teacherHiddenFileOut.split(separator);
-       teacherHidFileOutInt = new int[teacherHidFileOutArr.length];
-       Feedback fb = 
-         parseOutputArrays(teacherHidFileOutArr, teacherHidFileOutInt);
-       if (fb != null) {
-         return fb;
-       }
-     }
+      if (hiddenOutputs != null) {
+	  hiddenOutArr = hiddenOutputs.split(separator);
+	  hiddenOutInt = new int[hiddenOutArr.length];
+	  Feedback fb = 
+	      parseOutputArrays(hiddenOutArr, hiddenOutInt);
+	  if (fb != null) {
+	      return fb;
+	  }
+      }
 
+      for (int i=0; i < outCrits.length; ++i) {
+	  TTK91TaskCriteria crit = outCrits[i];
+	  String[] 
 
      //EN NYT MUISTA MIKÄ TAI MISTÄ [HT]
      //getCrt() [EN]
      // Näytä mulle mistä löytyy getCrt() muualta kuin kommenteista ;( [LL]
+     // eli ainakin mun mielestä ne lähtee irti metodilla read[Crt|File]()
      //NÄYTÖN TULOSTEET
      //TIEDOSTON TULOSTEET
 
