@@ -12,11 +12,11 @@ package fi.helsinki.cs.koskelo.analyser;
 
 public class StaticTTK91Analyser extends CommonAnalyser {
 
-    AttributeCache cache;
-    String taskID;
-    String language;
-    ParameterString initP;
-    private TTK91Core core;
+  AttributeCache cache;
+  String taskID;
+  String language;
+  ParameterString initP;
+  private TTK91Core core;
 
   /**
    * Konstruktori, joka luo uuden alustamattoman
@@ -72,27 +72,43 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @return palaute
      */
 
-  public Feedback analyse(String[] answer, String params) { // FIXME: varsinainen toiminnallisuus kesken
+  public Feedback analyse(String[] answer, String params) { // FIXME:
+                                                            // varsinainen
+                                                            // toiminnallisuus
+                                                            // kesken
+
     TTK91CompileSource src = StaticTTK91Analyser.parseSourceFromAnswer(answer);
     if (src == null) {
-	return new Feedback(); // FIXME: oikeanlainen palaute kun sorsa ei suostu menem‰‰n edes TTK91CompileSource-muotoon - voiko n‰in edes k‰yd‰?
+      return new Feedback(); // FIXME: oikeanlainen palaute kun sorsa
+                             // ei suostu menem‰‰n edes
+                             // TTK91CompileSource-muotoon - voiko
+                             // n‰in edes k‰yd‰?
     }
+
     TTK91Application app;
+
     try {
-	app = core.compile(src);
+      app = core.compile(src);
     }
     catch (TTK91Exception e) {
-	return new Feedback(); // FIXME: oikeanlainen palaute, kun k‰‰nnˆs ep‰onnistuu
+      return new Feedback(); // FIXME: oikeanlainen palaute, kun
+                             // k‰‰nnˆs ep‰onnistuu
     }
+
     try {
-	core.run(app, 5); // FIXME: maksimikierrosten m‰‰r‰ taskoptionsista (tai jostain muualta)
+      core.run(app, 5); // FIXME: maksimikierrosten m‰‰r‰
+                        // taskoptionsista (tai jostain muualta)
     }
     catch (TTK91Exception e) {
-	//	System.err.println("Ajonaikainen virhe"+e.getMessage());
-	return new Feedback(); // FIXME: oikeanlainen palaute, kun suoritus ep‰onnistuu
+      //	System.err.println("Ajonaikainen virhe"+e.getMessage());
+      return new Feedback(); // FIXME: oikeanlainen palaute, kun
+                             // suoritus ep‰onnistuu
     }
+
     TTK91Memory mem = core.getMemory();
     TTK91Cpu cpu = core.getCpu();
+
+
     return new Feedback();
   } // analyse
 
