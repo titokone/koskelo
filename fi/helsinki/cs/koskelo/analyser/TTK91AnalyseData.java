@@ -441,4 +441,32 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 	public TTK91TaskOptions getTaskOptions() {
 		return taskOptions;
 	}
-}// class
+
+	public int getCommandAmount() {
+
+		return  this.usedCommands;
+	
+	}
+	
+	public int getStackSize() {
+	
+		return this.maxStackSize;
+
+	}
+	
+	public int getMemoryReferences() {
+		return this.memoryReferences;
+	}
+
+	
+	public int getCodeSegmentSize() {
+		return this.codeSegmentSize;
+	}
+	
+	public int getDataSegmentSize() {
+		return this.dataSegmentSize;
+	}
+
+
+			
+	}// class
