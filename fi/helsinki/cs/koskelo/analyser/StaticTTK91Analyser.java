@@ -129,7 +129,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     Feedback getStudentAppFeedback =
       getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
     if (getStudentAppFeedback != null) {
-      return getStudenAppFeedback; // opiskelijan ratkaisu ei k‰‰nny,
+      return getStudentAppFeedback; // opiskelijan ratkaisu ei k‰‰nny,
                                    // josta tuupataan palaute
                                    // eteenp‰in
     }
