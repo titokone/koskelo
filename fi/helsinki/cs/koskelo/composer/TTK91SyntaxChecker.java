@@ -347,7 +347,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	}
 
 	private int[] parseInputString(String input)
-		throws ServletException, IOException {
+		throws Exception {
 
 
 			StringTokenizer st = new StringTokenizer(
