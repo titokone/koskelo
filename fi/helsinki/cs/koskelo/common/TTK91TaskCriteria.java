@@ -157,7 +157,7 @@ public class TTK91TaskCriteria{
 
      if(cleanedString == null || cleanedString.length() == 0) {
 
-	  throw new InvalidTTK91CriteriaException("Invalid comparator");
+	  throw new InvalidTTK91CriteriaException("Invalid first comparable");
 
      }//if
 
@@ -181,7 +181,7 @@ public class TTK91TaskCriteria{
 
   if(cleanedString == null || cleanedString.length() == 0) {
 
-      throw new InvalidTTK91CriteriaException("Invalid comparator");
+      throw new InvalidTTK91CriteriaException("Invalid second comparable");
 
   }//if
 
