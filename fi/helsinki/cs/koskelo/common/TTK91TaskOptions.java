@@ -595,175 +595,175 @@ public class TTK91TaskOptions {
 //     return ret;
 //   }  
 
-  /**
-   * Apulainen toString()-metodille. 
-   * @param sb StringBuffer, johon kriteerit tulostetaan
-   * @param crits Kriteeritaulukko
-   */
+//   /**
+//    * Apulainen toString()-metodille. 
+//    * @param sb StringBuffer, johon kriteerit tulostetaan
+//    * @param crits Kriteeritaulukko
+//    */
  
-  private static void toStringHelper(StringBuffer sb, TTK91TaskCriteria[] crits) {
-    for (int i = 0; i < crits.length; ++i) {
-	    sb.append(crits[i]);
-	    sb.append("|");
-    }
-  } // toStringHelper
+//   private static void toStringHelper(StringBuffer sb, TTK91TaskCriteria[] crits) {
+//     for (int i = 0; i < crits.length; ++i) {
+// 	    sb.append(crits[i]);
+// 	    sb.append("|");
+//     }
+//   } // toStringHelper
 
-    /**
-     * Apulainen toString()-metodille. 
-     * @param sb StringBuffer, johon syötteet tulostetaan
-     * @param inputs syötetaulukko
-     */
+//     /**
+//      * Apulainen toString()-metodille. 
+//      * @param sb StringBuffer, johon syötteet tulostetaan
+//      * @param inputs syötetaulukko
+//      */
 
-  private static void toStringHelper(StringBuffer sb, int[] inputs) {
-    if (inputs != null) {
-	    for (int i = 0; i < inputs.length; ++i) {
-        sb.append(inputs[i]);
-        sb.append("|");
-	    }
-    }
-  } // toStringHelper
+//   private static void toStringHelper(StringBuffer sb, int[] inputs) {
+//     if (inputs != null) {
+// 	    for (int i = 0; i < inputs.length; ++i) {
+//         sb.append(inputs[i]);
+//         sb.append("|");
+// 	    }
+//     }
+//   } // toStringHelper
 
-    /**
-     * Apulainen toString()-metodille. 
-     * @param sb StringBuffer, johon kielletyt/vaaditut käskyt tulostetaan
-     * @param cmds taulukko kielletyille/vaadituille käskyille
-     */
+//     /**
+//      * Apulainen toString()-metodille. 
+//      * @param sb StringBuffer, johon kielletyt/vaaditut käskyt tulostetaan
+//      * @param cmds taulukko kielletyille/vaadituille käskyille
+//      */
 
-  private static void toStringHelper(StringBuffer sb, String[] cmds) {
-    if (cmds != null) {
-	    for (int i = 0; i < cmds.length; ++i) {
-        sb.append(cmds[i]);
-        sb.append("|");
-	    }
-    }
-  } // toStringHelper
+//   private static void toStringHelper(StringBuffer sb, String[] cmds) {
+//     if (cmds != null) {
+// 	    for (int i = 0; i < cmds.length; ++i) {
+//         sb.append(cmds[i]);
+//         sb.append("|");
+// 	    }
+//     }
+//   } // toStringHelper
 
 
-  private static void toStringHelper(StringBuffer sb, int[][] cmds) {
-	  if(cmds != null) {
-		  for(int i = 0; i < cmds.length; i++) {
+//   private static void toStringHelper(StringBuffer sb, int[][] cmds) {
+// 	  if(cmds != null) {
+// 		  for(int i = 0; i < cmds.length; i++) {
 			  
-			  // voidaan olettaa että taulukon koko
-			  // on kaksi, sillä outputteille joille
-			  // tätä käytetään niiden jälkimmäisessä taulukossa
-			  // on aina kaksi alkiota. Jos ei ole niin jossain
-			  // aikaisemmin on tehty virhe.
-			  // FIXME järkevämpi toteutus kuin int[][] output
-			  // eille
-			  sb.append("(");
-			  sb.append(cmds[i][0]);
-			  sb.append(",");
-			  sb.append(cmds[i][1]);
-			  sb.append(")");
-			  sb.append("|");
-		  }
-	  }
-  }
+// 			  // voidaan olettaa että taulukon koko
+// 			  // on kaksi, sillä outputteille joille
+// 			  // tätä käytetään niiden jälkimmäisessä taulukossa
+// 			  // on aina kaksi alkiota. Jos ei ole niin jossain
+// 			  // aikaisemmin on tehty virhe.
+// 			  // FIXME järkevämpi toteutus kuin int[][] output
+// 			  // eille
+// 			  sb.append("(");
+// 			  sb.append(cmds[i][0]);
+// 			  sb.append(",");
+// 			  sb.append(cmds[i][1]);
+// 			  sb.append(")");
+// 			  sb.append("|");
+// 		  }
+// 	  }
+//   }
 				  
   
-    /**
-     * Palauttaa merkkijonoesityksen TTK91TaskOptions-oliosta
-     */
+//     /**
+//      * Palauttaa merkkijonoesityksen TTK91TaskOptions-oliosta
+//      */
 
-  public String toString() {
+//   public String toString() {
 
-    StringBuffer strbf = new StringBuffer();
+//     StringBuffer strbf = new StringBuffer();
 
-    strbf.append(":");
+//     strbf.append(":");
 
-    //    Rekisterikriteerit
-    TTK91TaskCriteria[] regs = this.getRegisterCriterias();
-    toStringHelper(strbf, regs);
-    strbf.append(":");
+//     //    Rekisterikriteerit
+//     TTK91TaskCriteria[] regs = this.getRegisterCriterias();
+//     toStringHelper(strbf, regs);
+//     strbf.append(":");
 
-    //    Muistikriteerit
-    TTK91TaskCriteria[] mems = this.getMemoryCriterias();
-    toStringHelper(strbf, mems);
-    strbf.append(":");
+//     //    Muistikriteerit
+//     TTK91TaskCriteria[] mems = this.getMemoryCriterias();
+//     toStringHelper(strbf, mems);
+//     strbf.append(":");
 
-    //    Näyttötulostuksen kriteerit
+//     //    Näyttötulostuksen kriteerit
    
-    TTK91TaskCriteria[] screens = this.getScreenOutputCriterias();
-    toStringHelper(strbf, screens);
-    strbf.append(":");
+//     TTK91TaskCriteria[] screens = this.getScreenOutputCriterias();
+//     toStringHelper(strbf, screens);
+//     strbf.append(":");
 
-    //    Tiedostotulostuksen kriteerit
-    TTK91TaskCriteria[] files = this.getFileOutputCriterias();
-    toStringHelper(strbf, files);
-    strbf.append(":");
+//     //    Tiedostotulostuksen kriteerit
+//     TTK91TaskCriteria[] files = this.getFileOutputCriterias();
+//     toStringHelper(strbf, files);
+//     strbf.append(":");
     
-    //    Malliratkaisu
-    String code = getExampleCode();
-    if (code != null) {
-	    strbf.append(code);
-    }
-    strbf.append(":");
+//     //    Malliratkaisu
+//     String code = getExampleCode();
+//     if (code != null) {
+// 	    strbf.append(code);
+//     }
+//     strbf.append(":");
     
-    //    getTaskDescription()
-    String description = getTaskDescription();
-    if (description != null) {
-	    strbf.append(description);
-    }
-    strbf.append(":");
+//     //    getTaskDescription()
+//     String description = getTaskDescription();
+//     if (description != null) {
+// 	    strbf.append(description);
+//     }
+//     strbf.append(":");
 
-    //    getPublicInput()
-    int[] pubinput = getPublicInput();
-    toStringHelper(strbf, pubinput);
-    strbf.append(":");
+//     //    getPublicInput()
+//     int[] pubinput = getPublicInput();
+//     toStringHelper(strbf, pubinput);
+//     strbf.append(":");
 	
-    //    getHiddenInput()
-    int[] hiddeninput = getHiddenInput();
-    toStringHelper(strbf, hiddeninput);
-    strbf.append(":");
+//     //    getHiddenInput()
+//     int[] hiddeninput = getHiddenInput();
+//     toStringHelper(strbf, hiddeninput);
+//     strbf.append(":");
 
-    //    getCompareMethod()
-    strbf.append(getCompareMethod());
-    strbf.append(":");
+//     //    getCompareMethod()
+//     strbf.append(getCompareMethod());
+//     strbf.append(":");
 
-    //    getMaxCommands()
-    strbf.append(getMaxCommands());
-    strbf.append(":");
+//     //    getMaxCommands()
+//     strbf.append(getMaxCommands());
+//     strbf.append(":");
     
-    //    getAcceptedSize()  
-    strbf.append(getAcceptedSize());
-    strbf.append(":");
+//     //    getAcceptedSize()  
+//     strbf.append(getAcceptedSize());
+//     strbf.append(":");
 
-    //    getOptimalSize()
-    strbf.append(getOptimalSize());
-    strbf.append(":");
+//     //    getOptimalSize()
+//     strbf.append(getOptimalSize());
+//     strbf.append(":");
 
-    //    getMemRefCriteria()
-    strbf.append(getMemRefCriteria());
-    strbf.append(":");
+//     //    getMemRefCriteria()
+//     strbf.append(getMemRefCriteria());
+//     strbf.append(":");
 
-    //    getRequiredCommands()
-    String[] req = getRequiredCommands();
-    toStringHelper(strbf, req);
-    strbf.append(":");
+//     //    getRequiredCommands()
+//     String[] req = getRequiredCommands();
+//     toStringHelper(strbf, req);
+//     strbf.append(":");
 
-    //    getForbiddenCommands()
-    String[] fbd = getForbiddenCommands();
-    toStringHelper(strbf, fbd);
-    strbf.append(":");
+//     //    getForbiddenCommands()
+//     String[] fbd = getForbiddenCommands();
+//     toStringHelper(strbf, fbd);
+//     strbf.append(":");
 
-    return strbf.toString();
-  } // toString()
+//     return strbf.toString();
+//   } // toString()
 
-  public static void main(String[] args) {
-    TTK91TaskOptions testi = new TTK91TaskOptions();
-    String[] req = {"foo", "bar", "barf"};
-    String[] fbd = {"argh", "yrgh"};
-		
-    testi.setRequiredCommands(req);
-    testi.setForbiddenCommands(fbd);
-
-    System.out.println(testi);
-    String testtext = testi.toString();
-    String[] tasktokens = testtext.split(":",-1);
-    for (int i=0; i<tasktokens.length; ++i) {
-	    System.out.print(tasktokens[i]+" * ");
-    }
+  //   public static void main(String[] args) {
+  //     TTK91TaskOptions testi = new TTK91TaskOptions();
+  //     String[] req = {"foo", "bar", "barf"};
+  //     String[] fbd = {"argh", "yrgh"};
+  
+  //     testi.setRequiredCommands(req);
+  //     testi.setForbiddenCommands(fbd);
+  
+  //     System.out.println(testi);
+  //     String testtext = testi.toString();
+  //     String[] tasktokens = testtext.split(":",-1);
+  //     for (int i=0; i<tasktokens.length; ++i) {
+  // 	    System.out.print(tasktokens[i]+" * ");
+  //     }
 	
-  }
-
+  //   }
+  
 } // public class TTK91TaskOptions
