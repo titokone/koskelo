@@ -37,7 +37,7 @@ try {
  System.out.println("Error while retrieving event-id: "+e);
 }//catch
 
-if (event == Events.STATIC_TTK91_EDIT) {
+if (event == Events.FILLIN_TTK91_EDIT) {
  editTask = true;
  task = (TaskDTO)
  request.getSession(false).
@@ -71,10 +71,10 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
 %>
 
 <form method="post" action="
- <%=request.getContextPath()%>/koskelo/composer/TTK91SyntaxChecker" name="StaticTTK91Composer">
+ <%=request.getContextPath()%>/koskelo/composer/TTK91SyntaxChecker" name="FillInTTK91Composer">
 
  <input name="event" type="hidden" id="event"
-  value="<%=Events.STATIC_TTK91_SUBMIT%>" />
+  value="<%=Events.FILLIN_TTK91_SUBMIT%>" />
   
  <input name="taskid" type="hidden" id="taskid"
   value="<%=( task == null ? "" : "" + task.getTaskId() )%>" />
