@@ -17,6 +17,8 @@ import fi.hy.eassari.showtask.trainer.CommonAnalyser;
 import fi.hy.eassari.showtask.trainer.CacheException;
 
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
+import fi.helsinki.cs.koskelo.common.TTK91Constant;
+import fi.helsinki.cs.koskelo.common.TTK91TaskCriteria;
 
 /**
  * Luokka staattisten TTK-91 -tehtävien vastauksien tarkastamiseen
@@ -385,7 +387,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     }
     catch (NumberFormatException e) {
 	    // rikkinäinen kriteeri - ei pitäisi tapahtua
-	    throw new RunTimeException("TTK91Analyser.checkMemRefCriteria(): Broken criteria, String to int conversion failed");
+	    throw new RuntimeException("TTK91Analyser.checkMemRefCriteria(): Broken criteria, String to int conversion failed");
     }
     switch (comparator) { 
 	    
