@@ -151,6 +151,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    teacherMemory = (RandomAccessMemory) controlPublicInputTeacher.getMemory(); 
     }
 
+    // FIXME: ilmeisesti pitäisi myös mahdollisesti analysoida nuo hidden-arvoilla...
     Feedback memFeedback = 
 	    analyseMemory(taskOptions.getMemoryCriterias(), 
                     results,
@@ -162,7 +163,22 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    return memFeedback; // muistianalysoinnissa tuli vastaan virhetilanne, josta tiedot palauteoliossa. Ei jatketa pidemmälle.
     }
 	
-    //analyseRegisters()
+    // FIXME == Tämä varmaan pitäisi ajaa kahdesti - tai jotain. Eli
+    // toinen ajokerta hiddeninputeilla? Toisaalta, jos toimii
+    // hiddeninputeilla, niin toiminee varmaan myös näkyvillä... Joku
+    // fiksumpi saa sanoa mitä tehdään... / Lauri == FIXME!
+    Feedback regFeedback = 
+      analyseRegisters(taskOptions.getRegisterCriterias(),
+                       results, 
+                       controlPublicInputStudent, 
+                       controlPublicInputTeacher );
+
+    if (regFeedback != null) {
+      return regFeedback; // rekisterianalysoinnissa tuli vastaan
+                          // virhetilanne, josta tiedot
+                          // palauteoliossa. Ei jatketa pidemmälle.
+    }
+
     //analyseOutput()
     
     //Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
@@ -632,9 +648,146 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     return null; // ok-paluu, vaikka vähän hassulta kuulostaakin.
   } //analyseMemory
 
-  private void analyseRegisters() {
+  /**
+   * Apumetodi rekistereiden sisältöön liittyvien kriteerien analysointiin
+   * 
+   */
+  private Feedback analyseRegisters(TTK91TaskCriteria[] regCrit,
+                                    TTK91AnalyseResults results,
+                                    TTK91Core controlPublicInputStudent,
+                                    TTK91Core controlPublicInputTeacher) {
 
-    //REKISTERIT
+    
+    if (regCrit == null) {
+      return null; // jos ei rekisterikriteerejä, ei ole analysoitavaakaan
+    }
+
+    TTK91Cpu studentCPU = null;
+    TTK91Cpu teacherCPU = null;
+    
+    if (controlPublicInputStudent != null) {
+      studentCPU = controlPublicInputStudent.getCpu();
+    }
+    else {
+      return new Feedback(TTK91Constant.FATAL_ERROR, "Malliratkaisun "+
+                          " suorituksessa käytetty simulaattori kadonnut");
+    }
+
+    if (controlPublicInputTeacher != null) {
+      teacherCPU = controlPublicInputTeacher.getCpu();
+    }
+    
+    TTK91TaskCriteria crit;
+    boolean studentOk = true;
+    boolean teacherOk = true;
+    boolean qualityOk = true;
+    boolean critOk = true;
+    boolean qualityCritFound = false;
+    boolean realCritFound = false;
+    
+    for (int i=0; i < regCrit.length; ++i) {
+      crit = regCrit[i];
+      boolean isQuality = crit.getQuality();
+      String regName = crit.getFirstComparable();
+      String comp = crit.getSecondComparable();
+      int comparator = crit.getComparator();
+      int regValue = -1;
+      
+      if (isQuality && !qualityOk) {
+        continue; // laatukriteeri, ja se on jo valmiiksi rikki
+      }
+      
+      try {
+        regValue = Integer.parseInt(comp);
+      }
+      catch (NumberFormatException e) {
+        return new Feedback(TTK91Constant.FATAL_ERROR, "Rikkinäinen kriteeri,"+
+                            " String->int -muunnos epäonnistui: "+
+                            e.getMessage());
+      }
+      
+      if (isQuality) {
+        qualityCritFound = true;
+        regName = regName.substring(regName.indexOf(","), regName.length());
+      }
+      else {
+        realCritFound = true;
+      }
+      int regNumber = -1;
+      
+      try {
+        regNumber = Integer.parseInt(regName.substring(regName.indexOf("R")+1, 
+                                                       regName.length()));
+      }
+      catch (NumberFormatException e) {
+        return new Feedback(TTK91Constant.FATAL_ERROR, "Rikkinäinen kriteeri,"+
+                            " String->int -muunnos epäonnistui: "+
+                            e.getMessage());
+      }
+
+      int regIndex = -1;
+
+      switch (regNumber) {
+        
+      case 1:
+        regIndex = TTK91Cpu.REG_R1;
+        break;
+      case 2:
+        regIndex = TTK91Cpu.REG_R2;
+        break;
+      case 3:
+        regIndex = TTK91Cpu.REG_R3;
+        break;
+      case 4:
+        regIndex = TTK91Cpu.REG_R4;
+        break;
+      case 5:
+        regIndex = TTK91Cpu.REG_R5;
+        break;
+      case 6:
+        regIndex = TTK91Cpu.REG_R6;
+        break;
+      case 7:
+        regIndex = TTK91Cpu.REG_R7;
+        break;
+      default:
+        return new Feedback(TTK91Constant.FATAL_ERROR, "Virheellinen "+
+                            "rekisteri: "+regName);
+      }
+      // nyt regIndex sisältää indeksin, jolla saadaan varsinainen
+      // rekisterin sisältö selville
+      // regValue-muuttujassa on vertauskriteerinä oleva arvo
+      
+      int studentRegValue = -1;
+      int teacherRegValue = -1;
+
+      studentRegValue = studentCPU.getValueOf(regIndex);
+      studentOk = compare(studentRegValue, comparator, regValue);
+
+      if (teacherCPU != null) {
+        teacherRegValue = teacherCPU.getValueOf(regIndex);
+        teacherOk = compare(teacherRegValue, comparator, regValue);
+      }
+      
+      if (isQuality) {
+        qualityOk = (studentOk && teacherOk);
+      }
+      else {
+        critOk = (studentOk && teacherOk);
+      }
+      if (!critOk) {
+        break; // oikeellisuus särkyi, ei syytä jatkaa
+      }
+    } // for
+    
+    if (realCritFound) {
+      results.setRegisters(critOk);
+    }
+    if (qualityCritFound) {
+      results.setRegistersQuality(qualityOk);
+    }
+
+    return null; // kaikki ok
 
     //results.setBLAAH(boolean)
   } //analyseRegisters
