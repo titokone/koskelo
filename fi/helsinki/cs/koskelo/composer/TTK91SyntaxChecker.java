@@ -5,12 +5,12 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import fi.helsinki.cs.koskelo.common.*;
 import fi.hy.eassari.taskdefinition.util.*;
-import fi.hy.eassari.taskdefinitioni.util.datastructures.*;
+import fi.hy.eassari.taskdefinition.util.datastructures.*;
 import fi.hy.eassari.showtask.trainer.TaskBase;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
-	private String response = "http://db.cs.helsinki.fi/"+
+	private String staticResponse = "http://db.cs.helsinki.fi/"+
 		"tomcat/tkt_kos/assari/jsp/StaticTTK91Composer.jsp";
 	private String lang = "EN"; // default in assari.
 	private HttpServletRequest req;
@@ -49,7 +49,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.req = req;
 		this.res = res;
-		cache = (TaskBase) request.getAttribute(
+		cache = (TaskBase) req.getAttribute(
 				"fi.hy.eassari.showtask.trainer.TaskBase"
 				);
 
@@ -181,7 +181,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						"util.datastructures.TaskDTO"
 						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
-			fillin = true;
+			fillIn = true;
 		// FIXME
 			response = "fillinaddress";
 		}
@@ -414,7 +414,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
  * Molempia saa esiintyä tasan yksi.
  * @param code fillIn tehtävän esimerkkikoodi.
  */
-	private void fillinValidate(String code) 
+	private void fillInValidate(String code) 
 		throws Exception {
 
 			if(code.indexOf("[")> -1) {
@@ -569,7 +569,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				" <input name=\"event\""+
 				" type=\"hidden\" id=\"event\""+
 				" value =\""+
-				reqEvent+
+				this.req.getParameter("event")+
 				"\" />"
 				);
 		// hidden input. Yuk.
