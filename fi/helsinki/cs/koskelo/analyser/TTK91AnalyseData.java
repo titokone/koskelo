@@ -199,6 +199,7 @@ public class TTK91AnalyseData{
 		// teacher app and make them into applications
 
 	}
+
 	private void compileStudentApplication() {
 
 
@@ -264,6 +265,8 @@ public class TTK91AnalyseData{
 		this.steps = taskOptions.getMaxCommands();
 
 		this.compareMethod = taskOptions.getCompareMethod();
+	
+		System.err.println("Vertailumetodi luettiin: " + compareMethod);
 	}
 
 
@@ -305,7 +308,10 @@ public class TTK91AnalyseData{
 
 		if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
 			// 1. simulointi malliratkaisua
+			System.err.println("Simuloituvertailu");
+			
 			this.controlPublicInputTeacher = new Control(null, null);
+			
 			try {
 				this.controlPublicInputTeacher.run(
 						this.teacherApplicationPublic,
@@ -457,7 +463,11 @@ public class TTK91AnalyseData{
 	}
 
 	public TTK91Cpu getTeacherCpuPublic(){
+		if(controlPublicInputTeacher != null) {
 		return controlPublicInputTeacher.getCpu();
+		} else {
+			return null;
+		}
 	}
 
 	public TTK91Cpu getTeacherCpuHidden(){
@@ -482,7 +492,11 @@ public class TTK91AnalyseData{
 	}
 
 	public TTK91Memory getTeacherMemoryPublic(){
-		return controlPublicInputTeacher.getMemory();
+		if(controlPublicInputTeacher != null) {
+			return controlPublicInputTeacher.getMemory();
+		} else {
+			return null;
+		}
 	}
 
 	public TTK91Memory getTeacherMemoryHidden(){
@@ -568,7 +582,7 @@ public class TTK91AnalyseData{
     }
 
     public String getStudentScreenOutputHidden(){
-	if (studentApplicationHidden != null) {
+	if (studentApplicationHidden != null && controlHiddenInputStudent != null) {
 	    return studentApplicationHidden.readCrt();
 	} else {
 	    return null;
@@ -576,7 +590,7 @@ public class TTK91AnalyseData{
     }
     
     public String getTeacherScreenOutputPublic(){
-	if (teacherApplicationPublic != null) {
+	if (teacherApplicationPublic != null && controlPublicInputStudent != null) {
 	    return teacherApplicationPublic.readCrt();
 	} else {
 	    return null;
@@ -584,7 +598,7 @@ public class TTK91AnalyseData{
     }
     
     public String getTeacherScreenOutputHidden(){
-	if (teacherApplicationHidden != null) {
+	if (teacherApplicationHidden != null && controlHiddenInputTeacher != null) {
 	    return teacherApplicationHidden.readCrt();
 	} else {
 	    return null;
