@@ -77,12 +77,7 @@ public final class TTK91AnalyserExtraUtils {
 	 */
 	public static Boolean isCommandFound(String answer, String cmd) {
 
-		System.err.println("Saavuttiin isCommandFound()iin");
-
 		if ((answer != null) && (cmd != null)) {
-			System.err.println("Päästiin sisään varsinaiseen"+
-					" isCommandFound()iin, eli alkuehdot kunnossa");
-
 			String haystack = answer.toLowerCase();
 			String needle = cmd.toLowerCase();
 
@@ -98,17 +93,9 @@ public final class TTK91AnalyserExtraUtils {
 				needle = needle.substring(0, temp); 
 				// poistetaan mahdollinen ';'
 			}
-
-			System.err.println("needle: |"+needle+"|");
-			System.err.println("valmiina ajamaan matchays...");
-
-			temp = answer.indexOf(needle);
-			System.err.println("matchayksen tulos (intinä),"+
-					"eli palautetaan (temp >= 0): "+temp);
+			temp = haystack.indexOf(needle);
 			return new Boolean(temp >= 0);
 		}
-		System.err.println("isCommandFound: answer != null: "+
-				(answer != null)+", cmd != null: "+(cmd != null));
 		return null; // jotain meni pieleen, mutta ei nyt osata kertoa sitä tarkemmin...
 	} // isCommandFound
 
@@ -458,7 +445,6 @@ public final class TTK91AnalyserExtraUtils {
 	for (int i=0; i < outputArray.length; ++i) {
 	    try {
 		to[i] = Integer.parseInt(outputArray[i]);
-	    	System.err.println("parsittiin" + to[i]);
 	    }
 	    catch (NumberFormatException e) {
 		return null;
@@ -494,7 +480,6 @@ public final class TTK91AnalyserExtraUtils {
 
 	    } catch (NumberFormatException nfe) {
 
-		    System.err.println("Hups, ei saatu lukuja");
 		    return false;
 	    }
 	    
@@ -542,7 +527,6 @@ public final class TTK91AnalyserExtraUtils {
 	
 	} catch (NumberFormatException nfe) {
 		
-		    System.err.println("Hups, ei saatu lukuja2");
 		return false;
 	
 	}
@@ -557,7 +541,6 @@ public final class TTK91AnalyserExtraUtils {
 			) {
 		
 
-		    System.err.println("Hups, ei ollut sallitulla välillä");
 		return false;
 	}
 	
