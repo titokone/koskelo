@@ -463,6 +463,32 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	public TTK91Memory getStudentMemoryPublic(){
+		return controlPublicInputStudent.getMemory();
+	}
+	public TTK91Memory getStudentMemoryHidden(){
+
+		if(controlHiddenInputStudent != null) {
+			return controlHiddenInputStudent.getMemory();
+		} else {
+			return null;
+		}
+	}
+
+	public TTK91Memory getTeacherMemoryPublic(){
+		return controlPublicInputTeacher.getMemory();
+	}
+
+	public TTK91Memory getTeacherMemoryHidden(){
+
+		if(controlHiddenInputTeacher != null) {
+			return controlHiddenInputTeacher.getMemory();
+		} else {
+			return null;
+		}
+	}
+
+
 	public TTK91TaskOptions getTaskOptions() {
 		return taskOptions;
 	}
