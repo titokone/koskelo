@@ -319,18 +319,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			editTask = true;
 		}//if
 
-		if(event == Events.STATIC_TTK91_COMPOSE) {
-			// Do nothing
-			// FIXME EDIT alle.
-		} else if(event == Events.STATIC_TTK91_SUBMIT){
+		if(event == Events.STATIC_TTK91_SUBMIT){
 
-			//donothing
-
-		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
-
-			// uusi FILL_IN-teht‰v‰
-			fillIn = true;
-			staticResponse = "/jsp/FillInTTK91Composer.jsp";
+			// donothing
 
 		} else if(event == Events.FILLIN_TTK91_SUBMIT) {
 
@@ -338,7 +329,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 
 		} else if( event == Events.SUBMIT_TASK) {
-
 			//donothing
 
 		}//else
@@ -551,11 +541,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			//on merkkijono MEMORYREFERENCES
 
 			if(validParam(reqMemoryReferences)) {
+				
 				String tmp = "MEMORYREFERENCES"+
 					reqMemoryReferences;
+				
 				memoryReferences = new TTK91TaskCriteria(
 						tmp
 						);
+				parsePostInt(memoryReferences.getSecondComparable());
 
 				// tarkistetaam ett‰ vertailun oikea puoli on
 				// kokonaisluku. T‰st‰ lent‰‰ poikkeus, jos
@@ -845,6 +838,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			for(int i = 0; i < splitted.length; i++){
 				outputRet[i] = new TTK91TaskCriteria(splitted[i], false);
+				parsePostInt(outputRet[i].getFirstComparable());
+				parsePostInt(outputRet[i].getSecondComparable());
 			}
 
 
@@ -888,7 +883,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 					if( fi.helsinki.cs.koskelo.common.TTK91ParserUtils.
 							validateTTK91Command(tmp2[1]) ) {
-
 					  // Oikea k‰sky oli toisessa alkiossa
 
 					} else {
@@ -919,7 +913,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		// p‰‰stiin t‰nne joten eka splittaus tehd‰‰n uusiksi koska
 		// merkkijonoja muutettiin v‰lill‰. Ja koska p‰‰stiin t‰nne
-		// siit‰ ei seurannut mit‰‰n kamalaa. Trimmataan viel‰ ylim‰‰r‰inen
+		// siit‰ ei seurannut mit‰‰n kamalaa. 
+		// Trimmataan viel‰ ylim‰‰r‰inen
 		// whitespace pois.
 
 	        //H‰vitet‰‰n kaikki whitespacet
@@ -936,7 +931,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	}// validTTK91Commands
 
 	/**
-	 * Apumetodi, jolla parsitaan muistipaikka ja rekisteri kriteerej‰ kuvaavat
+	 * Apumetodi, jolla parsitaan muistipaikka 
+	 * ja rekisterikriteerej‰ kuvaavat
 	 * merkkijonot.
 	 *
 	 *@return taulukkoesitys annetun merkkijonon kriteereist‰.
