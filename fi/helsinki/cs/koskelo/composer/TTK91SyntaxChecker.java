@@ -308,8 +308,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// Defaulttina oletetaan, ett‰ tehd‰‰n uutta staattista
 		// teht‰v‰‰
 		//
+	
+	
 		if(event == Events.STATIC_TTK91_COMPOSE) {
 			// Do nothing
+			// FIXME EDIT alle.
 		} else if(event == Events.STATIC_TTK91_EDIT){
 
 			// staattisen teht‰v‰n editointi
@@ -717,7 +720,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		} catch (CacheException ce) {
 			returnError(this.staticResponse,
-					"Error while retrieving error message");
+					"Error while retrieving error message" + ce.getMessage());
 		}
 		
 		// Asetetaan taskOptions sessioon, jotta
@@ -731,7 +734,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				);
 
 		this.res.setContentType ("text/html");
-
 		ServletOutputStream out = this.res.getOutputStream();
 
 		try{
@@ -1221,7 +1223,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		if(editTask) {
 			tmp = tmp + (String)task.get(name + "FeedbackPositive");
-			tmp = tmp + "Foo!!";
 		}
 		
 		tmp = tmp +	"</textarea>\n";
@@ -1234,7 +1235,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		if(editTask) {
 			tmp = (String)tmp+task.get(name+"FeedbackNegative");
-			tmp = tmp + "Foo!!";
 			
 		}
 		
@@ -1244,7 +1244,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			name+
 			"QualityFeedback\">";
 		if(editTask){
-			tmp = tmp + "Foo!!";
 			tmp = tmp+ (String)task.get(name + "QualityFeedback");
 		}
 		tmp = tmp +	"</textarea>\n"+
