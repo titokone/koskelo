@@ -327,6 +327,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // screenOutput
 
+			if(validParam(reqScreenOutput)) {
+				screenOutput = parseOutputString(
+					reqScreenOutput
+					);
+				taskOptions.setScreenOutput(
+					screenOutput
+					);
+			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -335,7 +343,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		try { // fileOutput
-
+			if(validParam(reqFileOutput)) {
+	
+				fileOutput = parseOutputString(
+					reqFileOutput
+					);
+				taskOptions.setFileOutput(
+					fileOutput
+					);
+			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -389,7 +405,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		} // parseInputString
 
-
+	
+	/* Parses string of format (1,2);(2,3); etc into int[][] */
 	private int[][] parseOutputString(String output) 
 		throws Exception{
 
@@ -515,7 +532,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				req.getParameter("taskname")+
 				"\" />"
 				);
-
+//kriteeriotsakkeet
 		page = page.concat(
 				"  <table width=\"450\" border=\"0\">"+
 				"   <tr>"+
@@ -532,55 +549,55 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"</tr>" +
 				"</table>\n"
 				);
-
+// käskyjen lukumäärä
 		page = page.concat(
 				"  <p>Hyv&auml;ksytt&auml;v&auml;n"+
 				" ratkaisun k&auml;skyjen " +
 				"maksimim&auml;&auml;r&auml;  </p>\n"+
 				feedbackBox("acceptedSize")
 				);
-
+// optimikoko
 		page = page.concat(
 				"  <p>Ihannekoko  </p>\n"+
 				feedbackBox("optimalSize")
 				);
-
+// vaaditut käskyt
 		page = page.concat(
 				"  <p>Ohjelmassa vaaditut k&auml;skyt  </p>\n"+
 				feedbackBox("requiredCommands")
 				);
-
+// kielletyt käskyt
 		page = page.concat(
 				"<p>Ohjelmassa kielletyt k&auml;skyt</p>\n" +
 				feedbackBox("forbiddenCommands")
 				);
-
+// rekisterikriteerit
 		page = page.concat(
 				"<p>Rekisterien sis&auml;lt&ouml;</p>" +
 				feedbackBox("register")
 				);
-
+// muistikriteerit
 		page = page.concat(
 				"  <p>Muistipaikkojen ja muuttujien"+
 				"sis&auml;lt&ouml;</p>" +
 				feedbackBox("memory")
 				);
-
+// muistiviitteet
 		page = page.concat(
 				"<p>Muistiviitteiden m&auml;&auml;r&auml;</p>" +
 				feedbackBox("memoryReferences")
 				);
-
+// näyttötulosteet
 		page = page.concat(
 				"<p>Tulosteet n&auml;yt&ouml;lle</p>" +
 				feedbackBox("screenOutput")
 				);
-
+// tiedostotulosteet
 		page = page.concat(
 				"  <p>Tulosteet tiedostoon</p>" +
 				feedbackBox("fileOutput")
 				);
-
+// submit
 		page = page.concat(
 				"  <p>"+
 				"<input type=\"submit\""+
