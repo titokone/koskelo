@@ -233,10 +233,13 @@ public class TTK91TaskCriteria{
  private String cleanString(String dirty) {
 
   String clean;
-  clean = dirty.replaceAll("&nbsp", "");
-  clean = dirty.replaceAll("\\(", "");
-  clean = dirty.replaceAll("\\)", "");
-  clean = dirty.replaceAll(";", "");
+  dirty = dirty.replaceAll("\\s", ""); // \s whitespace
+  dirty = dirty.replaceAll("\\(", "");
+  dirty = dirty.replaceAll("\\)", "");
+  dirty = dirty.replaceAll(";", "");
+  
+  clean = dirty;
+  
   return clean;
 
  }//cleanString
@@ -309,6 +312,14 @@ public class TTK91TaskCriteria{
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
    setComparator(this.NOTEQUAL);
+   return;
+  }//if
+
+  parameters = cleanCriteria.split("==");
+  if(parameters.length == 2) {
+   setFirstComparable(parameters[0]);
+   setSecondComparable(parameters[1]);
+   setComparator(this.EQUAL);
    return;
   }//if
 
