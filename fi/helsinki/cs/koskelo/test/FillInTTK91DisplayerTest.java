@@ -34,18 +34,18 @@ public class FillInTTK91DisplayerTest extends TestCase {
 				getHTMLElementTask("Laske yhteen 1,2 ja 3.")
 				+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
 				getHTMLElementInput("Syötteet","4, 5, 6")
-				+"<textarea cols =\"50\" readonly>"
+				+"<textarea cols =\"50\"rows=\"12\" readonly>"
 				+"LOAD R1, =0;</textarea><br>"
 				+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
-				getHTMLElementAnswerBox(12 ,50)
-				+"<textarea cols =\"50\" readonly>"
+				getHTMLElementAnswerBox(6 ,50)
+				+"<textarea cols =\"50\"rows =\"12\" readonly>"
 				+"LOAD R3, =3;</textarea><br>"
 				+hiddens
 				+"<input type=\"hidden\" name=\"tasktype\"" 
 				+"value=\"fillinttk91task\">"
 				+"</form>"));
 		*/
-		*/
+		/*
 		// Testanaan, niin että aukko ennen koodia.
 		
 			Assert.assertEquals
@@ -58,8 +58,8 @@ public class FillInTTK91DisplayerTest extends TestCase {
 				+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
 				getHTMLElementInput("Syötteet","4, 5, 6")
 				+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
-				getHTMLElementAnswerBox(12 ,50)
-				+"<textarea cols =\"50\" readonly>"
+				getHTMLElementAnswerBox(6 ,50)
+				+"<textarea cols =\"50\"rows =\"12\" readonly>"
 				+"LOAD R2, =2;LOAD R3, =3;</textarea><br>"
 				+hiddens
 				+"<input type=\"hidden\" name=\"tasktype\"" 
@@ -77,10 +77,10 @@ public class FillInTTK91DisplayerTest extends TestCase {
 					getHTMLElementTask("Laske yhteen 1,2 ja 3.")
 					+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
 					getHTMLElementInput("Syötteet","4, 5, 6")
-					+"<textarea cols =\"50\" readonly>"
+					+"<textarea cols =\"50\"rows =\"12\" readonly>"
 					+"LOAD R1, =0;LOAD R2, =2;</textarea><br>"
 					+fi.helsinki.cs.koskelo.displayer.TTK91DisplayerUtils.
-					getHTMLElementAnswerBox(12 ,50)
+					getHTMLElementAnswerBox(6 ,50)
 					+hiddens
 					+"<input type=\"hidden\" name=\"tasktype\"" 
 					+"value=\"fillinttk91task\">"
