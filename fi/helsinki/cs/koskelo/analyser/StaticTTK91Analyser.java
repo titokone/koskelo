@@ -51,10 +51,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      */
 
     public void init(String taskid, String language, String initparams) {
-	// FIXME: onko ok?
 	this.taskID = taskid;
 	this.language = language;
-	//	this.results = new TTK91AnalyseResults(); //Oletuksena kaikki tulokset false
     } // init
 
     
@@ -64,8 +62,18 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      */
     
     public void registerCache(AttributeCache c) {
+	
 	this.cache = c;
-	this.errorFeedback = fetchTTK91AnalyserUtils();
+
+	/* luodaan TTK91AnalyserUtils ja TTK91TaskOptions
+	 * -oliot. Rumaa, mutta pakko tehd‰ ennen varsinaisen
+	 * analyse()-metodin k‰yntiinpotkaisemista (jotta mahdolliset
+	 * aliluokat (ainakin FillinTTK91Analyser) voivat peitt‰‰
+	 * peitt‰‰ fetchExampleCoden, ja k‰ytt‰‰ t‰m‰n luokan omaa
+	 * analyse()-metodia. 
+	 */
+	
+	this.errorFeedback = fetchTTK91AnalyserUtils();  
 	if (errorFeedback == null) {
 	    this.errorFeedback = fetchTTK91TaskOptions();
 	}
