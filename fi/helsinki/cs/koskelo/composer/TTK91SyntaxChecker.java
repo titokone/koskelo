@@ -421,7 +421,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			outPutTable[i][1] = parsePostInt(splitted2[i][1]);
 		}
 		
-		return output;
+		return outPutTable;
 	}
 	
 	private String[] validTTK91Commands(
