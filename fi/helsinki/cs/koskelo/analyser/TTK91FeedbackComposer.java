@@ -19,7 +19,7 @@ public class TTK91FeedbackComposer{
 	 * Metodi, joka muodostaa palautteen.
 	 */
 
-	public Feedback formFeedback(TTK91AnalyseResults analyseResults,
+	public static Feedback formFeedback(TTK91AnalyseResults analyseResults,
 															 TTK91TaskFeedback taskFeedback,
 															 AttributeCache cache,
 															 String taskID,
@@ -318,7 +318,7 @@ public class TTK91FeedbackComposer{
 	}//formFeedback
 
 
-	private String getHTMLElementFeedbackRow(String criteriaName,
+	private static String getHTMLElementFeedbackRow(String criteriaName,
 																					 String feedback,
 																					 String quality,
 																					 boolean correct) {
