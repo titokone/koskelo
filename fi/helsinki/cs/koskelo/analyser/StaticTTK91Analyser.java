@@ -54,12 +54,24 @@ public class StaticTTK91Analyser extends CommonAnalyser {
   private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat määritelty opiskelijan vastaus
   private TTK91Core controlHiddenInputTeacher; // hiddeninputeilla jos ovat määritelty malliratkaisu jos vertailu on määritelty simuloitavaksi
   private TTK91TaskOptions taskOptions;        // taskoptions
+  private String[] exampleCode;                // haetaan taskoptionsista - malliratkaisun koodi
   private TTK91Application studentApplication; // opiskelijan vastaus
   private TTK91Application teacherApplication; // malliratkaisu
   private TTK91AnalyseResults results; //Uusi luokka.
   private TTK91FeedbackComposer fbcomposer;
   private Feedback feedback;
   private TTK91AnalyserUtils utils;
+  private int analyseMethod;
+  private String studentPublicScreenOut;
+  private String studentHiddenScreenOut;
+  private String teacherPublicScreenOut;
+  private String teacherHiddenScreenOut;
+  private String studentPublicFileOut;
+  private String studentHiddenFileOut;
+  private String teacherPublicFileOut;
+  private String teacherHiddenFileOut;
+
+  
 
   /**
    * Konstruktori, joka luo uuden alustamattoman
@@ -76,6 +88,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     this.fbcomposer = new TTK91FeedbackComposer();
     this.feedback = null;
     this.utils = null;
+    this.studentPublicScreenOut = null;
+    this.studentHiddenScreenOut = null;
+    this.teacherPublicScreenOut = null;
+    this.teacherHiddenScreenOut = null;
+    this.studentPublicFileOut = null;
+    this.studentHiddenFileOut = null;
+    this.teacherPublicFileOut = null;
+    this.teacherHiddenFileOut = null;
   } // StaticTTK91Analyser()
 
 
@@ -111,19 +131,32 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    this.taskOptions = this.utils.getTTK91TaskOptions();
     }
     catch (CacheException ce) {
-	    throw new RuntimeException("*TTK91Analyser.getTTK91TaskOptions()->CacheException: "+ce.getMessage());
+	    return new Feedback(TTK91Common.FATAL_ERROR, 
+                          "*TTK91Analyser.getTTK91TaskOptions()->"+
+                          "CacheException: "+ce.getMessage());
     }
     catch (InvalidTTK91CriteriaException ie) {
-	    throw new RuntimeException("*TTK91Analyser.getTTK91TaskOptions()->InvalidTTK91CriteriaException: "+ie.getMessage());
+	    return new Feedback(TTK91Common.FATAL_ERROR, 
+                          "*TTK91Analyser.getTTK91TaskOptions()->"+
+                          "InvalidTTK91CriteriaException: "+ie.getMessage());
     }	    
+    
+    if (this.taskOptions == null) {
+      return new Feedback(TTK91Common.FATAL_ERROR, "this.taskOptions on null,"+
+                          "vastauksen tarkastamista ei voi tehdä");
+    }
 
+    this.analyseMethod = taskOptions.getCompareMethod();
 
-    // FIXME: väärä parametri getTeacherApplicationille!
-    Feedback getTeacherAppFeedback =
-      getTeacherApplication(answer); // käännetään mahdollinen malliratkaisu 
-    if (getTeacherAppFeedback != null) {
-      return getTeacherAppFeedback; // malliratkaisu ei käänny, joten
-                                    // tuupataan palaute eteenpäin
+    if (analyseMethod > 0) {
+      this.exampleCode = fetchExampleCode();
+
+      Feedback getTeacherAppFeedback =
+        getTeacherApplication(exampleCode); // käännetään mahdollinen malliratkaisu 
+      if (getTeacherAppFeedback != null) {
+        return getTeacherAppFeedback; // malliratkaisu ei käänny, joten
+        // tuupataan palaute eteenpäin
+      }
     }
 
     Feedback getStudentAppFeedback =
@@ -180,6 +213,15 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     }
 
     //analyseOutput()
+
+    Feedback outputFeedback = 
+      analyseOutput();
+    
+    if (outputFeedback != null) {
+      return outputFeedback; // tulosteiden analysoinnissa tuli
+                             // vastaan virhetilanne, josta tiedot
+                             // palauteoliossa. Ei jatketa pidemmälle.
+    }
     
     //Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
     
@@ -214,6 +256,24 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     this.cache = c;
   } // registerCache
 
+
+  /**
+   * Apumetodi, joka noutaa malliratkaisun taskoptionsista Tämä metodi
+   * kannattanee peittää StaticTTK91Analyserin perivissä luokissa,
+   * ainakin fillin/dynamic -analysaattoreissa!
+   * @return esimerkkikoodi
+   */
+  
+  private String[] fetchExampleCode() {
+    String[] exampleCode = new String[1];
+    if (this.taskOptions != null) {
+      exampleCode[0] = this.taskOptions.getExampleCode();
+      return exampleCode;
+    }
+    else {
+      return null;
+    }
+  } // fetchExampleCode
 
     /**
      * Apumetodi, jolla kaivetaan opiskelijan ratkaisun lähdekoodi
@@ -351,6 +411,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     try {
 	    this.controlPublicInputStudent.run(this.studentApplication, steps);
+      studentPublicScreenOut = studentApplication.readCrt();
+      studentPublicFileOut = studentApplication.readStdOut();
 	    // 1. simulointi
     }
     catch (TTK91Exception e) {
@@ -363,6 +425,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    this.controlPublicInputTeacher = new Control(null, null);
 	    try {
         this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+        teacherPublicScreenOut = teacherApplication.readCrt();
+        teacherPublicFileOut = teacherApplication.readStdOut();
 	    }
 	    catch (TTK91Exception e) {
         feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
@@ -381,6 +445,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	    try {
         this.controlHiddenInputStudent.run(this.studentApplication, steps);
+        studentHiddenScreenOut = studentApplication.readCrt();
+        studentHiddenFileOut = studentApplication.readStdOut();
 	    }
 	    catch (TTK91Exception e) {
         feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
@@ -395,6 +461,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
         this.teacherApplication.setKbd(hiddenInput);
         try {
           this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
+          teacherHiddenScreenOut = teacherApplication.readCrt();
+          teacherHiddenFileOut = teacherApplication.readStdOut();
         }
         catch (TTK91Exception e) {
           feedback = 
@@ -792,16 +860,169 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     //results.setBLAAH(boolean)
   } //analyseRegisters
 
-  private void analyseOutput() {
+  /**
+   * Apumetodi tulostekriteerien analysointiin
+   *
+   * @return virhetilanteessa palauteolio
+   */
+   
+  private Feedback analyseOutput(TTK91TaskOptions taskOptions,
+                                 Application studentApp) {
 
-    //TULOSTEET SAI JOLLAIN TITOKONEEN METODILLA, 
-    //EN NYT MUISTA MIKÄ TAI MISTÄ [HT]
-    //getCrt() [EN]
-    //NÄYTÖN TULOSTEET
-    //TIEDOSTON TULOSTEET
+    TTK91TaskCriteria[] screenOut;
+    TTK91TaskCriteria[] fileOut;
+    
+    if (taskOptions != null) {
+      screenOut = taskOptions.getScreenOutputCriterias();
+      fileOut = taskOptions.getFileOutputCriterias();
+    }
+    else {
+      return new Feedback(TTK91Constant.FATAL_ERROR, "analyseOutput(): "+
+                          "taskoptions null");
+    }
+
+    if ((screenOut == null) && (fileOut == null)) {
+      return null; // ei kriteerejä, palataan
+    }
+
+    String separator = System.getProperty("line.separator", "\n");
+    
+    // outputtien parsinta
+
+    String[] studentPubScrOutArr = null;
+    String[] studentHidScrOutArr = null;
+    String[] teacherPubScrOutArr = null;
+    String[] teacherHidScrOutArr = null;
+    String[] studentPubFileOutArr = null;
+    String[] studentHidFileOutArr = null;
+    String[] teacherPubFileOutArr = null;
+    String[] teacherHidFileOutArr = null;
+
+    int[] studentPubScrOutInt = null;
+    int[] studentHidScrOutInt = null;
+    int[] teacherPubScrOutInt = null;
+    int[] teacherHidScrOutInt = null;
+    int[] studentPubFileOutInt = null;
+    int[] studentHidFileOutInt = null;
+    int[] teacherPubFileOutInt = null;
+    int[] teacherHidFileOutInt = null;
+
+
+     if (studentPublicScreenOut != null) {
+       studentPubScrOutArr = studentPublicScreenOut.split(separator);
+       studentPubScrOutInt = new int[studentPubScrOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(studentPubScrOutArr, studentPubScrOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (studentHiddenScreenOut != null) {
+       studentHidScrOutArr = studentHiddenScreenOut.split(separator);
+       studentHidScrOutInt = new int[studentHidScrOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(studentHidScrOutArr, studentHidScrOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (teacherPublicScreenOut != null) {
+       teacherPubScrOutArr = teacherPublicScreenOut.split(separator);
+       teacherPubScrOutInt = new int[teacherPubScrOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(teacherPubScrOutArr, teacherPubScrOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (teacherHiddenScreenOut != null) {
+       teacherHidScrOutArr = teacherHiddenScreenOut.split(separator);
+       teacherHidScrOutInt = new int[teacherHidScrOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(teacherHidScrOutArr, teacherHidScrOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (studentPublicFileOut != null) {
+       studentPubFileOutArr = studentPublicFileOut.split(separator);
+       studentPubFileOutInt = new int[studentPubFileOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(studentPubFileOutArr, studentPubFileOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (studentHiddenFileOut != null) {
+       studentHidFileOutArr = studentHiddenFileOut.split(separator);
+       studentHidFileOutInt = new int[studentHidFileOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(studentHidFileOutArr, studentHidFileOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (teacherPublicFileOut != null) {
+       teacherPubFileOutArr = teacherPublicFileOut.split(separator);
+       teacherPubFileOutInt = new int[teacherPubFileOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(teacherPubFileOutArr, teacherPubFileOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+     if (teacherHiddenFileOut != null) {
+       teacherHidFileOutArr = teacherHiddenFileOut.split(separator);
+       teacherHidFileOutInt = new int[teacherHidFileOutArr.length];
+       Feedback fb = 
+         parseOutputArrays(teacherHidFileOutArr, teacherHidFileOutInt);
+       if (fb != null) {
+         return fb;
+       }
+     }
+
+
+     //EN NYT MUISTA MIKÄ TAI MISTÄ [HT]
+     //getCrt() [EN]
+     // Näytä mulle mistä löytyy getCrt() muualta kuin kommenteista ;( [LL]
+     //NÄYTÖN TULOSTEET
+     //TIEDOSTON TULOSTEET
 
     //results.setBLAAH(boolean)
+
+    return null; // kaikki ok
+
   }//analyseOutput
+
+
+  /**
+   * Apumetodi String-muodossa olevan numerotaulukon muuntoon int-taulukoksi
+   * Lähdetaulukon ja kohdetaulukon tulee olla saman kokoiset.
+   * @param from lähdetaulukko
+   * @param to kohdetaulukko
+   * @return virhetilanteessa Feedback-olio, joka kuvaa virhettä, null muuten
+   * 
+   */
+
+  private Feedback parseOutputArrays(String[] from, int[] to) {
+    if ( (from == null) || (to == null) || (from.length != to.length) ) {
+      return new Feedback(TTK91Constant.FATAL_ERROR, "parseOutputArrays: "+
+                          "Analyserin sisäinen virhe, parametrivirhe");
+    }
+    
+    for (int i=0; i < from.length; i++) {
+      try {
+        to[i] = Integer.parseInt(from[i]);
+      }
+      catch (NumberFormatException e) {
+        return new Feedback(TTK91Constant.FATAL_ERROR, "parseOutputArrays: "+
+                            "String->int muunnos epäonnistui");
+      }
+    } // for
+
+    return null; // kaikki ok
+  } // parseOutputArrays
+
 
   /** Tehdään int[]-taulukosta merkkijono 1,2,3,4. Tämä siksi,
    * koska titokoneen setKbd ei osaa lukea int[]-taulua.
