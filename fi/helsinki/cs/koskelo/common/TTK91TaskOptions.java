@@ -127,7 +127,6 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    */
   public void setScreenOutputCriterias(TTK91TaskCriteria[] crit) {
-      System.err.println("TTK91TaskOptions.setScreenOutputCriterias; Asetettavan kriteeritaulukon pituus: "+crit.length);
       this.screenoutput = crit;
   } // addScreenOutputCriteria(TTK91TaskCriteria[] crit)
 
@@ -149,9 +148,6 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    */
   public void setFileOutputCriterias(TTK91TaskCriteria[] crit) {
-      if (crit != null) {
-	  System.err.println("TTK91TaskOptions.setFileOutputCriterias; Asetettavan kriteeritaulukon pituus: "+crit.length);
-      }
       this.fileoutput = crit;
   } // addFileOutputCriteria(TTK91TaskCriteria[] crit)
 
@@ -192,11 +188,9 @@ public class TTK91TaskOptions {
    */
   public void setPublicInput(int[] input) {
       if (input != null) {
-	  System.err.println("TTK91TaskOptions.setPublicInput--->");
 	  for (int i=0; i<input.length; ++i) {
 	      System.err.print(input[i]+" ");
 	  }
-	  System.err.println("<---TTK91TaskOptions.setPublicInput");
       }
     this.publicinput = input;
   } // setPublicInput
