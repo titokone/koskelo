@@ -10,14 +10,12 @@ public class TTK91TaskOptions {
 
 	public final static int COMPARE_TO_SIMULATED = 0; // FIXME syntaxCheckeriin n‰m‰ kanssa k‰yttˆˆn ja kai jsp-sivuille?
 	public final static int COMPARE_TO_STATIC = 1;
-  private final static int MAX_COMMANDS = 10000; //FIXME: kai t‰m‰
-                                                 //oletusarvo
-                                                 //m‰‰ritell‰‰n
-                                                 //jossain muualla?
-						 //[EN] ei, mutta
+  //  private final static int MAX_COMMANDS = 10000; // obsolete
+	
+  					 //[EN] ei, mutta
 						 //jos verkkosivuilla j‰tt‰‰
 						 //kent‰n tyhj‰ksi asettaa
-						 //syntaxChecker saman arvon
+						 //syntaxChecker saman arvon --> FIXME -> TTK91Constant.MAX_COMMANDS
     
   private Vector regcrits;
   private Vector memcrits;
@@ -60,7 +58,7 @@ public class TTK91TaskOptions {
     this.screenoutput = null;
     this.fileoutput = null;
     this.comparemethod = 0;
-    this.maxcommands = MAX_COMMANDS; // FIXME: kai t‰m‰ oletus m‰‰ritell‰‰n jossain muualla?
+    this.maxcommands = TTK91Constant.MAX_COMMANDS; // FIXME: kai t‰m‰ oletus m‰‰ritell‰‰n jossain muualla? -- TTK91Constant / Lauri
     this.acceptedsize = 0;
     this.optimalsize = 0;
     this.memrefcriteria = null;

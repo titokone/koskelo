@@ -10,15 +10,15 @@ import java.lang.String.*;
 public class TTK91TaskCriteria{
 
  // Vakioita konstruktoria varten, m‰‰rittelev‰t vertailut
- public final int INVALID = -1; // Alustamaton vertailu.
- public final int LESS = 0; // <
- public final int LESSEQ = 1; // <=
- public final int GREATER = 2; // >
- public final int GREATEREQ = 3; // >=
- public final int EQUAL = 4; // =
- public final int NOTEQUAL = 5; // !=
- public final int NOTCOMPARABLE = 6; // Tulosteita varten joissa
-                                   // ei ole loogista operaattoria
+//  public final int INVALID = -1; // Alustamaton vertailu.
+//  public final int LESS = 0; // <
+//  public final int LESSEQ = 1; // <=
+//  public final int GREATER = 2; // >
+//  public final int GREATEREQ = 3; // >=
+//  public final int EQUAL = 4; // =
+//  public final int NOTEQUAL = 5; // !=
+//  public final int NOTCOMPARABLE = 6; // Tulosteita varten joissa
+//                                    // ei ole loogista operaattoria
 
  // Olion sis‰iset muuttujat
 
@@ -33,7 +33,7 @@ public class TTK91TaskCriteria{
 
  public TTK91TaskCriteria() {
 
-  this.comparator = this.INVALID;
+  this.comparator = this.TTK91Constant.INVALID;
   this.firstComparable = null;
   this.secondComparable = null;
   this.quality = false;
@@ -264,8 +264,8 @@ public class TTK91TaskCriteria{
  private void checkComparator(int comparator)
               throws InvalidTTK91CriteriaException {
 
-  if(comparator < this.LESS ||
-     comparator > this.NOTCOMPARABLE) {
+  if(comparator < this.TTK91Constant.LESS ||
+     comparator > this.TTK91Constant.NOTCOMPARABLE) {
 
    throw new InvalidTTK91CriteriaException("Invalid comparator");
 
@@ -376,7 +376,7 @@ public class TTK91TaskCriteria{
   }//else
 
   //Aseta ilmoitus loogisen operaation puuttumisesta
-  setComparator(NOTCOMPARABLE);
+  setComparator(TTK91Constant.NOTCOMPARABLE);
 
   return;
 
@@ -409,7 +409,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.LESSEQ);
+   setComparator(this.TTK91Constant.LESSEQ);
    return;
   }//if
 
@@ -417,7 +417,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.LESSEQ);
+   setComparator(this.TTK91Constant.LESSEQ);
    return;
   }//if
 
@@ -425,7 +425,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.LESS);
+   setComparator(this.TTK91Constant.LESS);
    return;
   }//if
 
@@ -433,7 +433,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.GREATEREQ);
+   setComparator(this.TTK91Constant.GREATEREQ);
    return;
   }//if
 
@@ -441,7 +441,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.GREATEREQ);
+   setComparator(this.TTK91Constant.GREATEREQ);
    return;
   }//if
 
@@ -449,7 +449,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.GREATER);
+   setComparator(this.TTK91Constant.GREATER);
    return;
   }//if
 
@@ -457,7 +457,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.NOTEQUAL);
+   setComparator(this.TTK91Constant.NOTEQUAL);
    return;
   }//if
 
@@ -465,7 +465,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.NOTEQUAL);
+   setComparator(this.TTK91Constant.NOTEQUAL);
    return;
   }//if
 
@@ -473,7 +473,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.EQUAL);
+   setComparator(this.TTK91Constant.EQUAL);
    return;
   }//if
 
@@ -481,7 +481,7 @@ public class TTK91TaskCriteria{
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
    setSecondComparable(parameters[1]);
-   setComparator(this.EQUAL);
+   setComparator(this.TTK91Constant.EQUAL);
    return;
   }//if
 
@@ -507,7 +507,7 @@ public class TTK91TaskCriteria{
   try {
    criteria += comparatorSymbol();
   }catch(InvalidTTK91CriteriaException e) {
-	  return null; //Comparator == INVALID
+	  return null; //Comparator == TTK91Constant.INVALID
   }//catch
 
   criteria += secondComparable;
@@ -526,25 +526,25 @@ public class TTK91TaskCriteria{
 
   switch(this.comparator) {
 
-   case LESS:
+   case TTK91Constant.LESS:
          symbol = "<";
          break;
-   case LESSEQ:
+   case TTK91Constant.LESSEQ:
          symbol = "<=";
          break;
-   case GREATER:
+   case TTK91Constant.GREATER:
          symbol = ">";
          break;
-   case GREATEREQ:
+   case TTK91Constant.GREATEREQ:
          symbol = ">=";
          break;
-   case EQUAL:
+   case TTK91Constant.EQUAL:
          symbol = "==";
          break;
-   case NOTEQUAL:
+   case TTK91Constant.NOTEQUAL:
          symbol = "!=";
          break;
-  case NOTCOMPARABLE:
+  case TTK91Constant.NOTCOMPARABLE:
          symbol = ",";
          break;
   default:
