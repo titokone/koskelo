@@ -21,7 +21,10 @@ public class FillInTTK91Analyser extends StaticTTK91Analyser {
 
 
 	public FillInTTK91Analyser() {
-		super();
+		this.cache = null;
+    this.taskID = null;
+    this.language = null;
+    this.initparams = null;
 	}
 
 	
@@ -53,16 +56,21 @@ public class FillInTTK91Analyser extends StaticTTK91Analyser {
 		// Esimerkkikoodi sis‰lt‰‰ aukon paikan "[" ja "]" merkein erotettuna.
 
 		String[] exampleCode = super.fetchExampleCode();
-		
-		int indexBefore = exampleCode[0].indexOf("[");
-		int indexAfter = exampleCode[0].indexOf("]");
 
-		String before = exampleCode[0].substring(0, indexBefore);
-		String after = exampleCode[0].substring(indexAfter+1);
+		if (exampleCode != null) {
+			int indexBefore = exampleCode[0].indexOf("[");
+			int indexAfter = exampleCode[0].indexOf("]");
 
-		String[] answerAll = {before +answer[0] +after};
+			String before = exampleCode[0].substring(0, indexBefore);
+			String after = exampleCode[0].substring(indexAfter+1);
+
+			String[] answerAll = {before +answer[0] +after};
 		
-		return (super.analyse(answerAll, params));
+			return (super.analyse(answerAll, params));
+		} else {
+			return (new Feedback(TTK91Constant.FATAL_ERROR, 
+													 "Esimerkkikoodia ei saatu haettua."));
+		}
 	}
 
 	/**
@@ -89,5 +97,11 @@ public class FillInTTK91Analyser extends StaticTTK91Analyser {
 		return parsedExampleCode;
 		
 	} // fetchExampleCode
+
+	
+  public void registerCache(AttributeCache c) {
+    this.cache = c;
+		super.registerCache(c);
+  } // registerCache
 	
 }//class
