@@ -74,6 +74,11 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		private int[][] screenOutput; // (1,3) (2,4) (4,3)
 		private int[][] fileOutput; // (1,3)(2,4)(4,3)
 
+
+		// TODO checking of session, but no need for new one
+		
+		HttpSession session = request.getSession(false);
+		
 		// TODO yritet‰‰n saada parsittua saatu data
 		try { // maxCommands
 			maxCommands = (Integer.parseint(reqHiddenInput))
@@ -162,6 +167,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		}
 
+		session.setAttribute("TTK91TaskOptions", taskOptions);
 
 
 	} // doPost
