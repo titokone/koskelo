@@ -129,29 +129,49 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
 
-	generalAnalysis(answer); // "valmis"
+	generalAnalysis(answer); // "valmis" -- tarkistettava, varmaan löytyy luurankoja vielä [LL] (FIXME!)
 
-	analyseMemory(); // Lauri "valmis" ?
+	RandomAccessMemory studentMemory = (RandomAccessMemory) controlPublicInputStudent.getMemory();
+	
+	RandomAccessMemory teacherMemory = null;
+	if (controlPublicInputTeacher != null) {
+	    teacherMemory = (RandomAccessMemory) controlPublicInputTeacher.getMemory(); 
+	}
+
+	Feedback memFeedback = 
+	    analyseMemory(taskOptions.getMemoryCriterias(), 
+			  results,
+			  studentMemory,
+			  teacherMemory,
+			  taskOptions.getCompareMethod() ); // Lauri "valmis" ? -- ei tod ;( (FIXME!)
+	System.err.println("Tultiin analyseMemorystä pojjes, ja paluuarvo != null:" +( memFeedback != null));
+	if (memFeedback != null) {
+	    return memFeedback; // muistianalysoinnissa tuli vastaan virhetilanne, josta tiedot palauteoliossa. Ei jatketa pidemmälle.
+	}
+	
 	//analyseRegisters()
 	//analyseOutput()
     
 	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
     
 	try {
+	    System.err.println("Hypättiin palautepulautuksen alkuun, try-lohkoon.");
 	    feedback = 
 		TTK91FeedbackComposer.formFeedback(results, 
 						   taskOptions.getTaskFeedback(), 
 						   cache, 
 						   taskID, 
 						   language);
+	    System.err.println("Palaute pulautettu");
 	}
 	catch (CacheException e) {
+	    System.err.println("Tänne ei toivomma mukaan tulla... Elikkäs käts");
 	    feedback = 
 		TTK91FeedbackComposer.formFeedback("Error while retrieving "+
 						   "error message :( "+
 						   e.getMessage() );
 	}
-    
+	System.err.println("Seuraavaksi varsinainen palautteen pulautus eAssarin Answer2:lle");
 	return feedback;
 
     } // analyse
@@ -281,7 +301,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	String hiddenInput = null;
 
 	int steps = taskOptions.getMaxCommands();
-	int compareMethod = taskOptions.getCompareMethod();
+	int compareMethod = -1;
+	
+	compareMethod = taskOptions.getCompareMethod();
+
+	System.err.println("run() alku: compareMethod: "+compareMethod);
 
 	/* Koska titokoneesta metodilla .getCPU() saadaan
 	 * vain viite controlin sisäiseen prosessiin käytetään
@@ -411,76 +435,134 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	} // else
     }//generalAnalysis
 
+
     /**
      * Tutkitaan muistipaikkojen ja muuttujien sisältöön liittyvät
      * kriteerit Toimintaperiaate: kaydaan muistipaikkoihin ja
      * muuttujiin liittyvia kriteereja lapi, kunnes joko 1) kaikki on
      * kayty lapi tai 2) seka jokin oikeellisuus- etta jokin
      * laatukriteeri on pettanyt. 
+     *
+     * FIXME: kuvaus uusiksi
+     * @return Feedback palauttaa null, jos kaikki menee hyvin. Virhetilanteessa palautetaan virhettä kuvaava Feedback.
      */
-    private void analyseMemory() {
-
-	TTK91TaskCriteria[] memcrits = taskOptions.getMemoryCriterias();
+    private Feedback analyseMemory(TTK91TaskCriteria[] memcrits, 
+				   TTK91AnalyseResults results, 
+				   RandomAccessMemory studentMem, 
+				   RandomAccessMemory teacherMem, 
+				   int compareMethod) {
+	System.err.println("analyseMemoryn alku, compareMethod: "+compareMethod);
+	
 	if (memcrits == null) {
-	    results.setMemory(true); // ei kriteereja --> oikein
-	    results.setMemoryQuality(true); // ei kriteereja --> oikein
-	} // if
+	    return null;  // jos muistikriteerit null, palataan suoraan (jätetään resultsiin arvot nulleiksi)
+	}
 	else {
-	    RandomAccessMemory mem = 
-		(RandomAccessMemory) controlPublicInputStudent.getMemory();
-	    HashMap symboltable = mem.getSymbolTable();
-	    MemoryLine[] memlines = mem.getMemoryLines();
+	    
+	    /* tutkitaan "helpot" virhetilanteet pois; opiskelijan
+	       ratkaisun muistia ei ole käytössä, tai jos pitäisi
+	       verrata malliratkaisuun, eikä sitä ole käytettävissä
+	    */
+	    if ( ( (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) &&
+		   (teacherMem == null) ) || 
+		 (studentMem == null) ) {
+		return new Feedback(TTK91Constant.FATAL_ERROR, "<br>analyseMemory: virhe parametreissa - rikkinäinen tehtävä tai bugi koodissa<br><br>");
+	    } // if 	    
+
+
+	    HashMap studentSymbolTable = studentMem.getSymbolTable();
+	    System.err.println("analyseMemory: studentSymbolTable.size(): "+studentSymbolTable.size());
+	    if (studentSymbolTable == null) {
+		return new Feedback(TTK91Constant.FATAL_ERROR,
+				    "<br>analyseMemory: opiskelijan ratkaisun"+
+				    " symbolitaulua ei saatu - rikkinäinen "+
+				    "tehtävä tai bugi koodissa<br><br>");
+	    }
+		
+	    HashMap teacherSymbolTable = null;
+	    if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+		teacherSymbolTable = teacherMem.getSymbolTable();
+		if (teacherSymbolTable == null) {
+		    return new Feedback(TTK91Constant.FATAL_ERROR,
+					"<br>analyseMemory: malliratkaisun "+
+					"symbolitaulua ei saatu - rikkinäinen"+
+					" tehtävä tai bugi koodissa<br><br>");
+		}
+	    }
+	    
+	    MemoryLine[] studentMemlines = studentMem.getMemoryLines();
+	    if (studentMemlines == null) {
+		return new Feedback(TTK91Constant.FATAL_ERROR,
+				    "<br>analyseMemory: opiskelijan ratkaisun"+
+				    " muistia ei saatu - rikkinäinen tehtävä "+
+				    "tai bugi koodissa<br><br>");
+	    }
+
+	    MemoryLine[] teacherMemlines = null;
+	    if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+		teacherMemlines = teacherMem.getMemoryLines();
+		if (teacherMemlines == null) {
+		    return new Feedback(TTK91Constant.FATAL_ERROR, 
+					"<br>analyseMemory: simuloidun "+
+					"malliratkaisun muistia ei saatu"+
+					" - rikkinäinen tehtävä tai bugi"+
+					" koodissa<br><br>");
+		}
+	    }
 	    
 	    boolean critvalue = true;
 	    boolean qualitycritvalue = true;
 
 	    for (int i=0; i < memcrits.length; ++i) {
-		if (!critvalue && !qualitycritvalue) {
-		    break;                                     // Seka oikeellisuus- etta laatukriteerit ovat jo poksahtaneet, ei syyta jatkaa.
+		System.err.println("for-luupissa näin monetta kertaa: "+i);
+		if (!critvalue) {
+		    break;                                     // Oikeellisuuskriteeri poksahtanut, ei syyta jatkaa.
 		}
+
 		TTK91TaskCriteria crit = memcrits[i];
 		boolean isqualitycrit = crit.getQuality();
-		if ( (!isqualitycrit && !critvalue) ||         // oikeellisuuskriteeri ja jokin aiempi oikeellisuuskriteeri on jo poksahtanut
-		     (isqualitycrit && !qualitycritvalue) ) {  // laatukriteeri ja jokin aiempi laatukriteeri on jo poksahtanut
+
+		if (isqualitycrit && !qualitycritvalue) { // tutkittavana laatukriteeri, mutta jokin laatukriteeri on jo poksahtanut
 		    continue;
 		}
-		String memsymbol = crit.getFirstComparable();
-		int memvalue = -1;
-		try {
-		    memvalue = 
-			Integer.parseInt(memcrits[i].getSecondComparable());
-		} // try
-		catch (NumberFormatException e) {
-		    // rikkinäinen kriteeri - ei pitäisi tapahtua
-		    throw new
-			RuntimeException("TTK91Analyser.analyseMemory(): "+
-					 "Broken criteria, String to int "+
-					 "conversion failed");
-		} // catch
+
+		String studentMemSymbol = crit.getFirstComparable();
+		String compareMemSymbol = crit.getSecondComparable();
 		int comparator = memcrits[i].getComparator();
+
 		if (isqualitycrit) {
 		    qualitycritvalue = 
-			checkMemoryCriteria(memlines, 
-					    symboltable,
-					    memsymbol,
+			checkMemoryCriteria(studentMemlines, 
+					    teacherMemlines, 
+					    studentSymbolTable,
+					    teacherSymbolTable,
+					    studentMemSymbol,
+					    compareMemSymbol,
 					    comparator,
-					    memvalue);
+					    compareMethod);
 		} // if -- isqualitycrit
 		else {
+		    System.err.println("Arvottiin jotta kyseessä on oikeellisuuskriteeri");
+		    System.err.println("Ja kriteeri on siis: "+crit);
+		    System.err.println("Ja compareMethod: "+compareMethod);
 		    critvalue = 
-			checkMemoryCriteria(memlines, 
-					    symboltable,
-					    memsymbol,
+			checkMemoryCriteria(studentMemlines, 
+					    teacherMemlines,
+					    studentSymbolTable,
+					    teacherSymbolTable,
+					    studentMemSymbol,
+					    compareMemSymbol,
 					    comparator,
-					    memvalue);
+					    compareMethod);
+		    System.err.println("palattiin tänne, ja crivaluen pitäisi olla sama kuin edellä comparen tulos, eli: "+critvalue);
 		} // else -- !isqualitycrit
 	    } // for
-	    
+	    System.err.println("tultiin for-luupista ulos, ja critvalue on: "+critvalue);
 	    results.setMemory(critvalue);
 	    results.setMemoryQuality(qualitycritvalue);
 
 	} // else
-	
+	System.err.println("Seuraavana onkin null-palautuksen vuoro...");
+	return null; // ok-paluu, vaikka vähän hassulta kuulostaakin.
     } //analyseMemory
 
     private void analyseRegisters() {
@@ -561,35 +643,142 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     /**
      * Apumetodi muistipaikkaan tai muuttujaan liittyvan kriteerin
      * tarkastamiseen
-     * @param memlines
-     * @param symboltable
-     * @param memsymbol
-     * @param comparator
-     * @param memvalue
      */
-    private boolean checkMemoryCriteria(MemoryLine[] memlines, 
-					HashMap symboltable, 
-					String memsymbol, 
+    private boolean checkMemoryCriteria(MemoryLine[] studentMemLines, 
+					MemoryLine[] compareMemLines,
+					HashMap studentSymbolTable, 
+					HashMap compareSymbolTable, 
+					String studentMemSymbol, 
+					String compareMemSymbol, 
 					int comparator, 
-					int memvalue) {
+					int compareMethod) {
+
+	System.err.println("compareMethod: "+compareMethod);
+
+	/* kriteerin ensimmäinen "muistipaikka" (studentMemSymbol) on
+	   *aina* epäsuora - on sisältönä sitten muistipaikan nimi tai
+	   osoite. Kriteerin toinen "muistipaikka" (compareMemSymbol)
+	   taas voi olla epäsuoraa tai suoraa käsittelyä. Epäsuora
+	   käsittely jos ja vain jos vertaillaan mallivastaukseen,
+	   ilman mallivastausvertailua kriteerin toista muistipaikkaa
+	   käsitellään suoraan int-arvona. */
+	
+	boolean secondIsDirect = true; 
+	boolean studentMemSymbolAsInt = true;
+	boolean compareMemSymbolAsInt = true;
+	
+	int studentMemValue = -1;
+	int studentMemAddress = -1;
+	int compareMemValue = -1;
+	int compareMemAddress = -1;
+
+	for (int i=0; i<30; ++i) {
+	    System.err.println("MemLine "+i+":"+studentMemLines[i].getBinary());
+	}
+
+	System.err.println("studentMemSymbol: "+studentMemSymbol);
+	
+	try {
+	    studentMemAddress = Integer.parseInt(studentMemSymbol);
+	}
+	catch (NumberFormatException e) {
+	    System.err.println("Tämän ei pitäisi tulostua");
+	    studentMemSymbolAsInt = false;
+	}
 
 	int index = -1;
 	MemoryLine memline = null;
-	Integer indexI = (Integer) symboltable.get(memsymbol);
-	
-	if (indexI != null) {
-	    index = indexI.intValue();
-	    if ( (index >= 0) && (index < memlines.length) ) {
-		memline = memlines[index];
+	if (!studentMemSymbolAsInt) { // ei int-arvoa == oletetaan että kyseessä muistipaikan nimi
+	    Integer indexI = null;
+	    indexI = (Integer) studentSymbolTable.get(studentMemSymbol);
+	    java.util.Set keySet = studentSymbolTable.keySet();
+	    java.util.Iterator keyIt = keySet.iterator();
+	    int i=0;
+	    System.err.println("studentSymbolTablen koko: "+studentSymbolTable.size());
+	    while (keyIt.hasNext())
+	       System.err.println((String) keyIt.next());
+
+	    if (indexI != null) {
+		index = indexI.intValue();
+		if ( (index >= 0) && (index < studentMemLines.length) ) {
+		    memline = studentMemLines[index];
+		} // tuonkin ehdon pettämiseen voisi ehkä varautua. Titokone käytännössä pitänee huolen, ettei huonosti käy.
+	    studentMemValue = memline.getBinary();
+	    }
+	    else {
+		// FIXME: käsittele; kriteeri kosahtaa, koska symbolitaulusta ei moista alkiota löytynyt
+		System.err.println("Tänne kapsahdettiin");
+		return false;
 	    }
 	}
 	else {
-	    // avaimella 'memsymbol' ei löytynyt alkiota symbolitaulusta FIXME: käsittele
+	    System.err.println("Tullaan else-haaraan rivillä 698"+"ja studentMemAddress: "+studentMemAddress+" ja studentMemLines.length on: "+studentMemLines.length);
+	    if ( (studentMemAddress >= 0) && 
+		 (studentMemAddress < studentMemLines.length) ) {
+		System.err.println("Joten päädytään tänne (701), ja poimitaan muistirivi...");
+		memline = studentMemLines[studentMemAddress];
+		studentMemValue = memline.getBinary();
+		System.err.println("Muistipaikan arvo on siis: "+studentMemValue);
+	    }
+	    else {
+		// FIXME: käsittele; kriteerin pitäisi kosahtaa, koska saatu muistiosoitteen arvo ei pysy muistin rajojen sisäpuolella.
+	    }
 	}
-	
-	int memlinevalue = memline.getBinary();
 
-	return compare(memlinevalue, comparator, memvalue);
+	// Tässä vaiheessa on tämän kriteerin opiskelijan ratkaisun vertailtavan muistipaikan sisältö kaivettu esiin
+
+	System.err.println("compareMethod (rivi 713): "+compareMethod);
+	if (compareMethod == TTK91Constant.COMPARE_TO_STATIC) {
+	    System.err.println("Eli compare_to_static");
+	    try { 
+		compareMemValue = Integer.parseInt(compareMemSymbol);
+	    }
+	    catch (NumberFormatException e) {
+		System.err.println("Catched! (731)");
+		// FIXME: syntaxchecker on feilannut, pitäisi olla kelvollinen intti
+	    }
+	}
+	else { // eli compareMethod == TTK91Constant.COMPARE_TO_SIMULATED
+	    try {
+		compareMemAddress = Integer.parseInt(compareMemSymbol);
+	    }
+	    catch (NumberFormatException e) {
+		compareMemSymbolAsInt = false;
+	    }
+	    
+	    int index2 = -1;
+	    MemoryLine memline2 = null;
+	    if (!compareMemSymbolAsInt) { // ei int-arvoa == oletetaan että kyseessä muistipaikan nimi
+		Integer indexI = null;
+		indexI = (Integer) compareSymbolTable.get(compareMemSymbol);
+		if (indexI != null) {
+		    index2 = indexI.intValue();
+		    if ( (index2 >= 0) && (index2 < compareMemLines.length) ) {
+			memline2 = compareMemLines[index2];
+		    } // tuonkin ehdon pettämiseen voisi ehkä varautua. Titokone käytännössä pitänee huolen, ettei huonosti käy.
+		}
+		else {
+		    // FIXME: käsittele; kriteeri kosahtaa, koska symbolitaulusta ei moista alkiota löytynyt
+		}
+		compareMemValue = memline2.getBinary();
+	    }
+	    else {
+		if ( (compareMemAddress >= 0) && 
+		     (compareMemAddress < compareMemLines.length) ) {
+		    memline2 = compareMemLines[compareMemAddress];
+		    compareMemValue = memline2.getBinary();
+		}
+		else {
+		    // FIXME: käsittele; kriteerin pitäisi kosahtaa, koska saatu muistiosoitteen arvo ei pysy muistin rajojen sisäpuolella.
+		}
+	    }
+	} // else
+	System.err.println("Ennen compare()-kutsua"+"ja valuet:"+studentMemValue+","+comparator+","+compareMemValue);
+	boolean testi = compare(studentMemValue, comparator, compareMemValue);
+	System.err.println("comparen tulos: "+testi);
+	return testi;
+	//	return compare(studentMemValue, comparator, compareMemValue);
+
     } // checkMemoryCriteria
 
 

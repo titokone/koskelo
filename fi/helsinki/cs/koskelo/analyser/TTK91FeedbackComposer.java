@@ -37,6 +37,8 @@ public class TTK91FeedbackComposer{
 					String taskID,
 					String language) throws CacheException {
 		
+	System.err.println("Tultiin formFeedbackiin");
+
 	StringBuffer feedbackTable = new StringBuffer(); // palaute html-muodossa
 
 	String criteriaHeader = ""; // käsiteltävän kriteerin nimi
@@ -91,7 +93,7 @@ public class TTK91FeedbackComposer{
 
 	    // haetaan kriiterin kielikohtainen otsikko
 
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"acceptedSizeHeader", language);
 	    if (correct.booleanValue()) { // kriteeri oikein
 				
@@ -115,7 +117,7 @@ public class TTK91FeedbackComposer{
 
 	correct = analyseResults.getOptimalSize();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"optimalSizeHeader", language);
 	    if (correct.booleanValue()) {
 				
@@ -135,7 +137,7 @@ public class TTK91FeedbackComposer{
 
 	correct = analyseResults.getMemoryReferences();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"memoryReferencesHeader", language);
 	    if (correct.booleanValue()) { 
 			
@@ -156,7 +158,7 @@ public class TTK91FeedbackComposer{
 		
 	correct = analyseResults.getRequiredCommands();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"requiredCommandsHeader", language);
 	    if (correct.booleanValue()) {
 				
@@ -186,7 +188,7 @@ public class TTK91FeedbackComposer{
 		
 	correct = analyseResults.getForbiddenCommands();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"forbiddenCommandsHeader", language);
 	    if (correct.booleanValue()) {
 			
@@ -214,8 +216,9 @@ public class TTK91FeedbackComposer{
 	// Muisti
 		
 	correct = analyseResults.getMemory();
+	System.err.println("korrektin arvo, n. rivillä 219 on: "+correct.booleanValue());
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"memoryValuesHeader", language);
 	    if (correct.booleanValue()) {
 			
@@ -243,7 +246,7 @@ public class TTK91FeedbackComposer{
 		
 	correct = analyseResults.getRegisters();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"registerValuesHeader", language);
 	    if (correct.booleanValue()) {
 			
@@ -272,7 +275,7 @@ public class TTK91FeedbackComposer{
 		
 	correct = analyseResults.getScreenOutput();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"screenOutputHeader", language);
 	    if (correct.booleanValue()) {
 			
@@ -301,7 +304,7 @@ public class TTK91FeedbackComposer{
 		
 	correct = analyseResults.getFileOutput();
 	if (correct != null) {
-	    criteriaHeader = cache.getAttribute("D","statictaskcomposer", 
+	    criteriaHeader = cache.getAttribute("D","staticttk91taskcomposer", 
 						"fileOutputHeader", language);
 	    if (correct.booleanValue()) {
 			

@@ -242,22 +242,22 @@ public class TTK91AnalyserUtils {
 	taskFeedback.setRequiredCommandsFeedback
 	    (getStringFromCache("requiredCommandsFeedbackPositive"),
 	     getStringFromCache("requiredCommandsFeedbackNegative"),
-	     getStringFromCache("requiredCommandsFeedbackQuality"));
+	     getStringFromCache("requiredCommandsQualityFeedback"));
 
 	taskFeedback.setForbiddenCommandsFeedback
 	    (getStringFromCache("forbiddenCommandsFeedbackPositive"),
 	     getStringFromCache("forbiddenCommandsFeedbackNegative"),
-	     getStringFromCache("forbiddenCommandsFeedbackQuality"));
+	     getStringFromCache("forbiddenCommandsQualityFeedback"));
 
 	taskFeedback.setRegisterFeedback
-	    (getStringFromCache("registerValuesFeedbackPositive"),
-	     getStringFromCache("registerValuesFeedbackNegative"),
-	     getStringFromCache("registerValuesFeedbackQuality"));
+	    (getStringFromCache("registerFeedbackPositive"),
+	     getStringFromCache("registerFeedbackNegative"),
+	     getStringFromCache("registerQualityFeedback"));
 
 	taskFeedback.setMemoryFeedback
-	    (getStringFromCache("memoryValuesFeedbackPositive"),
-	     getStringFromCache("memoryValuesFeedbackNegative"),
-	     getStringFromCache("memoryValuesFeedbackQuality"));
+	    (getStringFromCache("memoryFeedbackPositive"),
+	     getStringFromCache("memoryFeedbackNegative"),
+	     getStringFromCache("memoryQualityFeedback"));
 
 	taskFeedback.setMemoryReferencesFeedback
 	    (getStringFromCache("memoryReferencesFeedbackPositive"),
@@ -266,12 +266,12 @@ public class TTK91AnalyserUtils {
 	taskFeedback.setScreenOutputFeedback
 	    (getStringFromCache("screenOutputFeedbackPositive"),
 	     getStringFromCache("screenOutputFeedbackNegative"),
-	     getStringFromCache("screenOutputFeedbackQuality"));
+	     getStringFromCache("screenOutputQualityFeedback"));
 
 	taskFeedback.setFileOutputFeedback
 	    (getStringFromCache("fileOutputFeedbackPositive"),
 	     getStringFromCache("fileOutputFeedbackNegative"),
-	     getStringFromCache("fileOutputFeedbackQuality"));
+	     getStringFromCache("fileOutputQualityFeedback"));
 
 	return taskFeedback;
     }//getTaskFeedback
