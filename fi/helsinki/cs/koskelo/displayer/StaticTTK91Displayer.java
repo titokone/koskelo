@@ -53,8 +53,8 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 		// Lomake alkaa
 	
 		setting.append("<form action=" + TARGETSERVLET + 
-									 " method=\"post\" name=\"answer\"" +
-									 "id=\"answer\">");
+									 " method=\"post\" name=\"staticttk91task\"" +
+									 "id=\"staticttk91task\">");
 	
        
 		// Lisätään tehtävänanto ja syötteet

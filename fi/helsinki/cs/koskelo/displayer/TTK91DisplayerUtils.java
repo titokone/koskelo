@@ -43,7 +43,7 @@ public class TTK91DisplayerUtils {
 
 	public static String getHTMLElementAnswerBox(){
 	
-		return new String("<textarea name=\"textfield\" cols=\"50\""+ 
+		return new String("<textarea name=\"answer\" cols=\"50\""+ 
 											"rows=\"20\"></textarea>\"<br>");
 	}//getHTMLElementAnswerBox
       
