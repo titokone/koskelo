@@ -1,8 +1,20 @@
 package fi.helsinki.cs.koskelo.analyser;
 
-// import TTK91CompileSource; // FIXME
-// pitäisi olla tyyliin
-// import fi.hu.cs.ttk91.TTK91CompileSource;
+import fi.hu.cs.ttk91.TTK91CompileSource;
+import fi.hu.cs.ttk91.TTK91Cpu;
+import fi.hu.cs.ttk91.TTK91Memory;
+import fi.hu.cs.ttk91.TTK91Exception;
+import fi.hu.cs.ttk91.TTK91Application;
+import fi.hu.cs.ttk91.TTK91Core;
+
+import fi.hu.cs.titokone.Source;
+import fi.hu.cs.titokone.Control;
+
+import fi.hy.eassari.showtask.trainer.Feedback;
+import fi.hy.eassari.showtask.trainer.ParameterString;
+import fi.hy.eassari.showtask.trainer.AttributeCache;
+import fi.hy.eassari.showtask.trainer.CommonAnalyser;
+
 
 /**
  * Luokka staattisten TTK-91 -tehtävien vastauksien tarkastamiseen
