@@ -1,3 +1,5 @@
+package fi.helsinki.cs.koskelo.composer;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -450,7 +452,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String page = "<html>";
 
 		// head
-		page.concat(
+		page =	page.concat(
 				"<head>"+
 				"<title>Untitled Document</title>" +
 				"<meta http-equiv=\"Content-Type\" "+
@@ -459,25 +461,25 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			   );
 		// body
 
-		page.concat(
+		page = page.concat(
 				"<body bgcolor=\"#FFFFFF\">"
 
 			   );
 		// title
 
-		page.concat(
+		page = page.concat(
 				"<h1>Opiskelijalle annettavat palautteet</h1>"
 			   );
 
 		// form
 		// FIXME assuming eassari in ../eassari
-		page.concat(
+		page = page.concat(
 				"<form method=\"post\" action=\""+
 				"../eassari/taskdefinition/TaskDefintionController"+
 				"\">\n"
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <table width=\"450\" border=\"0\">"+
 				"   <tr>"+
 				"        <td>" +
@@ -494,55 +496,55 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"</table>\n"
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>Hyv&auml;ksytt&auml;v&auml;n"+
 				" ratkaisun k&auml;skyjen " +
 				"maksimim&auml;&auml;r&auml;  </p>\n"+
 				feedbackBox("acceptedSize")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>Ihannekoko  </p>\n"+
 				feedbackBox("optimalSize")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>Ohjelmassa vaaditut k&auml;skyt  </p>\n"+
 				feedbackBox("requiredCommands")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"<p>Ohjelmassa kielletyt k&auml;skyt</p>\n" +
 				feedbackBox("forbiddenCommands")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"<p>Rekisterien sis&auml;lt&ouml;</p>" +
 				feedbackBox("register")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>Muistipaikkojen ja muuttujien"+
 				"sis&auml;lt&ouml;</p>" +
 				feedbackBox("memory")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"<p>Muistiviitteiden m&auml;&auml;r&auml;</p>" +
 				feedbackBox("memoryReferences")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"<p>Tulosteet n&auml;yt&ouml;lle</p>" +
 				feedbackBox("screenOutput")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>Tulosteet tiedostoon</p>" +
 				feedbackBox("fileOutput")
 			   );
 
-		page.concat(
+		page = page.concat(
 				"  <p>"+
 				"<input type=\"submit\""+
 				" name=\"Submit\""+
@@ -550,7 +552,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"</p>"
 			   );
 
-		page.concat("</form></body></html>");
+		page = page.concat("</form></body></html>");
 
 
 		return page;
@@ -565,10 +567,17 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			name+
 			"FeedbackPositive\">"+
 			"</textarea>\n"+
+			"<textarea "+
+			"cols=\"40\" rows=\"5\" "+
+			"name="+
+			"\""+
+			name+
+			"FeedbackNegative\">"+
+			"</textarea>\n"+
 			"<textarea name="+
 			"\""+
 			name+
-			"FeedbackNegative\""+
+			"FeedbackQuality\""+
 			"cols=\"40\" rows=\"5\">"+
 			"</textarea>\n"+
 			"</p>\n";
