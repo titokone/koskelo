@@ -372,8 +372,11 @@ public class TTK91AnalyseData{
 
 	private String parseInputString(int[] inputTable) {
 
+	    if (inputTable == null) {
+		return null;
+	    }
 		String input = "";
-
+		
 		for(int i = 0; i < inputTable.length; i++) {
 			input = input + inputTable[i];
 		}
