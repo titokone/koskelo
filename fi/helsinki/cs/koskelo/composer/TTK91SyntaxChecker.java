@@ -28,7 +28,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * Oletuskohde, jonne palataan jos jokin kriteereist‰ on v‰‰rin.
 	 */
 	private String staticResponse = "/jsp/StaticTTK91Composer.jsp";
-	/** 
+	/**
 	 * Kieliasetus. Assarin defaultasetus on ilmeisesti englanti, mutta
 	 * t‰m‰ ylikirjoitetaan settingissist‰ saaduilla asetuksilla.
 	 */
@@ -45,12 +45,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * @see Session
 	 */
 	private HttpSession session;
-	/** 
+	/**
 	 * Assarin oma sessityyppins‰. T‰‰lt‰ saadaan asetustietoa, kuten
 	 * kieli, joka asetetaan langiin.
 	 */
 	private TeacherSession settings;
-	/** 
+	/**
 	 * Events-luokan kokonaisluku. T‰st‰ voidaan p‰‰tell‰ mink‰tyyppist‰
 	 * teht‰v‰‰ ollaan luomassa. Luku l‰hetet‰‰n eteenp‰in
 	 * taskDefinitionControllerille.
@@ -66,7 +66,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * sivulle, kun teht‰v‰‰ halutaan editoida.
 	 */
 	private TaskDTO task;
-	/** Boolean, joka kertoo ollaanko luomassa uutta teht‰v‰‰ vai 
+	/** Boolean, joka kertoo ollaanko luomassa uutta teht‰v‰‰ vai
 	 * editoimassa jo vanhaa. Jos ollaan editoimassa jo olemassaolevaa
 	 * teht‰v‰‰, halutaan palauttaa annetut palautteet lomakkeeseen,
 	 * jotta k‰ytt‰j‰n on mukavampi muuttaa niit‰.
@@ -91,7 +91,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 */
 	public void init (ServletConfig config) throws ServletException  {
 
-		this.config = config;   
+		this.config = config;
 		super.init(this.config);
 
 		if (cache == null) {
@@ -120,9 +120,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			} catch (Exception e) {
 				throw new ServletException(
 						"Problems with configuration"+
-						" file " + 
-						conFile + 
-						": " + 
+						" file " +
+						conFile +
+						": " +
 						e.getMessage());
 			}//catch
 		}//if
@@ -147,7 +147,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * virheellinen, sivu palaa takaisin edelliselle sivulle ja antaa
 	 * virheilmoituksen.
 	 *
-	 * @param req HTTP-pyyntˆ joko Static- FillIn tai Dynamic 
+	 * @param req HTTP-pyyntˆ joko Static- FillIn tai Dynamic
 	 * TTK91Composerilta
 	 * @param res HTTP-vastaus asiakkaalle. Ilman virhetilanteita
 	 * lomake teht‰v‰n ratkaisun palautteen ker‰‰miseen
@@ -163,7 +163,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		this.session = this.req.getSession(false);
 
 		// Tarkistetaan onko sessio vanhentunut
-		if(this.session == null) { 
+		if(this.session == null) {
 			//sessio on vanhentunut, joten ohjataan k‰ytt‰j‰
 			//sis‰‰nkirjautumissivulle eik‰ tehd‰ muuta
 			req.getRequestDispatcher(
@@ -271,7 +271,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				);
 
 
-		// Asetustiedot. mm. kieliasetukset, jota 
+		// Asetustiedot. mm. kieliasetukset, jota
 		// k‰ytet‰‰n sivulla p‰‰tt‰m‰‰n mink‰ kieliset
 		// merkkijonot tulostetaan palautteenker‰‰missivulle.
 
@@ -283,11 +283,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		this.session.removeAttribute("TTK91ERROR");
-		
+
 		// Asetuksia ei v‰ltt‰m‰tt‰ ole
 		if (settings != null){
 			// Asetuksista lˆytyy mahdollisesti korvaava
-			// kieli aikaisemmin asetetulle oletuskielelle 
+			// kieli aikaisemmin asetetulle oletuskielelle
 			// EN
 			lang = settings.getSelectedLanguageId();
 		}
@@ -308,53 +308,45 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// Defaulttina oletetaan, ett‰ tehd‰‰n uutta staattista
 		// teht‰v‰‰
 		//
-	
-	
+
+		task = (TaskDTO)
+			this.session.getAttribute(
+					"fi.hy.taskdefinition."+
+					"util.datastructures.TaskDTO"
+					);
+
+		if (task != null) {
+			editTask = true;
+		}//if
+
 		if(event == Events.STATIC_TTK91_COMPOSE) {
 			// Do nothing
 			// FIXME EDIT alle.
-		} else if(event == Events.STATIC_TTK91_EDIT){
+		} else if(event == Events.STATIC_TTK91_SUBMIT){
 
-			// staattisen teht‰v‰n editointi
+			//donothing
 
-			editTask = true;
-			task = (TaskDTO)
-				this.session.getAttribute(
-						"fi.hy.taskdefinition."+
-						"util.datastructures.TaskDTO"
-						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
-			
+
 			// uusi FILL_IN-teht‰v‰
 			fillIn = true;
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
-		
-		} else if(event == Events.FILLIN_TTK91_EDIT) {
 
-			editTask = true;
+		} else if(event == Events.FILLIN_TTK91_SUBMIT) {
+
 			fillIn = true;
-			task = (TaskDTO)
-				this.session.getAttribute(
-						"fi.hy.taskdefinition."+
-						"util.datastructures.TaskDTO"
-						);
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
+
 		} else if( event == Events.SUBMIT_TASK) {
-			task = (TaskDTO)
-				this.session.getAttribute(
-						"fi.hy.taskdefinition."+
-						"util.datastructures.TaskDTO"
-						);
-			if (task != null) {
-			editTask = true;
 
-			}
-		}
+			//donothing
+
+		}//else
 
 
-		
+
 		try { // catch CacheException kun haetaan virheilmotusta tietokannasta
-		
+
 		try {
 			// maxCommands ei voi olla null, sill‰
 			// maxCommandsia k‰ytet‰‰n looppiin juuttumisen
@@ -389,10 +381,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen koodin vaatiminen
 
 			exampleCode = reqExampleCode;
-		
+
 			if(validParam(reqExampleCode)){
 				if(fillIn) {
-					fillInValidate(exampleCode);	
+					fillInValidate(exampleCode);
 				}
 
 				taskOptions.setExampleCode(exampleCode);
@@ -469,7 +461,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						"ttk91hiddeninputsyntaxerror",
 						lang
 						)
-				   );	
+				   );
 			return;
 		}
 
@@ -496,14 +488,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					return;
 				}
 
-			}	
+			}
 
 		} catch (Exception e) {
-			returnError(this.staticResponse, 
+			returnError(this.staticResponse,
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91comparemethodsyntaxerror", 
+						"ttk91comparemethodsyntaxerror",
 						lang
 						)
 				   );
@@ -522,7 +514,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91acceptedsizesyntaxerror", 
+						"ttk91acceptedsizesyntaxerror",
 						lang
 						)
 				   );
@@ -540,7 +532,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91optimalsizesyntaxerror", 
+						"ttk91optimalsizesyntaxerror",
 						lang
 						)
 				   );
@@ -549,7 +541,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // memoryReferences. Odotetaan vertailu
-			//operaattoria ja numeroa. 
+			//operaattoria ja numeroa.
 			//Tallenetaan TTK91Criteriana siten,
 			//ett‰ ensimm‰isen‰ vertailuoperaattorina
 			//on merkkijono MEMORYREFERENCES
@@ -566,7 +558,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				// niin ei ole, joten p‰‰dyt‰‰n virheilmotukseen.
 				// Analyser olettaa ett‰ t‰m‰ tarkastus on tehty.
 				//parsePostInt(memoryReferences.getSecondComparable());
-				
+
 				taskOptions.setMemRefCriteria(
 						memoryReferences
 						);
@@ -576,7 +568,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91memoryreferencessyntaxerror", 
+						"ttk91memoryreferencessyntaxerror",
 						lang
 						)
 				   );
@@ -601,9 +593,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91requiredcommandssyntaxerror", 
+						"ttk91requiredcommandssyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 		}
@@ -619,13 +611,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, 
+			returnError(this.staticResponse,
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91forbiddencommandssyntaxerror", 
+						"ttk91forbiddencommandssyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 		}
@@ -649,15 +641,15 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91memoryvaluesyntaxerror", 
+						"ttk91memoryvaluesyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 		}
 
 		try { // registerCriteria eli titokoneen rekistereihin
-			//liittyv‰t vertailukriteerit. 
+			//liittyv‰t vertailukriteerit.
 			//Tyyppi‰ TTK91TaskCriteria.
 			if(validParam(reqRegisterCriteria)) {
 				registerCriteria = parseCriteriaString(
@@ -672,14 +664,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91registervaluesyntaxerror", 
+						"ttk91registervaluesyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 		}
 
-		try { // screenOutput eli opiskelijan 
+		try { // screenOutput eli opiskelijan
 			//ohjelman tulosteet n‰ytˆlle. Lukupareja, joista
 			//ensimm‰inen ilmaisee monesko tuloste ja toinen
 			//ilmaisee mit‰ tulostettu.
@@ -692,13 +684,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 			}
 		} catch (Exception e) {
-			returnError(this.staticResponse, 
+			returnError(this.staticResponse,
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91screenoutputsyntaxerror", 
+						"ttk91screenoutputsyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 		}
@@ -719,9 +711,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					cache.getAttribute(
 						"D",
 						"ttk91syntaxchecker",
-						"ttk91fileoutputsyntaxerror", 
+						"ttk91fileoutputsyntaxerror",
 						lang
-						) 
+						)
 				   );
 			return;
 
@@ -731,7 +723,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			returnError(this.staticResponse,
 					"Error while retrieving error message" + ce.getMessage());
 		}
-		
+
 		// Asetetaan taskOptions sessioon, jotta
 		// taskdefinitioncontrollerissa se saadaan annettua
 		// eteenp‰in TTK91TaskParserille. TaskParser muokkaa
@@ -770,7 +762,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * tulostaa k‰ytt‰j‰lle selityksen‰ virheest‰.
 	 */
 
-	private void returnError(String target, String error) 
+	private void returnError(String target, String error)
 		throws ServletException, java.io.IOException{
 
 			this.req.setAttribute("fi.hy.eassari.showtask.trainer.TaskBase", cache);
@@ -779,14 +771,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				forward(this.req, this.res);
 		}
 
-	/** Heitt‰‰ poikkeuksen jos code-string ei ole validi 
+	/** Heitt‰‰ poikkeuksen jos code-string ei ole validi
 	 * FillIn esimerkkiohjelma.
-	 * Vaatimukset sopivuudelle ovat, ett‰ merkkijonossa esiintyy [ ensin 
+	 * Vaatimukset sopivuudelle ovat, ett‰ merkkijonossa esiintyy [ ensin
 	 * ja sitten ].
 	 * Molempia saa esiinty‰ tasan yksi.
 	 * @param code fillIn teht‰v‰n esimerkkikoodi.
 	 */
-	private void fillInValidate(String code) 
+	private void fillInValidate(String code)
 		throws Exception {
 
 			if(code.indexOf("[")> -1) {
@@ -838,20 +830,20 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * tasan kaksi lukua, ensimm‰inen luku ilmaisemassa tulosteen
 	 * j‰rjestyslukua ja toinen ilmaisemassa tulosteen sis‰ltˆ‰.
 	 *
-	 * Ylim‰‰r‰iset annettavat numerot yksien sulkujen sis‰ll‰ 
+	 * Ylim‰‰r‰iset annettavat numerot yksien sulkujen sis‰ll‰
 	 * j‰tet‰‰n huomiotta.
 	 */
-	private TTK91TaskCriteria[] parseOutputString(String output) 
+	private TTK91TaskCriteria[] parseOutputString(String output)
 		throws InvalidTTK91CriteriaException{
 
 			String[] splitted = output.split(";");
 			TTK91TaskCriteria[] outputRet = new TTK91TaskCriteria[splitted.length];
-			
+
 			for(int i = 0; i < splitted.length; i++){
 				outputRet[i] = new TTK91TaskCriteria(splitted[i], false);
 			}
-			
-			
+
+
 			return outputRet;
 		}
 	/** Apumetodi, jolla tarkistetaan syˆtteist‰ ovatko ne pilkulla
@@ -925,27 +917,27 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// merkkijonoja muutettiin v‰lill‰. Ja koska p‰‰stiin t‰nne
 		// siit‰ ei seurannut mit‰‰n kamalaa. Trimmataan viel‰ ylim‰‰r‰inen
 		// whitespace pois.
-		
+
 	        //H‰vitet‰‰n kaikki whitespacet
 	        cleanString  = commandString.replaceAll("\\s","");
-		
+
 		tmp = cleanString.split(";");
 
 		for( int i = 0; i < tmp.length; i++) {
 			tmp[i] = tmp[i]+";";
 		}
-		
+
 		return tmp;
 
 	}// validTTK91Commands
 
 	/**
 	 * Apumetodi, jolla parsitaan muistipaikka ja rekisteri kriteerej‰ kuvaavat
-	 * merkkijonot. 
-	 * 
+	 * merkkijonot.
+	 *
 	 *@return taulukkoesitys annetun merkkijonon kriteereist‰.
 	 */
-	private TTK91TaskCriteria[] parseCriteriaString(String criteriaString) 
+	private TTK91TaskCriteria[] parseCriteriaString(String criteriaString)
 		throws InvalidTTK91CriteriaException{
 
 			String[] tmp = criteriaString.split(";");
@@ -986,7 +978,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"feedbacktitle", 
+					"feedbacktitle",
 					lang
 					) +
 				"</title>" +
@@ -1007,7 +999,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"feedbacktitle", 
+					"feedbacktitle",
 					lang
 					) +
 				"</h1>"
@@ -1054,7 +1046,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"criteriafilledtitle", 
+					"criteriafilledtitle",
 					lang
 					) +
 				"</div>" +
@@ -1064,7 +1056,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"criterianotfilledtitle", 
+					"criterianotfilledtitle",
 					lang
 					) +
 				"</div>" +
@@ -1074,7 +1066,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"criteriaqualitytitle", 
+					"criteriaqualitytitle",
 					lang
 					) +
 			"</div>" +
@@ -1088,7 +1080,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"acceptedSizeHeader", 
+					"acceptedSizeHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1100,7 +1092,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"optimalSizeHeader", 
+					"optimalSizeHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1112,7 +1104,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"requiredCommandsHeader", 
+					"requiredCommandsHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1124,7 +1116,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"forbiddenCommandsHeader", 
+					"forbiddenCommandsHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1136,7 +1128,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"registerValuesHeader", 
+					"registerValuesHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1148,7 +1140,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"memoryValuesHeader", 
+					"memoryValuesHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1160,7 +1152,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"memoryReferencesHeader", 
+					"memoryReferencesHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1172,7 +1164,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"screenOutputHeader", 
+					"screenOutputHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1184,7 +1176,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
-					"fileOutputHeader", 
+					"fileOutputHeader",
 					lang
 					) +
 				"</p>\n"+
@@ -1199,7 +1191,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
-					"submitbutton", 
+					"submitbutton",
 					lang
 					) +
 
@@ -1221,9 +1213,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		// if edit, lis‰t‰‰n vanha teksti.
-		
+
 		String tmp = "";
-		
+
 		tmp = tmp + "<p>\n"+
 			"<textarea cols=\"40\" rows=\"5\" "+
 			"name=\""+
@@ -1233,7 +1225,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		if(editTask) {
 			tmp = tmp + (String)task.get(name + "FeedbackPositive");
 		}
-		
+
 		tmp = tmp +	"</textarea>\n";
 		tmp = tmp +	"<textarea "+
 			"cols=\"40\" rows=\"5\" "+
@@ -1244,9 +1236,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		if(editTask) {
 			tmp = (String)tmp+task.get(name+"FeedbackNegative");
-			
+
 		}
-		
+
 		tmp = tmp + "</textarea>\n";
 		tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
 			"\""+
@@ -1257,7 +1249,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 		tmp = tmp +	"</textarea>\n"+
 			"</p>\n";
-	
+
 		return tmp;
 	}// feedbackBox
 
