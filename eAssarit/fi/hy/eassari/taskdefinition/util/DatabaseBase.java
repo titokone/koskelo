@@ -27,8 +27,8 @@ public abstract class DatabaseBase {
    	protected String dbDriver="oracle.jdbc.OracleDriver";
    	protected String dbServer= "jdbc:oracle:thin:@bodbacka.cs.helsinki.fi:1521:test";
  
-   	protected String dbUser= "assari";     // replace with your db user account
-   	protected String dbPassword ="opetus"; // replace with your password
+   	protected String dbUser= "koskelo";     // replace with your db user account
+   	protected String dbPassword ="titokone"; // replace with your password
 
 	/**
 	 * Default constructor for database superclass
