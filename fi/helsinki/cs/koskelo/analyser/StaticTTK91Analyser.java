@@ -130,7 +130,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
 
 	generalAnalysis(answer); // "valmis" -- tarkistettava, varmaan löytyy luurankoja vielä [LL] (FIXME!)
-
+	System.err.println("************* GENERAL_ANALYSIS PÄÄTTYI *************** ");
 	RandomAccessMemory studentMemory = (RandomAccessMemory) controlPublicInputStudent.getMemory();
 	
 	RandomAccessMemory teacherMemory = null;
@@ -394,13 +394,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * - kielletyt käskyt
      */
     private void generalAnalysis(String[] answer) { // Laurin heiniä - "valmis"
-
+	System.err.println("******************** GENERAL_ANALYSIS ALKAA *******************");
 	//  -Suoritettujen konekäskyjen määrä (oikeellisuus)
 	TTK91Cpu cpu = controlPublicInputStudent.getCpu();
+	System.err.println("giveCommAmount(): "+((Processor)cpu).giveCommAmount());
 	int size = ((Processor)cpu).giveCommAmount(); // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
-	int sizeLimit = taskOptions.getMaxCommands();
-	results.setAcceptedSize(size <= sizeLimit);
-
+	int sizeLimit = taskOptions.getAcceptedSize();
+	results.setAcceptedSize(size < sizeLimit);
+	System.err.println("size: "+size+" sizeLimit: "+sizeLimit);
 
 	//	  -Ihannekoko (laatu)
 	results.setOptimalSize(size <= taskOptions.getOptimalSize());
@@ -408,11 +409,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	//	  -Muistiviitteiden määrä
 	TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
-	if (memRefCriteria == null) {
-	    results.setRequiredCommands(true);
-	    results.setForbiddenCommands(true);
-	} // if
-	else {
+	if (memRefCriteria != null) {
 	    TTK91Memory mem = controlPublicInputStudent.getMemory();
 	    int memrefs = ((RandomAccessMemory)mem).getMemoryReferences();  // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
 	    boolean memrefsok = 
@@ -420,19 +417,23 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 				    memRefCriteria.getComparator(),
 				    memRefCriteria.getSecondComparable());
 	    results.setMemoryReferences(memrefsok);
-	
-	    //      -Vaaditut käskyt
+	}
+	//      -Vaaditut käskyt
+	String[] requiredCommands = taskOptions.getRequiredCommands();
+	if (requiredCommands != null) {
 	    boolean requiredCommandFound = 
-		isCommandFound(answer, taskOptions.getRequiredCommands());
-	
+		isCommandFound(answer, requiredCommands);
+	    
 	    results.setRequiredCommands(requiredCommandFound);
-	
-	    //      -Kielletyt käskyt
+	}
+	//      -Kielletyt käskyt
+	String[] forbiddenCommands = taskOptions.getForbiddenCommands();
+	if (forbiddenCommands != null) {
 	    boolean forbiddenCommandFound = 
-		isCommandFound(answer, taskOptions.getForbiddenCommands());
-	
+		isCommandFound(answer, forbiddenCommands);
+	    
 	    results.setForbiddenCommands(!forbiddenCommandFound);
-	} // else
+	}
     }//generalAnalysis
 
 
@@ -605,6 +606,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param secondcomparable
      */
     private boolean checkMemRefCriteria(int memrefs, int comparator, String secondcomparable) {
+	System.err.println("MUISTIVIITTEITÄ: memrefs:"+memrefs+" comparator:"+comparator+"secondcomparable:"+secondcomparable);
 	boolean ret = false;
 	int checkAgainstMe = -1;
 	try {
@@ -627,17 +629,22 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param cmds
      */
     private boolean isCommandFound(String[] answer, String[] cmds) {
+	boolean value = false;
 	if ((answer != null) && (answer[0] != null) && (cmds != null)) {
 	    String src = answer[0].toLowerCase();
 	    for (int i=0; i < cmds.length; ++i) {
-		String pat = "\\s"+cmds[0].toLowerCase()+"\\s";
+		String tempstring = cmds[i];
+		tempstring = tempstring.replaceAll("\\(",""); // FIXMEFIXME: TÄHÄN JÄÄTIIN: pitäisi palauttaa true, jos kaikki cmds-taulukon käskyt löytyvät
+		tempstring = tempstring.replaceAll("\\)","");
+		tempstring = tempstring.replaceAll(";","");
+		String pat = "\\s*"+tempstring.toLowerCase()+"\\s*";
 		if ( Pattern.matches(pat, src) ) {
 		    // sisältääkö src merkkijonoa "whitespace+komento+whitespace" ?
 		    return true;
 		}
 	    }
 	}
-	return false;
+	return value;
     } // isCommandFound
     
     /**
@@ -672,7 +679,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	int compareMemValue = -1;
 	int compareMemAddress = -1;
 
-	for (int i=0; i<30; ++i) {
+	for (int i=0; i<10; ++i) {
 	    System.err.println("MemLine "+i+":"+studentMemLines[i].getBinary());
 	}
 

@@ -237,7 +237,7 @@ public class TTK91AnalyserUtils {
 			 			 
 	taskFeedback.setOptimalSizeFeedback
 	    (getStringFromCache("optimalSizeFeedbackPositive"),
-	     getStringFromCache("FeedbackNegative"),"");
+	     getStringFromCache("optimalSizeFeedbackNegative"),"");
 
 	taskFeedback.setRequiredCommandsFeedback
 	    (getStringFromCache("requiredCommandsFeedbackPositive"),
