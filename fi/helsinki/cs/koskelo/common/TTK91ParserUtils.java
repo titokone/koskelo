@@ -6,7 +6,10 @@ package fi.helsinki.cs.koskelo.common;
 public class TTK91ParserUtils { 
 
 	/** Tarkistaa onko annettu String m‰‰ritelty TTK91-konekielen
-	 * k‰skyksi.
+	 * k‰skyksi. Jos TTK-91 kieleen m‰‰ritell‰‰n uusia k‰skyj‰
+	 * syksyn 2004 j‰lkeen, on ne k‰sin lis‰tt‰v‰ t‰h‰n luokkaan
+	 * tai muutettava t‰m‰ metodi, jotta automaattinen teht‰vien
+	 * tarkistus ja luonti edelleen toimii.
 	 * @param command TTK-91 k‰skyn String-esitys
 	 * @return Onko annettu k‰sky validi TTK-91 k‰sky
 	 */
