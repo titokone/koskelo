@@ -52,14 +52,48 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		String reqHiddenInput = req.getParameter(
 				"hidden_input"
 				);
-		String reqCompareMethod; // verrataanko simulaatioon
-		String reqAcceptedSize; // miksi tämä on?
-		String reqOptimalSize; // ratkaisun suosituskoko
-		String reqCommands; //konekäskyt
-		String reqRegisterValues; // pyydetyt rekisterien arvot
-		String reqMemoryValues; //muistipaikkojen arvot
-		String reqScreenOutput; // näytön tulosteet
-		String reqFileOutput; // tulosteet tiedostoon
+		// verrataanko simulaatioon
+		String reqCompareMethod = req.getParameter(
+				"compare_method"
+				);
+		
+		// miksi tämä on?
+		String reqAcceptedSize = req.getParameter(
+				"accepted_size"
+				); 
+		// ratkaisun suosituskoko
+		String reqOptimalSize = req.getParameter(
+				"optimal_size"
+				); 
+		// kielletyt konekäskyt
+		String reqRequiredCommands = req.getParameter(
+				"required_commands"
+				);
+		// vaaditut konekäskyt
+		String reqForbiddenCommands = req.getParameter(
+				"forbidden_commands"
+				);
+		
+		// pyydetyt rekisterien arvot
+		String reqRegisterValues = req.getParameter(
+				"register_values"
+				);
+		
+		//muistipaikkojen arvot
+		String reqMemoryValues = req.getParameter(
+				"memory_values"
+				);
+		
+		// näytön tulosteet
+		String reqScreenOutput = req.getParameter(
+				"screen_output"
+				); 
+		
+		// tulosteet tiedostoon
+		String reqFileOutput = req.getParameter(
+				"file_output"
+				); 
+		
 
 		int maxCommands;
 		String exampleCode; //TODO tarkista koodin kääntyminen
@@ -80,12 +114,27 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		// TODO checking of session, but no need for new one
 		
 		HttpSession session = req.getSession(false);
+
+
+		// TODO nämä omiksi privametodeikseen
 		
-		// TODO yritetään saada parsittua saatu data
-		try { // maxCommands
-			maxCommands = (new Integer(reqHiddenInput))
+		try { 
+			// maxCommands ei voi olla null
+			// TODO konffattava oletusarvo
+			
+			if(reqMaxCommands != null) {
+			
+				maxCommands = (new Integer(reqMaxCommands))
 				.intValue();
+			
+			} else {
+			
+				maxCommands = 10000;
+			
+			}
+			
 			taskOptions.setMaxCommands(maxCommands);
+		
 		} catch (Exception e) { 
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -94,39 +143,54 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		}// catch
 
 		try { // exampleCode
+			// TODO validin TTK91-koodin tarkistaminen
+			// TODO dynaamisen koodin syntaksin tarkistaminen
+			// TODO dynaamisen koodin vaatiminen
 
+			exampleCode = reqExampleCode;
+			taskOptions.setExampleCode(exampleCode);
+		
 		} catch (Exception e) {
 
 		}
 
 		try { // taskDescription
+			// TODO vaaditaanko?
+			// TODO dynaamisen tehtävän syntaksin tarkistaminen
+			// TODO dynaamisen tehtävän vertailu mallikoodiin
 
+			taskDescription = reqTaskDescription;
+			taskOptions.setTaskDescription(taskDescription);
+			
 		} catch (Exception e) {
 
 		}
 
 		try { // publicInput
 
-			StringTokenizer st = new StringTokenizer(
-					reqPublicInput, ","
-					);
-			Vector tmp = new Vector();
+			if(reqPublicInput != null) {
+				StringTokenizer st = new StringTokenizer(
+						reqPublicInput, ","
+						);
+				Vector tmp = new Vector();
 
-			while(st.hasMoreTokens()){
+				while(st.hasMoreTokens()){
 
-				tmp.add(new Integer(st.nextToken()));
+					tmp.add(new Integer(st.nextToken()));
+				}
+
+				publicInput = new int[tmp.size()];
+
+
+				for(int i = 0; i < tmp.size(); i++) {
+				
+					publicInput[i] = ((Integer)tmp.get(i))
+						.intValue();
+
+				}
+
+				taskOptions.setPublicInput(publicInput);
 			}
-
-			publicInput = new int[tmp.size()];
-
-
-			for(int i = 0; i < tmp.size(); i++) {
-				publicInput[i] = ((Integer)tmp.get(i)).intValue();
-
-			}
-
-			taskOptions.setPublicInput(publicInput);
-
 		} catch (Exception e) {
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -135,26 +199,28 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		}
 
 		try { // hiddenInput
-			StringTokenizer st = new StringTokenizer(
-					reqHiddenInput, ","
-					);
-			Vector tmp = new Vector();
+			if(reqHiddenInput != null) {
+				StringTokenizer st = new StringTokenizer(
+						reqHiddenInput, ","
+						);
+				Vector tmp = new Vector();
 
-			while(st.hasMoreTokens()){
+				while(st.hasMoreTokens()){
 
-				tmp.add(new Integer(st.nextToken()));
+					tmp.add(new Integer(st.nextToken()));
+				}
+
+				hiddenInput = new int[tmp.size()];
+
+
+				for(int i = 0; i < tmp.size(); i++) {
+					hiddenInput[i] = ((Integer)(tmp.get(i)))
+						.intValue();
+
+				}
+
+				taskOptions.setHiddenInput(hiddenInput);
 			}
-
-			hiddenInput = new int[tmp.size()];
-
-
-			for(int i = 0; i < tmp.size(); i++) {
-				hiddenInput[i] = ((Integer)(tmp.get(i))).intValue();
-
-			}
-			
-			taskOptions.setHiddenInput(hiddenInput);
-
 		} catch (Exception e) {
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
