@@ -42,6 +42,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     private TTK91Application teacherApplication; // malliratkaisu
     private TTK91AnalyseResults results; //Uusi luokka.
     private TTK91FeedbackComposer fbcomposer;
+    private Feedback feedback;
 
     /**
      * Konstruktori, joka luo uuden alustamattoman
@@ -57,6 +58,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	//	this.control = null;  // ei tarvittane en‰‰
 	this.results = null;
 	this.fbcomposer = new TTK91FeedbackComposer();
+	this.feedback = null;
     } // StaticTTK91Analyser()
 
 
@@ -93,7 +95,11 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
 	getTTK91TaskOptions();
 
-	//RUN()
+	boolean runnedOK = false;
+	runnedOK = run(); // varsinainen ratkaisu(je)n simulointi
+	if (!runnedOK) { // jos true, ajo(t) meniv‰t ok -> jatketaan. Virheist‰ generoidaan palaute ja lopetetaan.
+	    return feedback;
+	}
 
 	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
 	//GeneralAnalysis() a.k.a. "hilut"
@@ -103,15 +109,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
 
-	Feedback palaute = null;
 	try {
-	    palaute = TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
+	    feedback = TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
 	}
 	catch (CacheException e) {
 	    // FIXME: mit‰ tehd‰‰n
 	}
 	
-	return palaute;
+	return feedback;
 
     } // analyse
 
@@ -213,7 +218,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     }//TTK91TaskOptions
 
-    private void run() {
+    private boolean run() { // false jos virheit‰, true muuten
 
 	int[] publicInputTable = taskOptions.getPublicInput();
 	int[] hiddenInputTable = taskOptions.getHiddenInput();
@@ -248,6 +253,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 	catch (TTK91Exception e) {
 	    //FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
+	    feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
+	    return false;
 	}
 
 	if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
@@ -258,6 +265,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    }
 	    catch (TTK91Exception e) {
 		// FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
+		feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
+		return false;
 	    }
 	}
 
@@ -274,6 +283,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    }
 	    catch (TTK91Exception e) {
 		//FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui
+		feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
+		return false;
 	    }
 
 	    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
@@ -287,9 +298,13 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		}
 		catch (TTK91Exception e) {
 		    // FIXME: mit‰ tehd‰‰n -- annetaan palaute; ohjelman suoritus kaatui - malliratkaisun kirjoittaja on k‰mm‰nnyt
+		    feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
+		    return false;
 		}
 	    }
 	} 
+	
+	return true;
 
     }//run
 
