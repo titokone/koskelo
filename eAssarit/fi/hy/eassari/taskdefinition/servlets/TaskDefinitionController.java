@@ -242,6 +242,15 @@ public class TaskDefinitionController extends HttpServlet {
 			 *Assemble a statitc TTK91 task
 			 */
 			  case Events.STATIC_TTK91_SUBMIT:
+				  task = fi.helsinki.cs.koskelo.composer.TTK91TaskParser.assembleStaticTTK91Task(
+						  post, session
+						  );
+				  taskDb.saveData(task);
+				  tasks = db.getAllAuthorTasks(userId, displayLanguage);
+				  session.setAttribute("java.util.Collection", tasks);
+				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
+				  break;
+			  case Events.FILLIN_TTK91_SUBMIT:
 				  task = fi.helsinki.cs.koskelo.composer.TTK91TaskParser.assembleFillInTTK91Task(
 						  post, session
 						  );
