@@ -1,6 +1,7 @@
 package fi.helsinki.cs.koskelo.composer;
 
 import java.io.*;
+import java.util.Properties;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import fi.helsinki.cs.koskelo.common.*;
