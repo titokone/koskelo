@@ -257,7 +257,6 @@ task = (TaskDTO)
     } else if(task != null) {
       temp = (String) task.get("compareMethod");
     }//else
-    out.print("Temppi<"+temp+">");
     if(temp == null) {temp = ""+TTK91Constant.COMPARE_TO_STATIC;}
   %>
 
