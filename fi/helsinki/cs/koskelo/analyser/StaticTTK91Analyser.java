@@ -24,25 +24,32 @@ import fi.hy.eassari.showtask.trainer.CommonAnalyser;
 
 public class StaticTTK91Analyser extends CommonAnalyser {
 
-  AttributeCache cache;
-  String taskID;
-  String language;
-  ParameterString initP;
-  private TTK91Core core;
+    private AttributeCache cache;
+    private String taskID;
+    private String language;
+    private ParameterString initP;
+    private TTK91Core core;
+    private TTK91TaskOptions taskOptions;
+    private TTK91Application application;
+    private TTK91AnalyseResults results; //Uusi luokka.
+                                         //Sisältää boolean muuttujat jokaiselle kriteerille.
+                                         //Eeva koodaa
+                                         //Huom! Resulttiin kentät statistiikalle!
 
-  /**
-   * Konstruktori, joka luo uuden alustamattoman
-   * StaticTTK91Analyserin, alustettava init-metodilla.
-   *
-   */
+    /**
+     * Konstruktori, joka luo uuden alustamattoman
+     * StaticTTK91Analyserin, alustettava init-metodilla.
+     *
+     */
 
-  public StaticTTK91Analyser() {
-    this.cache = null;
-    this.taskID = null;
-    this.language = "FI";
-    this.initP = null;
-    this.core = null;
-  } // StaticTTK91Analyser()
+    public StaticTTK91Analyser() {
+	this.cache = null;
+	this.taskID = null;
+	this.language = "FI";
+	this.initP = null;
+	this.core = null;
+	this.results = null;
+    } // StaticTTK91Analyser()
 
 
     /**
@@ -54,13 +61,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      *
      */
 
-  public StaticTTK91Analyser(String taskid, String language, String initparams) {
-    this.taskID = taskid;
-    this.language = language;
-    this.initP = new ParameterString(initparams);
-    this.core = new Control(null, null);
-  } // StaticTTK91Analyser(String taskid, String language, String initparams)
-
+    /*XXX: TURHA?
+    public StaticTTK91Analyser(String taskid, String language, String initparams) {
+	this.taskID = taskid;
+	this.language = language;
+	this.initP = new ParameterString(initparams);
+	this.core = new Control(null, null);
+    } // StaticTTK91Analyser(String taskid, String language, String initparams)
+    */
 
     /**
      * Alustaa alustamattoman StaticTTK91Analyserin
@@ -69,12 +77,13 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param initparams FIXME: kuvaus
      */
 
-  public void init(String taskid, String language, String initparams) {
-    this.taskID = taskid;
-    this.language = language;
-    this.initP = new ParameterString(initparams);
-    this.core = new Control(null, null);
-  } // init
+    public void init(String taskid, String language, String initparams) {
+	this.taskID = taskid;
+	this.language = language;
+	this.initP = new ParameterString(initparams);
+	this.core = new Control(null, null);
+	this.results = new TTK91AnalyseResults; //Oletuksena kaikki tulokset false
+    } // init
 
 
     /**
@@ -84,55 +93,55 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @return palaute
      */
 
-  public Feedback analyse(String[] answer, String params) { // FIXME:
-                                                            // varsinainen
-                                                            // toiminnallisuus
-                                                            // kesken
+    public Feedback analyse(String[] answer, String params) { // FIXME:
+	// varsinainen
+	// toiminnallisuus
+	// kesken
 
-    TTK91CompileSource src = StaticTTK91Analyser.parseSourceFromAnswer(answer);
-    if (src == null) {
-      return new Feedback(); // FIXME: oikeanlainen palaute kun sorsa
-                             // ei suostu menemään edes
-                             // TTK91CompileSource-muotoon - voiko
-                             // näin edes käydä?
-    }
+	getTTK91Application();
+	getTTK91TaskOptions();
 
-    TTK91Application app;
+	//RUN()
 
-    try {
-      app = core.compile(src);
-    }
-    catch (TTK91Exception e) {
-      return new Feedback(); // FIXME: oikeanlainen palaute, kun
-                             // käännös epäonnistuu
-    }
+	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
+	//GeneralAnalysis() a.k.a. "hilut"
+	//AnalyseMemory() Lauri
+	//AnalyseRegisters()
+	//AnalyseOutput()
 
-    try {
-      core.run(app, 5); // FIXME: maksimikierrosten määrä
-                        // taskoptionsista (tai jostain muualta)
-    }
-    catch (TTK91Exception e) {
-      //	System.err.println("Ajonaikainen virhe"+e.getMessage());
-      return new Feedback(); // FIXME: oikeanlainen palaute, kun
-                             // suoritus epäonnistuu
-    }
+	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
 
-    TTK91Memory mem = core.getMemory();
-    TTK91Cpu cpu = core.getCpu();
+	return TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback() );
 
 
-    return new Feedback();
-  } // analyse
+	/*
+	try {
+	    core.run(app, 5); // FIXME: maksimikierrosten määrä
+	    // taskoptionsista (tai jostain muualta)
+	}
+	catch (TTK91Exception e) {
+	    //	System.err.println("Ajonaikainen virhe"+e.getMessage());
+	    return new Feedback(); // FIXME: oikeanlainen palaute, kun
+	    // suoritus epäonnistuu
+	}
 
+	TTK91Memory mem = core.getMemory();
+	TTK91Cpu cpu = core.getCpu();
+
+
+	return new Feedback();
+	*/
+
+    } // analyse
 
     /**
      * Ilmoitetaan StaticTTK91Analyserille tietokanta-cache
      * @param AttributeCache
      */
 
-  public void registerCache(AttributeCache c) {
-    this.cache = c;
-  } // registerCache
+    public void registerCache(AttributeCache c) {
+	this.cache = c;
+    } // registerCache
 
 
     /**
@@ -140,13 +149,85 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param answer
      */
 
-  private static TTK91CompileSource parseSourceFromAnswer(String[] answer) {
-    if (answer != null) { 
-      return (TTK91CompileSource) new Source(answer[0]); // FIXME: toimiiko tosiaan näin helposti?
-    }
-    else {
-      return null;
-    }
-  } // parseSourceFromAnswer
+    private void getTTK91Application(String[] answer) {
+
+	TTK91CompileSource src = StaticTTK91Analyser.parseSourceFromAnswer(answer);
+
+	if (src == null) {
+	    return new Feedback(); // FIXME: oikeanlainen palaute kun sorsa
+	    // ei suostu menemään edes
+	    // TTK91CompileSource-muotoon - voiko
+	    // näin edes käydä?
+	}//if
+	
+	TTK91Application app = null;
+
+	try {
+	    app = core.compile(src);
+	} catch (TTK91Exception e) {
+	    //	    return new Feedback(); // FIXME: oikeanlainen palaute, kun
+	    // käännös epäonnistuu
+	}//catch
+
+	this.application = app;
+
+    }//getTTK91Application
+
+    private static TTK91CompileSource parseSourceFromAnswer(String[] answer) {
+	if (answer != null) { 
+	    return (TTK91CompileSource) new Source(answer[0]); // FIXME: toimiiko tosiaan näin helposti?
+	}
+	else {
+	    return null;
+	}
+    } // parseSourceFromAnswer
+
+    private void getTTK91TaskOptions() {
+
+	//TOMPPA
+	//this.taskOptions = blah;
+
+    }//TTK91TaskOptions
+
+    private void run() {
+
+	//suorita simulointi 1-4 kertaa.
+
+    }//run
+
+    private void generalAnalysis() {
+
+	/* Kaikille seuraaville kenties
+	  -Suoritettujen konekäskyjen määrä (oikeellisuus)
+	  -Ihannekoko (laatu)
+	  -Muistiviitteiden määrä
+	  -Vaaditut käskys
+	  -Kielletyt käskyt
+	 */
+	//results.setBLAAH(boolean)
+
+    }//generalAnalysis
+
+    private void analyseMemory() {
+
+	/*
+	 *MUISTIPAIKKOJEN JA MUUTTUJIEN SISÄLTÖ
+	 */
+
+    }analyseMemory
+
+    private void analyseRegisters() {
+
+	//REKISTERIT
+
+    }analyseRegisters
+    
+    private void analyseOutput() {
+
+	//TULOSTEET SAI JOLLAIN TITOKONEEN METODILLA, EN NYT MUISTA MIKÄ TAI MISTÄ [HT]
+	//NÄYTÖN TULOSTEET
+	//TIEDOSTON TULOSTEET
+
+    }//analyseOutput
 
 } // StaticTTK91Analyser
