@@ -32,7 +32,6 @@ cache = (TaskBase)request.getAttribute(
                   "fi.hy.eassari.showtask.trainer.TaskBase"
                   );
 
-boolean editTask = false;
 TaskDTO task = null;
 
 String syntaxErrorMsg = null;
@@ -46,24 +45,17 @@ try {
 
 syntaxErrorMsg = (String)session.getAttribute("TTK91ERROR");
 
-if(syntaxErrorMsg == null) {out.print("TTK91ERROR == NULL");}
-
 if(syntaxErrorMsg != null) {
 
  syntaxError = true;
 
-} else {
+}//if
 
- if (event == Events.STATIC_TTK91_EDIT) {
+task = (TaskDTO)  
+ request.getSession(false).  
+ getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); 
 
-  editTask = true;
-  task = (TaskDTO)
-  request.getSession(false).
-  getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
-
- }//if
-
-}//else
+out.print("EVENT"+event);
 
 %>
 
@@ -114,7 +106,7 @@ if(syntaxErrorMsg != null) {
 
     out.print(request.getParameter("taskDescription"));
 
-   } else if(editTask == true) {
+   } else if(task != null) {
 
     out.print( task.get("taskDescription") );
 
@@ -135,7 +127,7 @@ if(syntaxErrorMsg != null) {
 
        out.print( request.getParameter("publicInput") );
 
-      } else if(editTask == true) {
+      } else if(task != null) {
 
        out.print( task.get("publicInput") );
 
@@ -156,7 +148,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("hiddenInput") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("hiddenInput") );
 
@@ -176,7 +168,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("exampleCode") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("exampleCode") );
 
@@ -195,7 +187,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("maxCommands") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("maxCommands") );
 
@@ -214,7 +206,7 @@ if(syntaxErrorMsg != null) {
 
        out.print( request.getParameter("acceptedSize") );
 
-      } else if(editTask == true) {
+      } else if(task != null) {
 
        out.print( task.get("acceptedSize") );
 
@@ -232,7 +224,7 @@ if(syntaxErrorMsg != null) {
 
        out.print( request.getParameter("optimalSize") );
 
-      } else if(editTask == true) {
+      } else if(task != null) {
 
        out.print( task.get("optimalSize") );
 
@@ -264,7 +256,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("requiredCommands") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("requiredCommands") );
 
@@ -283,7 +275,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("forbiddenCommands") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("forbiddenCommands") );
 
@@ -302,7 +294,7 @@ if(syntaxErrorMsg != null) {
 
        out.print( request.getParameter("registerValues") );
 
-      } else if(editTask == true) {
+      } else if(task != null) {
 
        out.print( task.get("registerValues") );
 
@@ -321,7 +313,7 @@ if(syntaxErrorMsg != null) {
 
        out.print( request.getParameter("memoryValues") );
 
-      } else if(editTask == true) {
+      } else if(task != null) {
 
        out.print( task.get("memoryValues") );
 
@@ -339,7 +331,7 @@ if(syntaxErrorMsg != null) {
 
         out.print( request.getParameter("memoryReferences") );
 
-       } else if(editTask == true) {
+       } else if(task != null) {
 
         out.print( task.get("memoryReferences") );
 
@@ -359,7 +351,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("screenOutput") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("screenOutput") );
 
@@ -378,7 +370,7 @@ if(syntaxErrorMsg != null) {
 
       out.print( request.getParameter("fileOutput") );
 
-     } else if(editTask == true) {
+     } else if(task != null) {
 
       out.print( task.get("fileOutput") );
 
