@@ -58,6 +58,22 @@ public class TTK91TaskParser {
 		PostParameterParser post,
 		HttpSession session) {
 
+  return assemble(post, session);
+
+ }//assembleStaticTTK91Task
+
+ public TaskDTO assembleFillInTTK91Task(
+	 	PostParameterParser post,
+		HttpSession session) {
+
+  return assemble(post, session);
+
+ }//assembleFillInTTK91Task
+
+ private TaskDTO assemble(
+		 PostParameterParser post,
+		 HttpSession session) {
+
   this.options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
   TaskDTO newTask = new TaskDTO();
 
@@ -97,10 +113,8 @@ public class TTK91TaskParser {
   String  optsize = "" + options.getOptimalSize();
   newTask.set( OPTIMAL_SIZE, ( "" + optsize ) );
 
-  /*FIXME: Poista kommenteista KUN TaskOptionsiin lisätty tämä metodi
-  TTK91TaskCriteria memrefs = options.getMemoryReferences();
+  TTK91TaskCriteria memrefs = options.getMemRefCriteria();
   newTask.set( MEMORY_REFERENCES, memrefs.toString() );
-  */
 
   String[] reqcomm = options.getRequiredCommands();
   newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
@@ -159,7 +173,7 @@ public class TTK91TaskParser {
 
   return newTask;
 
- }//assembleStaticTTK91Task
+ }//assemble
 
  private String concatCriterias(TTK91TaskCriteria[] criterias) {
 
