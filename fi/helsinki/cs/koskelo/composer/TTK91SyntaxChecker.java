@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 import fi.helsinki.cs.koskelo.common.*;
 import fi.hy.eassari.taskdefinition.util.*;
-import fi.hy.eassari.taskdefinition.datastructures.*;
+//import fi.hy.eassari.taskdefinition.datastructures.*;
 import fi.hy.eassari.showtask.trainer.TaskBase;
 
 public class TTK91SyntaxChecker extends HttpServlet {
@@ -296,7 +296,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				memoryCriteria = parseCriteriaString(
 					reqMemoryCriteria
 					);
-				taskOptions.setMemoryCriteria(
+				taskOptions.setMemoryCriterias(
 					memoryCriteria
 					);
 			}
@@ -311,7 +311,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				registerCriteria = parseCriteriaString(
 					reqRegisterCriteria
 					);
-				taskOptions.setRegisterCriteria(
+				taskOptions.setRegisterCriterias(
 					registerCriteria
 					);
 			}
@@ -420,7 +420,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			outPutTable[i][0] = parsePostInt(splitted2[i][0]);
 			outPutTable[i][1] = parsePostInt(splitted2[i][1]);
 		}
-
+		
+		return output;
 	}
 	
 	private String[] validTTK91Commands(
