@@ -7,6 +7,12 @@
 <%@
  page import="fi.hy.eassari.showtask.trainer.TaskBase"
 %>
+<%@
+ page import="fi.helsinki.cs.koskelo.common.TTK91Constant"
+%>
+<%@
+ page import="java.lang.String.*"
+%>
 
 <%
                     //resolve selected language
@@ -36,7 +42,9 @@ TaskDTO task = null;
 
 String syntaxErrorMsg = null;
 boolean syntaxError = false;
+
 String temp; //Parametrin != null välitarkistukseen
+String[] oldValues; //Käytetään editissä kriteerien rivittämiseen.
 
 try {
  event = ( (Integer)request.getAttribute("event") ).intValue();
@@ -244,13 +252,13 @@ task = (TaskDTO)
   </p>
 
   <p>
-    <input type="radio" name="compareMethod" value="0">
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_SIMULATED%>">
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod1Header", lang)%>
   </p>
   
   <p> 
-    <input type="radio" name="compareMethod" value="1" checked>
+    <input type="radio" name="compareMethod" value="<%=TTK91Constant.COMPARE_TO_SIMULATED%>" checked>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
@@ -268,7 +276,18 @@ task = (TaskDTO)
      } else if(task != null) {
 
       temp = (String) task.get("requiredCommands");
-      if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
      }//else
 
@@ -288,7 +307,18 @@ task = (TaskDTO)
      } else if(task != null) {
 
       temp = (String) task.get("forbiddenCommands");
-      if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
      }//else
 
@@ -308,7 +338,18 @@ task = (TaskDTO)
       } else if(task != null) {
 
        temp = (String) task.get("registerValues");
-       if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
       }//else
 
@@ -328,7 +369,18 @@ task = (TaskDTO)
       } else if(task != null) {
 
        temp = (String) task.get("memoryValues");
-       if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
       }//else
 
@@ -368,7 +420,18 @@ task = (TaskDTO)
      } else if(task != null) {
 
       temp = (String) task.get("screenOutput");
-      if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
      }//else
 
@@ -388,7 +451,18 @@ task = (TaskDTO)
      } else if(task != null) {
 
       temp = (String) task.get("fileOutput");
-      if(temp != null) { out.print(temp); } 
+
+       if(temp != null) {
+         oldValues = temp.split(";");
+         for(int i = 0; i<oldValues.length; ++i) {
+           if( (oldValues[i]).length() > 1 ) {
+             out.print(oldValues[i] + ";");
+           }//if
+           if( (i < oldValues.length - 1) ) {
+            out.println();
+           }//if
+         }//for
+       }//if
 
      }//else
 
