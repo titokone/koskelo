@@ -817,7 +817,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			TTK91TaskCriteria[] outputRet = new TTK91TaskCriteria[splitted.length];
 			
 			for(int i = 0; i < splitted.length; i++){
-				outputRet[i] = new TTK91TaskCriteria(splitted[i], true);
+				outputRet[i] = new TTK91TaskCriteria(splitted[i], false);
 			}
 			
 			
