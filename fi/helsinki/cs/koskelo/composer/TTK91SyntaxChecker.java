@@ -1204,116 +1204,125 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					) +
 			"</div>" +
 			"</td>" +
-			"</tr>" +
-			"</table>\n"
+			"</tr>" 
 			);
 		// käskyjen lukumäärä
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"acceptedSizeHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("acceptedSize", false, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("acceptedSize", false, task, editTask) +
+				"</tr>
 				);
 		// optimikoko
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"optimalSizeHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("optimalSize", false, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("optimalSize", false, task, editTask) +
+				"</tr>"
 				);
 		// vaaditut käskyt
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"requiredCommandsHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("requiredCommands", true, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("requiredCommands", true, task, editTask)+
+				"</tr>
 				);
 		// kielletyt käskyt
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"forbiddenCommandsHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("forbiddenCommands", true, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("forbiddenCommands", true, task, editTask) +
+				"</tr>"
 				);
 		// rekisterikriteerit
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"registerValuesHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("register", true, task, editTask)
+				"</p></td></tr><tr>\n"+
+				feedbackBox("register", true, task, editTask)+
+				"</tr>"
 				);
 		// muistikriteerit
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"memoryValuesHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("memory", true, task, editTask)
+				"</p></td></tr>\n<tr>"+
+				feedbackBox("memory", true, task, editTask)+
+				"</tr>"
 				);
 
 		// muistiviitteet
 		page = page.concat(
+				"<tr><td><p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"memoryReferencesHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("memoryReferences", false, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("memoryReferences", false, task, editTask)+
+				"</tr>"
 				);
 		// näyttötulosteet
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"screenOutputHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("screenOutput", true, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("screenOutput", true, task, editTask)+
+				"</tr>"
 				);
 		// tiedostotulosteet
 		page = page.concat(
-				"  <p>"+
+				"<tr><td>  <p>"+
 				cache.getAttribute(
 					"D",
 					"staticttk91taskcomposer",
 					"fileOutputHeader",
 					lang
 					) +
-				"</p>\n"+
-				feedbackBox("fileOutput", true, task, editTask)
+				"</p>\n</td></tr><tr>"+
+				feedbackBox("fileOutput", true, task, editTask)+
+				"</tr></table>"
 				);
 		// submit
 		page = page.concat(
@@ -1352,7 +1361,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String feedback = "";
 
 		tmp = tmp + "<p>\n"+
-			"<textarea cols=\"40\" rows=\"5\" "+
+			"<td><textarea cols=\"40\" rows=\"5\" "+
 			"name=\""+
 			name+
 			"FeedbackPositive\">";
@@ -1365,8 +1374,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			feedback = "";
 		}
 
-		tmp = tmp +	"</textarea>\n";
-		tmp = tmp +	"<textarea "+
+		tmp = tmp +	"</textarea>\n</td>";
+		tmp = tmp +	"<td><textarea "+
 			"cols=\"40\" rows=\"5\" "+
 			"name="+
 			"\""+
@@ -1382,10 +1391,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}
 
-		tmp = tmp + "</textarea>\n";
+		tmp = tmp + "</textarea>\n</td>";
 
 		if(quality){
-			tmp = tmp + "<textarea cols=\"40\" rows=\"5\" name="+
+			tmp = tmp + "<td><textarea cols=\"40\" rows=\"5\" name="+
 				"\""+
 				name+
 				"QualityFeedback\">";
@@ -1398,7 +1407,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 			}
-			tmp = tmp +	"</textarea>\n";
+			tmp = tmp +	"</textarea>\n</td>";
 		}
 
 		tmp = tmp + "</p>\n";
