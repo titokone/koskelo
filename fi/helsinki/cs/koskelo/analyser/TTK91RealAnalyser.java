@@ -539,7 +539,7 @@ public class TTK91RealAnalyser {
 	for (int i = 0; i < screenOutCrit.length; ++i) {
 	    TTK91TaskCriteria crit = screenOutCrit[i];
 	    if (crit.getQuality()) {
-		if (!outPutQualityOk) {
+		if (!outputQualityOk) {
 		    continue; // valmiiksi poks
 		}
 		qualityFound = true;
@@ -547,7 +547,7 @@ public class TTK91RealAnalyser {
 		if ( (studHidScreenOut != null) &&
 		     (tchrHidScreenOut != null) &&
 		     (outputQualityOk) ) {
-		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, sutdHidScreenOut, tchrHidScreenOut);
+		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studHidScreenOut, tchrHidScreenOut);
 		}
 	    }
 	    else {
@@ -601,7 +601,7 @@ public class TTK91RealAnalyser {
 	for (int i = 0; i < fileOutCrit.length; ++i) {
 	    TTK91TaskCriteria crit = fileOutCrit[i];
 	    if (crit.getQuality()) {
-		if (!outPutQualityOk) {
+		if (!outputQualityOk) {
 		    continue; // valmiiksi poks
 		}
 		qualityFound = true;
@@ -609,7 +609,7 @@ public class TTK91RealAnalyser {
 		if ( (studHidFileOut != null) &&
 		     (tchrHidFileOut != null) &&
 		     (outputQualityOk) ) {
-		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, sutdHidFileOut, tchrHidFileOut);
+		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studHidFileOut, tchrHidFileOut);
 		}
 	    }
 	    else {
