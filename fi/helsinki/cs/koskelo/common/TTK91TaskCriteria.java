@@ -270,6 +270,7 @@ public class TTK91TaskCriteria{
  public String toString() {
 
   String criteria;
+
   criteria = "(";
 
   if(this.quality == true) {
