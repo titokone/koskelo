@@ -26,7 +26,7 @@ public class TTK91TaskCriteria{
  private boolean quality; //True = kriteeri on laadullinen
 
  /**
- * Alustaa kriteerin muuttujat.
+ * Luo tyhjän kriteeriolion.
  */
 
  public TTK91TaskCriteria() {
@@ -39,7 +39,7 @@ public class TTK91TaskCriteria{
  }//TTK91TaskCriteria()
 
  /**
- * Alustaa tyhjän kriteerin.
+ * Luo kriteerin saamastaan merkkijonoesityksestä. 
  * @throws InvalidTTK91CriteriaException
  * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
  * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
