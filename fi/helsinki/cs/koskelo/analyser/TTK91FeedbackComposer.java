@@ -405,10 +405,10 @@ public class TTK91FeedbackComposer{
 												 +"</tr>");
 
 		for(int i = 0; i < crt.length; ++i) {
-			feedbackTable.append("<td>CRT " +i +":  " +crt[i] +"</td></tr>");
+			feedbackTable.append("<td>CRT " +(i+1) +":  " +crt[i] +"</td></tr>");
 		}
 		for(int i = 0; i < file.length; ++i) {
-			feedbackTable.append("<td>FILE " +i +": " +file[i] +"</td></tr>");
+			feedbackTable.append("<td>FILE " +(i+1) +": " +file[i] +"</td></tr>");
 		}
 		feedbackTable.append("</table><br>");
 
