@@ -37,78 +37,89 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		// sen tyyppi ja syntaksi oikein.
 
 		// suoritettavien konekäskyjen maksimimäärä
+	
+		String reqEvent = req.getParameter(
+				"event");
+		
 		String reqMaxCommands = req.getParameter(
-				"max_commands"
+				"maxCommands"
 				);
 		// malliratkaisu
 		String reqExampleCode;
 		// tehtävänanto
-		String reqTaskDescription;
+		String reqTaskDescription = req.getParameter(
+				"taskDescription"
+				);
 		// julkiset syötteet
 		String reqPublicInput = req.getParameter(
-				"public_input"
+				"publicInput"
 				);
 		// piilotetut syötteet
 		String reqHiddenInput = req.getParameter(
-				"hidden_input"
+				"hiddenInput"
 				);
 		// verrataanko simulaatioon
 		String reqCompareMethod = req.getParameter(
-				"compare_method"
+				"compareMethod"
 				);
 		
 		// miksi tämä on?
 		String reqAcceptedSize = req.getParameter(
-				"accepted_size"
+				"acceptedSize"
 				); 
 		// ratkaisun suosituskoko
 		String reqOptimalSize = req.getParameter(
-				"optimal_size"
+				"optimalSize"
 				); 
 		// kielletyt konekäskyt
 		String reqRequiredCommands = req.getParameter(
-				"required_commands"
+				"requiredCommands"
 				);
 		// vaaditut konekäskyt
 		String reqForbiddenCommands = req.getParameter(
-				"forbidden_commands"
+				"forbiddenCommands"
 				);
 		
 		// pyydetyt rekisterien arvot
 		String reqRegisterValues = req.getParameter(
-				"register_values"
+				"registerValues"
 				);
 		
 		//muistipaikkojen arvot
 		String reqMemoryValues = req.getParameter(
-				"memory_values"
+				"memoryValues"
+				);
+		// Muistiviittaukset
+		String reqMemoryReferences = req.getParameter(
+				"memoryReferences"
 				);
 		
 		// näytön tulosteet
 		String reqScreenOutput = req.getParameter(
-				"screen_output"
+				"screenOutput"
 				); 
 		
 		// tulosteet tiedostoon
 		String reqFileOutput = req.getParameter(
-				"file_output"
+				"fileOutput"
 				); 
 		
 
-		int maxCommands;
 		String exampleCode; //TODO tarkista koodin kääntyminen
 		String taskDescription; // tarviiko tarkistaa?
-		int[] publicInput; 
-		int[] hiddenInput; // 1,2,3,5,2...
-		int compareMethod; // 0 = static, 1 = simuloitu
-		int acceptedSize; // 200 riviä
-		int optimalSize; // 10 riviä
 		String[] requiredCommands; // JUMP
 		String[] forbiddenCommands; // EQU
-		TTK91TaskCriteria[] registerCriteria; // R2 > 1
-		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
+		int compareMethod; // 0 = static, 1 = simuloitu
+		int maxCommands;
+		int acceptedSize; // 200 riviä
+		int optimalSize; // 10 riviä
+		int memoryReferences;
 		int[][] screenOutput; // (1,3) (2,4) (4,3)
 		int[][] fileOutput; // (1,3)(2,4)(4,3)
+		int[] publicInput; 
+		int[] hiddenInput; // 1,2,3,5,2...
+		TTK91TaskCriteria[] registerCriteria; // R2 > 1
+		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
 
 
 		// TODO checking of session, but no need for new one
@@ -319,27 +330,143 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		
 		session.setAttribute("TTK91TaskOptions", taskOptions);
 
-		
-		
+		res.setContentType ("text/html");
+		ServletOutputStream out = res.getOutputStream();
+		out.print(feedbackForm());
 
 		
 	} // doPost
 
-	/** Not yet sure what for. 
-	*/
+	private String feedbackForm() {
 
-	public void init() throws ServletException {
+		// TODO language!!
+		
+		String page = "<html>";
+
+		// head
+		page.concat(
+				"<head>"+
+				"<title>Untitled Document</title>" +
+				"<meta http-equiv=\"Content-Type\" "+
+				"content=\"text/html; charset=iso-8859-1\">"+
+				"</head>"
+			   );
+		// body
+		
+		page.concat(
+				"<body bgcolor=\"#FFFFFF\">"
+
+			   );
+		// title
+		
+		page.concat(
+				"<h1>Opiskelijalle annettavat palautteet</h1>"
+			   );
+
+		// form
+		page.concat(
+				"<form method=\"post\" action=\"\">\n"
+			   );
+
+		page.concat(
+				"  <table width=\"450\" border=\"0\">"+
+				"   <tr>"+
+				"        <td>" +
+				"  <div align=\"center\">"+
+				"<b>Kriteeri t&auml;yttyy</b>" +
+				"</div>" +
+				"</td>" +
+				"<td>" +
+				"       <div align=\"center\">" +
+				"<b>Kriteeri ei t&auml;yty</b>" +
+				"</div>" +
+				"</td>" +
+				"</tr>" +
+				"</table>\n"
+			   );
+
+		page.concat(
+				"  <p>Hyv&auml;ksytt&auml;v&auml;n"+
+				" ratkaisun k&auml;skyjen " +
+				"maksimim&auml;&auml;r&auml;  </p>\n"+
+				feedbackBox("acceptedSize")
+			   );
+
+		page.concat(
+				"  <p>Ihannekoko  </p>\n"+
+				feedbackBox("optimalSize")
+			   );
+
+		page.concat(
+				"  <p>Ohjelmassa vaaditut k&auml;skyt  </p>\n"+
+				feedbackBox("requiredCommands")
+			   );
+
+		page.concat(
+				"<p>Ohjelmassa kielletyt k&auml;skyt</p>\n" +
+				feedbackBox("forbiddenCommands")
+				);
+
+		page.concat(
+				"<p>Rekisterien sis&auml;lt&ouml;</p>" +
+				feedbackBox("register")
+			   );
+		
+		page.concat(
+				"  <p>Muistipaikkojen ja muuttujien sis&auml;lt&ouml;</p>" +
+				feedbackBox("memory")
+			   );
+		
+		page.concat(
+				"<p>Muistiviitteiden m&auml;&auml;r&auml;</p>" +
+				feedbackBox("memoryReferences")
+			   );
+		
+		page.concat(
+				"<p>Tulosteet n&auml;yt&ouml;lle</p>" +
+				feedbackBox("screenOutput")
+			   );
+		
+		page.concat(
+				"  <p>Tulosteet tiedostoon</p>" +
+				feedbackBox("fileOutput")
+			   );
+
+		page.concat(
+				"  <p>"+
+				"<input type=\"submit\""+
+				" name=\"Submit\""+
+				"value=\"Luo teht&auml;v&auml;\">"+
+				"</p>"
+			   );
+
+		page.concat("</form></body></html>");
+				
+
+		return page;
+	}
 
 
-	} // init()
+	private String feedbackBox(String name) {
+
+		return "<p>\n"+
+			"<textarea cols=\"40\" rows=\"5\" "+
+			"name=\""+name+"FeedbackPositive\">"+
+			"</textarea>\n"+
+			"<textarea name="+
+			"\""+name+"FeedbackNegative\""+
+			"cols=\"40\" rows=\"5\">"+
+			"</textarea>\n"+
+			"</p>\n";
+	}
 
 
 	private int parsePostInt(String s) throws Exception {
 
 		return ((new Integer(s)).intValue());
-		
+
 	}
-	
+
 	/** Servletin oma sisäinen apumetodi. Tätä hyödynnetään
 	 * doPostin parsiessa kriteereitä erilleen saamastaan 
 	 * HttpRequestista.
