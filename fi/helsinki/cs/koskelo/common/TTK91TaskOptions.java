@@ -8,6 +8,8 @@ import java.util.Vector;
  */
 public class TTK91TaskOptions {
 
+	public final static int COMPARE_TO_SIMULATED = 0; // FIXME syntaxCheckeriin nämä kanssa käyttöön ja kai jsp-sivuille?
+	public final static int COMPARE_TO_STATIC = 1;
   private final static int MAX_COMMANDS = 10000; //FIXME: kai tämä
                                                  //oletusarvo
                                                  //määritellään
