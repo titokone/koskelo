@@ -180,13 +180,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		int maxCommands;
 		int acceptedSize; // 200 riviä
 		int optimalSize; // 10 riviä
-		int[][] screenOutput; // (1,3) (2,4) (4,3)
-		int[][] fileOutput; // (1,3)(2,4)(4,3)
 		int[] publicInput;
 		int[] hiddenInput; // 1,2,3,5,2...
 		TTK91TaskCriteria memoryReferences;
 		TTK91TaskCriteria[] registerCriteria; // R2 > 1
 		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
+		TTK91TaskCriteria[] screenOutput; // (1,3) (2,4) (4,3)
+		TTk91TaskCriteria[] fileOutput; // (1,3)(2,4)(4,3)
 
 		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
 
@@ -810,46 +810,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * Ylimääräiset annettavat numerot yksien sulkujen sisällä 
 	 * jätetään huomiotta.
 	 */
-	private int[][] parseOutputString(String output) 
-		throws Exception{
+	private TTK91TaskCriteria[] parseOutputString(String output) 
+		throws InvalidTTK91CriteriaException{
 
-                  	//(L,1,10);(2,30);
-	                String[] splitted1 = output.split(";");
-			//splitted1_0["(L,1,10)"] ja slitted1_1["(2,30)"]
-			String[][] splitted2 = new String[splitted1.length][];
-			String[] splitted3;
-			int[][] outPutTable = new int[splitted1.length][];
-			boolean quality;
-
-			for(int i = 0; i < splitted1.length; i++) {
-
-				splitted1[i] = splitted1[i].replaceAll("\\(","");
-				//splitted1_0["L,1,10)"]
-
-				splitted1[i] = splitted1[i].replaceAll("\\)","");
-                                //splitted1_0["L,1,10"]
-
-				splitted1[i] = splitted1[i].trim();
-				splitted2[i] = splitted1[i].split(",");
-                                //splitted2_0["L"] ja splitted2_1["1"] ja INDEX_OUT_OF_BOUNDS
-
-				splitted2[i][0] = splitted2[i][0].trim(); // kaiva täältä L
-				//Jos vain (1,10) ? Etsitään olematonta laatua
-
-				if(splitted2[i][0].equalsIgnoreCase("L")) {
-				    quality = true; // Tällä ei näköjään tehdä yhtään mitään (?)
-				}
-				
-				splitted2[i][1] = splitted2[i][1].trim();
-				outPutTable[i][0] = parsePostInt(
-						splitted2[i][0]
-						);
-				outPutTable[i][1] = parsePostInt(
-						splitted2[i][1]
-						);
+			String[] splitted = output.split(";");
+			TTK91TaskCriteria[] output = new TTK91TaskCriteria[splitted.length];
+			
+			for(int i = 0; i < splitted.length(); i++){
+				this.output[i] = new TTK91TaskCriteria(splitted[i], true);
 			}
-
-			return outPutTable;
+			
+			
+			return this.output;
 		}
 	/** Apumetodi, jolla tarkistetaan syötteistä ovatko ne pilkulla
 	 * toisistaan erotettuja TTK91-käskyjä.

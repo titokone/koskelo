@@ -30,8 +30,8 @@ public class TTK91TaskOptions {
   private int[] publicinput;
   private int[] hiddeninput;
 
-  private int[][] screenoutput;
-  private int[][] fileoutput;
+  private TTK91TaskCriteria[] screenoutput;
+  private TTK91TaskCriteria[] fileoutput;
   
   private int comparemethod;
   private int maxcommands;
@@ -131,7 +131,7 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    * FIXME tyyppi muuttuu
    */
-  public void setScreenOutputCriterias(int[][] crit) {
+  public void setScreenOutputCriterias(TTK91TaskCriteria[] crit) {
     this.screenoutput = crit;
   } // addScreenOutputCriteria(TTK91TaskCriteria[] crit)
 
@@ -140,8 +140,8 @@ public class TTK91TaskOptions {
    * Lisää näytön tulosteeseen liittyvän kriteerin crt-taulukon viimeiseksi.
    * @param crit Kokoelmaan lisättävä kriteeri
    */
-  /*
-  public void addScreenOutputCriteria(TTK91TaskCriteria crit) {
+  
+ /* public void addScreenOutputCriteria(TTK91TaskCriteria crit) {
     if (crit != null) {
 	    this.screencrits.add(crit);
     }
@@ -153,7 +153,7 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    * FIXME tyyppi muuttuu
    */
-  public void setFileOutputCriterias(int[][] crit) {
+  public void setFileOutputCriterias(TTK91TaskCriteria[] crit) {
     this.fileoutput = crit;
   } // addFileOutputCriteria(TTK91TaskCriteria[] crit)
 
@@ -306,7 +306,7 @@ public class TTK91TaskOptions {
    * Hakee kaikki näytön tulosteisiin liittyvät kriteerit.
    * @return kriteerit TTK91-simulaattorin näyttötulosteille
    */
-  public int[][] getScreenOutputCriterias() {
+  public TTK91TaskCriteria[] getScreenOutputCriterias() {
     return this.screenoutput;
   } // getScreenOutputCriterias
 
@@ -315,7 +315,7 @@ public class TTK91TaskOptions {
    * Hakee kaikki tiedoston tulosteisiin liittyvät kriteerit.
    * @return kriteerit TTK91-simulaattorin tiedostotulosteille
    */
-  public int[][] getFileOutputCriterias() {
+  public TTK91TaskCriteria[] getFileOutputCriterias() {
     return this.fileoutput;
   } // getFileOutputCriterias
 
@@ -686,12 +686,13 @@ public class TTK91TaskOptions {
     strbf.append(":");
 
     //    Näyttötulostuksen kriteerit
-    int[][] screens = this.getScreenOutputCriterias();
+   
+    TTK91TaskCriteria[] screens = this.getScreenOutputCriterias();
     toStringHelper(strbf, screens);
     strbf.append(":");
 
     //    Tiedostotulostuksen kriteerit
-    int[][] files = this.getFileOutputCriterias();
+    TTK91TaskCriteria[] files = this.getFileOutputCriterias();
     toStringHelper(strbf, files);
     strbf.append(":");
     
