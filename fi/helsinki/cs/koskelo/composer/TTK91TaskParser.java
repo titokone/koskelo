@@ -60,7 +60,7 @@ public class TTK91TaskParser {
 		PostParameterParser post,
 		HttpSession session) {
 
-  return assemble(post, session);
+   return assemble(post, session);
 
  }//assembleStaticTTK91Task
 
@@ -79,19 +79,21 @@ public class TTK91TaskParser {
   TTK91TaskOptions options;
   options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
 
-  TaskDTO newTask = (TaskDTO)session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
+  Object temp = session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); //KAATUU
+  if(temp == null) {return null;} //FIXME KAATUU TÄSSÄ
+  TaskDTO newTask = (TaskDTO)temp;
 
   TTK91TaskCriteria[] rc = options.getRegisterCriterias();
-  newTask.set( REGISTER_VALUES, concatCriterias(rc) );
+  // newTask.set( REGISTER_VALUES, concatCriterias(rc) );
 
   TTK91TaskCriteria[] mc = options.getMemoryCriterias();
-  newTask.set( MEMORY_VALUES, concatCriterias(mc) );
+  //  newTask.set( MEMORY_VALUES, concatCriterias(mc) );
 
   int[][] soc = options.getScreenOutputCriterias();
-  newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
+  //  newTask.set( SCREEN_OUTPUT, concatCriterias(soc) );
 
   int[][] foc = options.getFileOutputCriterias();
-  newTask.set( FILE_OUTPUT, concatCriterias(foc) );
+  //  newTask.set( FILE_OUTPUT, concatCriterias(foc) );
 
   String code = options.getExampleCode();
   newTask.set( EXAMPLE_CODE, code );
@@ -100,10 +102,10 @@ public class TTK91TaskParser {
   newTask.set( TASK_DESCRIPTION, taskdesc );
 
   int[] publicinput = options.getPublicInput();
-  newTask.set( PUBLIC_INPUT, publicinput );
+  //  newTask.set( PUBLIC_INPUT, publicinput );
 
   int[] hiddeninput = options.getHiddenInput();
-  newTask.set( HIDDEN_INPUT, hiddeninput );
+  //  newTask.set( HIDDEN_INPUT, hiddeninput );
 
   int compmethod = options.getCompareMethod();
   newTask.set( COMPARE_METHOD, ("" + compmethod ) );
@@ -121,10 +123,10 @@ public class TTK91TaskParser {
   newTask.set( MEMORY_REFERENCES, memrefs.toString() );
 
   String[] reqcomm = options.getRequiredCommands();
-  newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
+  //  newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
 
   String[] forbcomm = options.getForbiddenCommands();
-  newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
+  //  newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
 
   newTask.set( REGISTER_FEEDBACK_POSITIVE,
 	       post.getStringParameter(REGISTER_FEEDBACK_POSITIVE) );

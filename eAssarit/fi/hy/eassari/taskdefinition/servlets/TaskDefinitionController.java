@@ -244,23 +244,25 @@ public class TaskDefinitionController extends HttpServlet {
 				  session.setAttribute("java.util.Collection", tasks);
 				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
-			/*ADDED by HT, Koskelo-projekti, 08.11.2004*
-			 *Modified by EN
-			 *Assemble a statitc TTK91 task
-			 */
+
+
+               		  /*ADDED by HT, Koskelo-projekti, 08.11.2004
+			  *Modified by EN
+			  *Assemble a statitc TTK91 task
+			  */
+
 			  case Events.STATIC_TTK91_SUBMIT:
-				  task = fi.helsinki.cs.koskelo.composer.TTK91TaskParser.assembleStaticTTK91Task(
-						  post, session
-						  );
-				  taskDb.saveData(task);
-				  tasks = db.getAllAuthorTasks(userId, displayLanguage);
-				  session.setAttribute("java.util.Collection", tasks);
-				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
+
+				  task = TTK91TaskParser.assembleStaticTTK91Task(post, session); //FIXME KAATUU TÄSSÄ
+				  if(task != null) {
+				   taskDb.saveData(task);
+				   tasks = db.getAllAuthorTasks(userId, displayLanguage);
+				   session.setAttribute("java.util.Collection", tasks);
+				  }//if
+				   request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
 			  case Events.FILLIN_TTK91_SUBMIT:
-				  task = fi.helsinki.cs.koskelo.composer.TTK91TaskParser.assembleFillInTTK91Task(
-						  post, session
-						  );
+				  task = TTK91TaskParser.assembleFillInTTK91Task(post, session);//FIXME KAATUU TÄSSÄ
 				  taskDb.saveData(task);
 				  tasks = db.getAllAuthorTasks(userId, displayLanguage);
 				  session.setAttribute("java.util.Collection", tasks);
