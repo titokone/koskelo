@@ -464,7 +464,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			if(validParam(reqCompareMethod)) {
 				compareMethod = parsePostInt(reqCompareMethod);
 
-				if(compareMethod == TTK91Constants.COMPARE_TO_SIMULATED && !validParam(exampleCode)) {
+				if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED && !validParam(exampleCode)) {
 
 
 					// Vaaditaan esimerkkikoodi, jos
@@ -831,7 +831,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 * j‰tet‰‰n huomiotta.
 	 */
 	private TTK91TaskCriteria[] parseOutputString(String output)
-		throws InvalidTTK91CriteriaException{
+		throws InvalidTTK91CriteriaException, Exception{
 
 			String[] splitted = output.split(";");
 			TTK91TaskCriteria[] outputRet = new TTK91TaskCriteria[splitted.length];
