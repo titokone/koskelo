@@ -44,6 +44,7 @@ Collection tasks = (Collection)request.getSession(false).getAttribute("java.util
 	if (tasks != null) {
 		Iterator taskIter = tasks.iterator();
 		while (taskIter.hasNext()) {
+
 			TaskDTO taskAtIter = (TaskDTO)taskIter.next();
 
 			Collection taskLanguages = LanguageHandler.getTaskLanguages(taskAtIter.getTaskId());

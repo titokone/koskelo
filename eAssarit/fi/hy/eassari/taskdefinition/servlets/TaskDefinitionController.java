@@ -253,7 +253,7 @@ public class TaskDefinitionController extends HttpServlet {
 
 			  case Events.STATIC_TTK91_SUBMIT:
 
-				  task = TTK91TaskParser.assembleStaticTTK91Task(post, session); //FIXME KAATUU TÄSSÄ
+				  task = TTK91TaskParser.assembleStaticTTK91Task(post, session);
 				  if(task != null) {
 				   taskDb.saveData(task);
 				   tasks = db.getAllAuthorTasks(userId, displayLanguage);
@@ -262,7 +262,7 @@ public class TaskDefinitionController extends HttpServlet {
 				   request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
 			  case Events.FILLIN_TTK91_SUBMIT:
-				  task = TTK91TaskParser.assembleFillInTTK91Task(post, session);//FIXME KAATUU TÄSSÄ
+				  task = TTK91TaskParser.assembleFillInTTK91Task(post, session);
 				  taskDb.saveData(task);
 				  tasks = db.getAllAuthorTasks(userId, displayLanguage);
 				  session.setAttribute("java.util.Collection", tasks);

@@ -160,19 +160,13 @@ public class TTK91TaskParser {
   newTask.set( OPTIMAL_SIZE, ( "" + optsize ) );
 
   TTK91TaskCriteria memrefs = options.getMemRefCriteria();
-  if(memrefs != null) {
-   newTask.set( MEMORY_REFERENCES, concatMemoryReference(memrefs) );
-  }//if
+  newTask.set( MEMORY_REFERENCES, concatMemoryReference(memrefs) );
 
   String[] reqcomm = options.getRequiredCommands();
-  if(reqcomm != null) {
-   newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
-  }//if
+  newTask.set( REQUIRED_COMMANDS, concatCommands(reqcomm) );
 
   String[] forbcomm = options.getForbiddenCommands();
-  if(forbcomm != null) {
-   newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
-  }//if
+  newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
 
   //Ker‰t‰‰n request-olion mukana tulleet teht‰v‰‰n liittyv‰t
   //palautteet.
@@ -311,6 +305,8 @@ public class TTK91TaskParser {
  ******************************************************************/
 
  private static String concatMemoryReference(TTK91TaskCriteria memrefs) {
+
+  if(memrefs == null) {return "";}
 
   String references = "";
 
