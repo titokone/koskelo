@@ -442,4 +442,25 @@ public final class TTK91AnalyserExtraUtils {
 		}
 
 	}
+
+    public static int[] parseOutputArrays(String from) {
+	if (from == null) {
+	    return null;
+	}
+	String lineFeed = System.getProperty("line.separator", "\n");
+	String[] outputArray = from.split(lineFeed); // käytännössä siis stringissä on rivinvaihdolla erotettuna numeroita FIXME: testausraporttiin/ylläpitodokkariin kommentti; mitäs jos on kaksimerkkinen rivinvaihto?
+	
+	int[] to = new int[outputArray.length];
+	for (int i=0; i < outputArray.length; ++i) {
+	    try {
+		to[i] = Integer.parseInt(outputArray[i]);
+	    }
+	    catch (NumberFormatException e) {
+		return null;
+	    }
+	}
+	return to;
+    }
+    
+
 }
