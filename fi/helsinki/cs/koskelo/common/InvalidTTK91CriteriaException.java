@@ -2,13 +2,13 @@
 
 public class InvalidTTK91CriteriaException extends Exception {
 
- public InvalidCriteriaException() {
+ public InvalidTTK91CriteriaException() {
 
   super();
 
  }//InvalidCriteriaException
 
- public InvalidCriteriaException(String msg) {
+ public InvalidTTK91CriteriaException(String msg) {
 
   super(msg);
 
