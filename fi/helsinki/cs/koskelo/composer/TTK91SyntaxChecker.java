@@ -244,7 +244,8 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			
 		} catch (Exception e) {
 
-			// TODO virheen palautus. Tälle metodinsa kun se on näissä
+			// TODO virheen palautus.
+			// Tälle metodinsa kun se on näissä
 			// kkaikissa?
 		}
 
@@ -278,9 +279,13 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 			if( reqRequiredCommands != null) {
 
-				requiredCommands = reqRequiredCommands.split(",");
+				requiredCommands = reqRequiredCommands.split(
+						","
+						);
 
-				taskOptions.setRequiredCommands(requiredCommands);
+				taskOptions.setRequiredCommands(
+						requiredCommands
+						);
 
 			}
 			
@@ -292,9 +297,13 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 			if( reqForbiddenCommands != null) {
 
-				forbiddenCommands = reqForbiddenCommands.split(",");
+				forbiddenCommands = reqForbiddenCommands.split(
+						","
+						);
 
-				taskOptions.setForbiddenCommands(forbiddenCommands);
+				taskOptions.setForbiddenCommands(
+						forbiddenCommands
+						);
 			}
 
 		} catch (Exception e) {
@@ -332,12 +341,12 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		res.setContentType ("text/html");
 		ServletOutputStream out = res.getOutputStream();
-		out.print(feedbackForm());
+		out.print(feedbackForm(req.getContextPath()));
 
 		
 	} // doPost
 
-	private String feedbackForm() {
+	private String feedbackForm(String context) {
 
 		// TODO language!!
 		
@@ -365,7 +374,10 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		// form
 		page.concat(
-				"<form method=\"post\" action=\"\">\n"
+				"<form method=\"post\" action=\""+
+				context+
+				"/koskelo/common/TTK91TaskParser"+
+				"\">\n"
 			   );
 
 		page.concat(
@@ -413,7 +425,8 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			   );
 		
 		page.concat(
-				"  <p>Muistipaikkojen ja muuttujien sis&auml;lt&ouml;</p>" +
+				"  <p>Muistipaikkojen ja muuttujien"+
+				"sis&auml;lt&ouml;</p>" +
 				feedbackBox("memory")
 			   );
 		
@@ -451,10 +464,14 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		return "<p>\n"+
 			"<textarea cols=\"40\" rows=\"5\" "+
-			"name=\""+name+"FeedbackPositive\">"+
+			"name=\""+
+			name+
+			"FeedbackPositive\">"+
 			"</textarea>\n"+
 			"<textarea name="+
-			"\""+name+"FeedbackNegative\""+
+			"\""+
+			name+
+			"FeedbackNegative\""+
 			"cols=\"40\" rows=\"5\">"+
 			"</textarea>\n"+
 			"</p>\n";
