@@ -1,9 +1,11 @@
 package fi.helsinki.cs.koskelo.analyser;
 
 import fi.helsinki.cs.koskelo.common.*;
+
 import fi.hy.eassari.showtask.trainer.AttributeCache;
 import fi.hy.eassari.showtask.trainer.Feedback;
 import fi.hy.eassari.showtask.trainer.CacheException;
+
 
 /**
  * Luokka, joka luo kriteerien perusteella palautteen.
@@ -461,8 +463,11 @@ public class TTK91FeedbackComposer{
 		 * new String(feedbackTable) (palaute).
 		 */
 
-		return new Feedback(0, evaluation, feedbackSummaryPos, 
-												feedbackSummaryNeg, new String(feedbackTable));
+		return new Feedback(TTK91Constant.NO_ERROR, 
+												evaluation, 
+												feedbackSummaryPos, 
+												feedbackSummaryNeg, 
+												new String(feedbackTable));
 		
 	}//formFeedback
 
@@ -478,7 +483,7 @@ public class TTK91FeedbackComposer{
 
 		// Virhekoodi 2 on fataalivirhe.
 
-		return new Feedback(2, errorMessage);
+		return new Feedback(TTK91Constant.FATAL_ERROR, errorMessage);
 	}//formFeedback
 
 	/**
