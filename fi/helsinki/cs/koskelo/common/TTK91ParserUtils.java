@@ -1,8 +1,15 @@
 
 package fi.helsinki.cs.koskelo.common;
 
+/** TTK91 teht‰vien parsimiseen k‰ytett‰vi‰ yhteisi‰ metodeja */
+
 public class TTK91ParserUtils { 
 
+	/** Tarkistaa onko annettu String m‰‰ritelty TTK91-konekielen
+	 * k‰skyksi.
+	 * @param command TTK-91 k‰skyn String-esitys
+	 * @return Onko annettu k‰sky validi TTK-91 k‰sky
+	 */
 
 	static public boolean validateTTK91Command(String command) {
 
@@ -50,10 +57,11 @@ public class TTK91ParserUtils {
 				command.equals("EQU")
 				
 				) {
+				
 					return true;
 				
 				} else {
-					
+				
 					return false;
 				
 				}
