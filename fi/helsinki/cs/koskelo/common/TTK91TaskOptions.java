@@ -8,8 +8,8 @@ import java.util.Vector;
  */
 public class TTK91TaskOptions {
 
-	public final static int COMPARE_TO_SIMULATED = 0; // FIXME syntaxCheckeriin nämä kanssa käyttöön ja kai jsp-sivuille?
-	public final static int COMPARE_TO_STATIC = 1;
+    //	public final static int COMPARE_TO_SIMULATED = 0; // FIXME syntaxCheckeriin nämä kanssa käyttöön ja kai jsp-sivuille?
+    //	public final static int COMPARE_TO_STATIC = 1;
   //  private final static int MAX_COMMANDS = 10000; // obsolete
 	
   					 //[EN] ei, mutta
@@ -127,7 +127,8 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    */
   public void setScreenOutputCriterias(TTK91TaskCriteria[] crit) {
-    this.screenoutput = crit;
+      System.err.println("TTK91TaskOptions.setScreenOutputCriterias; Asetettavan kriteeritaulukon pituus: "+crit.length);
+      this.screenoutput = crit;
   } // addScreenOutputCriteria(TTK91TaskCriteria[] crit)
 
 
@@ -148,7 +149,10 @@ public class TTK91TaskOptions {
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    */
   public void setFileOutputCriterias(TTK91TaskCriteria[] crit) {
-    this.fileoutput = crit;
+      if (crit != null) {
+	  System.err.println("TTK91TaskOptions.setFileOutputCriterias; Asetettavan kriteeritaulukon pituus: "+crit.length);
+      }
+      this.fileoutput = crit;
   } // addFileOutputCriteria(TTK91TaskCriteria[] crit)
 
 
@@ -187,6 +191,13 @@ public class TTK91TaskOptions {
    * @param input Asetettavat julkiset syötteet
    */
   public void setPublicInput(int[] input) {
+      if (input != null) {
+	  System.err.println("TTK91TaskOptions.setPublicInput--->");
+	  for (int i=0; i<input.length; ++i) {
+	      System.err.print(input[i]+" ");
+	  }
+	  System.err.println("<---TTK91TaskOptions.setPublicInput");
+      }
     this.publicinput = input;
   } // setPublicInput
 
