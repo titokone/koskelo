@@ -543,20 +543,20 @@ public class TTK91RealAnalyser {
 		    continue; // valmiiksi poks
 		}
 		qualityFound = true;
-		outputQualityOk = TTK91AnalyserExtraUtils.checkScreenOutCriteria(crit, studPubScreenOut, tchrPubScreenOut);
+		outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studPubScreenOut, tchrPubScreenOut);
 		if ( (studHidScreenOut != null) &&
 		     (tchrHidScreenOut != null) &&
 		     (outputQualityOk) ) {
-		    outputQualityOk = TTK91AnalyserExtraUtils.checkScreenOutCriteria(crit, sutdHidScreenOut, tchrHidScreenOut);
+		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, sutdHidScreenOut, tchrHidScreenOut);
 		}
 	    }
 	    else {
 		critFound = true;
-		outputCritOk = TTK91AnalyserExtraUtils.checkScreenOutCriteria(crit, studPubScreenOut, tchrPubScreenOut);
+		outputCritOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studPubScreenOut, tchrPubScreenOut);
 		if ( (studHidScreenOut != null) &&
 		     (tchrHidScreenOut != null) &&
 		     (outputCritOk) ) {
-		    outputCritOk = TTK91AnalyserExtraUtils.checkScreenOutCriteria(crit, studHidScreenOut, tchrHidScreenOut);
+		    outputCritOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studHidScreenOut, tchrHidScreenOut);
 		}
 		if (!outputCritOk) {
 		    break; // kaik' on mänt'
@@ -605,20 +605,20 @@ public class TTK91RealAnalyser {
 		    continue; // valmiiksi poks
 		}
 		qualityFound = true;
-		outputQualityOk = TTK91AnalyserExtraUtils.checkFileOutCriteria(crit, studPubFileOut, tchrPubFileOut);
+		outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studPubFileOut, tchrPubFileOut);
 		if ( (studHidFileOut != null) &&
 		     (tchrHidFileOut != null) &&
 		     (outputQualityOk) ) {
-		    outputQualityOk = TTK91AnalyserExtraUtils.checkFileOutCriteria(crit, sutdHidFileOut, tchrHidFileOut);
+		    outputQualityOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, sutdHidFileOut, tchrHidFileOut);
 		}
 	    }
 	    else {
 		critFound = true;
-		outputCritOk = TTK91AnalyserExtraUtils.checkFileOutCriteria(crit, studPubFileOut, tchrPubFileOut);
+		outputCritOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studPubFileOut, tchrPubFileOut);
 		if ( (studHidFileOut != null) &&
 		     (tchrHidFileOut != null) &&
 		     (outputCritOk) ) {
-		    outputCritOk = TTK91AnalyserExtraUtils.checkFileOutCriteria(crit, studHidFileOut, tchrHidFileOut);
+		    outputCritOk = TTK91AnalyserExtraUtils.checkOutputCriteria(crit, studHidFileOut, tchrHidFileOut);
 		}
 		if (!outputCritOk) {
 		    break; // kaik' on mänt'
