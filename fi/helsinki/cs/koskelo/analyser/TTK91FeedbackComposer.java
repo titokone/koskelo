@@ -387,21 +387,21 @@ public class TTK91FeedbackComposer{
 												 +statisticsLabel +"</td>"
 												 +"</tr>");
 
-		feedbackTable.append("<td>" +	memoryReference +": "
+		feedbackTable.append("<tr><td>" +	memoryReference +": "
 												 +analyseResults.getMemoryReferenceCount()
-												 +"</tr>");
-		feedbackTable.append("<td>" +	stackSize +": "
+												 +"</td></tr>");
+		feedbackTable.append("<tr><td>" +	stackSize +": "
 												 +analyseResults.getStackSize()
-												 +"</tr>");
-		feedbackTable.append("<td>" +	codeSegment +": "
+												 +"</td></tr>");
+		feedbackTable.append("<tr><td>" +	codeSegment +": "
 												 +analyseResults.getCodeSegmentSize()
-												 +"</tr>");
-		feedbackTable.append("<td>" +	dataSegment +": "
+												 +"</td></tr>");
+		feedbackTable.append("<tr><td>" +	dataSegment +": "
 												 +analyseResults.getDataSegmentSize()
-												 +"</tr>");	
-		feedbackTable.append("<td>" +	executedCommands +": "
+												 +"</td></tr>");	
+		feedbackTable.append("<tr><td>" +	executedCommands +": "
 												 +analyseResults.getExecutedCommandsCount()
-												 +"</tr>");
+												 +"</td></tr>");
 		feedbackTable.append("</table><br>");
 
 		/************************************************
@@ -414,24 +414,27 @@ public class TTK91FeedbackComposer{
 		int[] crt = analyseResults.getCrt();
 		int[] file = analyseResults.getFile();
 
-		feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
-												 +"cellpadding=\"3\">"
-												 +"<tr align=\"center\">" 
-												 +"<td class=\"tableHeader\" align =\"left\">" 
-												 +outputLabel +"</td>"
-												 +"</tr>");
+		if ((crt != null) && (file != null)) { // Testataan onko tulosteita
 
-		if (crt != null) { // FIXME: Tom; t‰m‰ ja seuraava vastaava iffi, fiksattiin eevan kanssa samoin kuin aiemmpi... [LL]
-	    for(int i = 0; i < crt.length; ++i) {
-				feedbackTable.append("<td>CRT " +(i+1) +":  " +crt[i] +"</td></tr>");
-	    }
+			feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
+													 +"cellpadding=\"3\">"
+													 +"<tr align=\"center\">" 
+													 +"<td class=\"tableHeader\" align =\"left\">" 
+													 +outputLabel +"</td>"
+													 +"</tr>");
+
+			if (crt != null) { // FIXME: Tom; t‰m‰ ja seuraava vastaava iffi, fiksattiin eevan kanssa samoin kuin aiemmpi... [LL]
+				for(int i = 0; i < crt.length; ++i) {
+					feedbackTable.append("<td>CRT " +(i+1) +":  " +crt[i] +"</td></tr>");
+				}
+			}
+			if (file != null) {
+				for(int i = 0; i < file.length; ++i) {
+					feedbackTable.append("<td>FILE " +(i+1) +": " +file[i] +"</td></tr>");
+				}
+			}
+			feedbackTable.append("</table><br>");
 		}
-		if (file != null) {
-	    for(int i = 0; i < file.length; ++i) {
-				feedbackTable.append("<td>FILE " +(i+1) +": " +file[i] +"</td></tr>");
-	    }
-		}
-		feedbackTable.append("</table><br>");
 
 		/** 
 		 * Haetaan teht‰v‰‰ vastaava yleinen positiivinen 
