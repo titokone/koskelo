@@ -6,7 +6,9 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import fi.helsinki.cs.koskelo.common.*;
 import fi.hy.eassari.taskdefinition.util.*;
+import fi.hy.eassari.taskdefinition.util.PostParameterParser;
 import fi.hy.eassari.taskdefinition.util.datastructures.*;
+import fi.hy.eassari.taskdefinition.util.datastructures.TaskDTO;
 
 public class TTK91TaskParser {
 
@@ -75,9 +77,9 @@ public class TTK91TaskParser {
 		 HttpSession session) {
 
   TTK91TaskOptions options;
-
   options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
-  TaskDTO newTask = new TaskDTO();
+
+  TaskDTO newTask = (TaskDTO)session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
 
   TTK91TaskCriteria[] rc = options.getRegisterCriterias();
   newTask.set( REGISTER_VALUES, concatCriterias(rc) );
