@@ -16,7 +16,7 @@ import java.util.HashMap;
  * 
  * @author Sami Termonen
  */
-public class TaskDTO {
+public class TaskDTO implements {
 	private String taskId = "";
 	private String taskName = "";
 	private String language = "";
