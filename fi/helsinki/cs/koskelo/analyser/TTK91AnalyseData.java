@@ -417,6 +417,9 @@ public class TTK91AnalyseData{
 		return this.errors;
 	}
 
+	public boolean compareToHidden() {
+		return (hiddenInput != null);
+	}
 
 	public String getAnswer() {
 		return this.answer;
