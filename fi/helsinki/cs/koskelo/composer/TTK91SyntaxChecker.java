@@ -560,11 +560,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			name+
 			"FeedbackNegative\">"+
 			"</textarea>\n"+
-			"<textarea name="+
+			"<textarea cols=\"40\" rows=\"5\" name="+
 			"\""+
 			name+
-			"QualityFeedback\""+
-			"cols=\"40\" rows=\"5\">"+
+			"QualityFeedback\">"+
 			"</textarea>\n"+
 			"</p>\n";
 	}// feedbackBox
