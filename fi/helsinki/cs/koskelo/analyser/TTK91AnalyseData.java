@@ -339,7 +339,7 @@ public class TTK91AnalyseData{
 		return errors;
 	}
 	
-	public boolean Errors() {
+	public boolean errors() {
 		return this.errors;
 	}
 
