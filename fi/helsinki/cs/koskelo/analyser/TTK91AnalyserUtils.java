@@ -37,7 +37,7 @@ public class TTK91AnalyserUtils {
      */
 
     //    private void getTTK91TaskOptions() -- muutettu 26.11.2004 / Lauri
-    public TaskOptions getTTK91TaskOptions() 
+    public TTK91TaskOptions getTTK91TaskOptions() 
 	throws CacheException, InvalidTTK91CriteriaException {
 		
 	this.taskOptions.setCompareMethod
