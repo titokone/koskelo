@@ -186,7 +186,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		TTK91TaskCriteria[] registerCriteria; // R2 > 1
 		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
 		TTK91TaskCriteria[] screenOutput; // (1,3) (2,4) (4,3)
-		TTk91TaskCriteria[] fileOutput; // (1,3)(2,4)(4,3)
+		TTK91TaskCriteria[] fileOutput; // (1,3)(2,4)(4,3)
 
 		TTK91TaskOptions taskOptions = new TTK91TaskOptions();
 
@@ -814,14 +814,14 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		throws InvalidTTK91CriteriaException{
 
 			String[] splitted = output.split(";");
-			TTK91TaskCriteria[] output = new TTK91TaskCriteria[splitted.length];
+			TTK91TaskCriteria[] outputRet = new TTK91TaskCriteria[splitted.length];
 			
 			for(int i = 0; i < splitted.length(); i++){
-				this.output[i] = new TTK91TaskCriteria(splitted[i], true);
+				this.outputRet[i] = new TTK91TaskCriteria(splitted[i], true);
 			}
 			
 			
-			return this.output;
+			return this.outputRet;
 		}
 	/** Apumetodi, jolla tarkistetaan syötteistä ovatko ne pilkulla
 	 * toisistaan erotettuja TTK91-käskyjä.
