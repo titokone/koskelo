@@ -28,7 +28,7 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 														 String hiddens,  
 														 boolean allowTry) throws CacheException{
        
-				/*
+				/**
 				 * Servletin nimi, joka käynnistetäänn lomakkeen
 				 * täyttämisen jälkeen.
 				 */
@@ -44,9 +44,9 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 				// Haetaan tehtävänanto, syötteet ja kieliriippuvainen syöteteksti.
 	
 				String taskDescription = 
-						cache.getAttribute("T", taskid, "task_description", language);
+						cache.getAttribute("T", taskid, "tasDescription", language);
 				String input = 
-						cache.getAttribute("T", taskid, "public_input", language);
+						cache.getAttribute("T", taskid, "publicInput", language);
 
 				//FIXME: Inputtext pitäisi oikeasti hakea tietokannasta
 				String inputText ="Syötteet"; 
@@ -67,9 +67,9 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 				setting.append(getHTMLElementTask(taskDescription));
 				setting.append(getHTMLElementInput(inputText, input));
 
-				/* 
+				/** 
 				 * Lisätään vastauslaatikko. Jos parametri initVal on null,
-				 * silloin näytetään opiskelijalle tyhjä tehtävälaatikko,
+				 * näytetään opiskelijalle tyhjä tehtävälaatikko,
 				 * muutoin opiskelijan vastaus laitetaan laatikkoon.
 				 */
 
@@ -98,11 +98,11 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 		}//getSetting
     
 		/**
-    * Palauttaa tehtävänannon html-muodossa.
-    *
-    * @param  task tehtävänanto 
-    * @return tehtävänanto html-muodossa
-    */
+		 * Palauttaa tehtävänannon html-muodossa.
+		 *
+		 * @param  task tehtävänanto 
+		 * @return tehtävänanto html-muodossa
+		 */
 
     private String getHTMLElementTask(String task){
 	
@@ -111,13 +111,13 @@ public class StaticTTK91Displayer extends CommonDisplayer{
     }//getHTMLElementTask
 
 		/**
-    * Palauttaa syötteet html-muodossa.
-    *
-    * @param inputText kieliriippuvainen syöteteksti esim. suomeksi syötteet 
-    *        -> englanniksi input jne.
-    * @param input varsinaiset syötteet                     
-    * @return syötteet html-muodossa
-    */
+		 * Palauttaa syötteet html-muodossa.
+		 *
+		 * @param inputText kieliriippuvainen syöteteksti esim. suomeksi syötteet 
+		 *        -> englanniksi input jne.
+		 * @param input varsinaiset syötteet                     
+		 * @return syötteet html-muodossa
+		 */
 
     private String getHTMLElementInput(String inputText, String input){
 	
@@ -126,10 +126,10 @@ public class StaticTTK91Displayer extends CommonDisplayer{
     }//getHTMLELementInput
     
 		/**
-    * Palauttaa tyhjän vastauslaatikon html-muodossa.
-    *
-    * @return vastauslaatikko
-    */
+		 * Palauttaa tyhjän vastauslaatikon html-muodossa.
+		 *
+		 * @return vastauslaatikko
+		 */
 
     private String getHTMLElementAnswerBox(){
 	
@@ -138,11 +138,11 @@ public class StaticTTK91Displayer extends CommonDisplayer{
     }//getHTMLElementAnswerBox
       
 		/**
-    * Palauttaa vastauslaatikon, joka sisältää vastauksen
-    *
-    * @param  answer vastaus 
-    * @return tÃ¤ytetyn vastauslaatikon html-muodossa
-    */
+		 * Palauttaa vastauslaatikon, joka sisältää vastauksen
+		 *
+		 * @param  answer vastaus 
+		 * @return tÃ¤ytetyn vastauslaatikon html-muodossa
+		 */
  
     private String getHTMLElementAnswerBox(String[] answer){
 	
