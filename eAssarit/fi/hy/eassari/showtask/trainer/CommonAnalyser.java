@@ -10,7 +10,7 @@ package fi.hy.eassari.showtask.trainer;
  * A class that provides taskId and language for analysers
  * @author Mikko Lukkari
  */
-abstract class CommonAnalyser implements AnalyserInterface{
+public abstract class CommonAnalyser implements AnalyserInterface{
 	
   String taskID;
   String language;
