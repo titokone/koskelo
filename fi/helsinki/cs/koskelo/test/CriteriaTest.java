@@ -141,7 +141,8 @@ public class CriteriaTest extends TestCase {
 
 	public void testSetTests() throws Exception{
 		System.out.println("Foo");	
-		g.setComparator(e.LESS);
+		//		g.setComparator(e.LESS);
+		g.setComparator(TTK91Constant.LESS);
 		g.setFirstComparable("A");
 		g.setSecondComparable("B");
 
@@ -181,7 +182,8 @@ public class CriteriaTest extends TestCase {
 		}
 
 
-		g.setComparator(e.LESS);
+		//		g.setComparator(e.LESS);
+		g.setComparator(TTK91Constant.LESS);
 		g.setFirstComparable("A");
 		g.setSecondComparable("B");
 		g.setQuality(true);
@@ -204,7 +206,8 @@ public class CriteriaTest extends TestCase {
 
 
 
-		g.setComparator(ab.NOTCOMPARABLE);
+		//		g.setComparator(ab.NOTCOMPARABLE);
+		g.setComparator(TTK91Constant.NOTCOMPARABLE);
 		g.setFirstComparable("A");
 		g.setSecondComparable("B");
 		g.setQuality(true);
