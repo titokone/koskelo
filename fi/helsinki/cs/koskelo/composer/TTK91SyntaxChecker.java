@@ -46,7 +46,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				"maxCommands"
 				);
 		// malliratkaisu
-		String reqExampleCode;
+		String reqExampleCode = req.getParameter(
+				"exampleCode"
+				);
 		// tehtävänanto
 		String reqTaskDescription = req.getParameter(
 				"taskDescription"
@@ -491,7 +493,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	 */
 
 	private String[] parsePostText(String s) {
-
+		
+		String[] foo = new String[2];
+		foo[0] = "bar";
+		
+		return ;
 	}//parsePostText
 
 
