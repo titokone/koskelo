@@ -476,6 +476,18 @@ public final class TTK91AnalyserExtraUtils {
 	    int slot = 0;
 	    int value = 0;
 
+	    if (output == null) {
+		return false; // output ei voi olla oikea, jos sit‰ ei ole!
+	    }
+
+	    //	    System.err.println("crit == null: "+(crit==null));
+	    
+	    // FIXME: EEVA, onko korjaukseni j‰rkev‰? Aiemmin lensi
+	    // nullPointerExceptionia, jos output[] oli null...
+	    // Lis‰ksi pit‰isi varmaan tarkastaa etuk‰teen, ettei
+	    // indeksoidan output-taulukkoa liian
+	    // pitk‰lle/negatiiviselle? Olenko yht‰‰n j‰ljill‰? [LL]
+
 	    try{
 		    slot = Integer.parseInt(crit.getFirstComparable());
 		    value = Integer.parseInt(crit.getSecondComparable());
@@ -486,6 +498,9 @@ public final class TTK91AnalyserExtraUtils {
 		    return false;
 	    }
 	    
+	    //	    System.err.println("output==null"+(output==null));
+	    //	    System.err.println("slot: "+slot);
+	    //	    System.err.println("value: "+value);
 
 	    return compare(
 			    output[slot],
