@@ -16,6 +16,12 @@ import fi.hu.cs.titokone.MemoryLine;
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
 import fi.helsinki.cs.koskelo.common.TTK91Constant;
 
+/**Kerää tehtävän analysoinnissa tarvittavat tiedot, 
+ * ja jakaa ne varsinaiselle analysointikoneistolle. 
+ * Luokan ilmentymää luotaessa suoritetaan tarvittavat simuloinnit
+ * Titokoneella.
+ */
+
 public class TTK91AnalyseData{
 
 
@@ -90,7 +96,8 @@ public class TTK91AnalyseData{
 	/** Luodaan uusi TTK91AnalyseDAta, jolle annetaan parametreina 
 	 * tehtävänperustiedot, opiskelijan vastaus ja malliratkaisu.
 	 * Malliratkaisu annetaan erikseen, jotta sitä voideen erikseen
-	 * esikäsitellä analyserissa.
+	 * esikäsitellä analyserissa. Konstruktori suorittaa varsinaiset
+	 * tarvittavat simuloinnit titokoneessa.
 	 *
 	 * @param taskOptions Tehtävän kriteerit ja perustiedot
 	 * @param answer Opiskelijan vastaus
@@ -217,7 +224,8 @@ public class TTK91AnalyseData{
 
 	}
 
-	/** Opiskelijan ohjelman kääntäminen. Jos opiskelijan ohjelmaa ei ole, palautetaan virhe.
+	/** Opiskelijan ohjelman kääntäminen. 
+	 * Jos opiskelijan ohjelmaa ei ole, palautetaan virhe.
 	 */
 	
 	private void compileStudentApplication() {
@@ -427,28 +435,47 @@ public class TTK91AnalyseData{
 		}
 	}
 
-	/** Seuraavat getterit ovat datan saamiseksi analyserissa, realAnalyserissa jne.*/
+	/* Seuraavat getterit ovat datan saamiseksi analyserissa, 
+	 * realAnalyserissa jne.*/
 
+	/**
+	 * Palauttaa mahdolliset Titokoneen käännösaikaiset virheilmoitukset käännettäessä opiskelijan ratkaisua.
+	 */
 	public String getStudentCompileError() {
 		return this.studentCompileError;
 	}
 
+	/** Palauttaa mahdolliset 
+	 * Titokoneen käännösaikaiset virheilmoitukset 
+	 * käännettäessä malliratkaisua.
+	 */
 	public String getTeacherCompileError() {
 		return this.teacherCompileError;
 	}
 
+	/**Palauttaa mahdolliset 
+	 * Titokoneen ajonaikaiset 
+	 * virheilmoitukset opiskelijan ratkaisua simuloitaessa.
+	 */
+	
 	public String getStudentRunError() {
 		return this.studentRunError;
 	}
 
+	/**Palauttaa mahdolliset Titokoneen 
+	 * ajonaikaiset virheilmoitukset malliratkaisua simuloitaessa.
+	 */
 	public String getTeacherRunError() {
 		return this.teacherRunError;
 	}
 
 	/** Näin analyser saa kaikki neljä virheilmoitusta siististi kerralla.
+	 * 
+	 *Palauttaa kaikki edellämainitut virheilmoitukset String-taulukkona.
 	 * Käytännössä vain yksi on käytössä, sillä jos teacher ei käänny,
 	 * turha yritää opiskelijaa, jos opiskelija ei käänny, turha mitään on
-	 * ajaa, jos opiskelijaa ei voida ajaa, turha yrittää saada sitä vertailtavaan
+	 * ajaa, jos opiskelijaa ei voida ajaa, 
+	 * turha yrittää saada sitä vertailtavaan
 	 * tilaan
 	 */
 	public String[] getErrorMessages() { //FIXME rumaa!
@@ -461,37 +488,67 @@ public class TTK91AnalyseData{
 		return errors;
 	}
 
+	/** Palauttaa true, jos käännös- tai ajonaikaisia virheitä.
+	 */
 	public boolean errors() {
 		return this.errors;
 	}
-
+	
+	/** Käytetäänkö vaihtoehtoisia, 
+	 * opiskelijalle näkymättömiä syötteitä simulaatiossa.
+	 */
 	public boolean compareToHidden() {
 		return (hiddenInput != null);
 	}
 
+	/** Palauttaa opiskelijan vastauksen.
+	 */
 	public String getAnswer() {
 		return this.answer;
 	}
 
+	/** Palauttaa opiskelijan joko syötteettömän tai 
+	 * julkisilla syötteillä simuloidun opiskelijan
+	 * ratkaisusta saadun sovelluksen
+	 */
 	public TTK91Application getStudentAppPublic() {
 		return this.studentApplicationPublic;
 	}
 
+	/** Palauttaa julkisilla tai ilman syötteitä simuloidun
+	 * malliratkaisun sovelluksen
+	 */
 	public TTK91Application getTeacherAppPublic() {
 		return this.teacherApplicationPublic;
 	}
 
+	/** Palauttaa piilosyötteillä simuloidun opiskelijan
+	 * ratkaisun sovelluksen
+	 */
 	public TTK91Application getStudentAppHidden() {
 		return this.studentApplicationHidden;
 	}
 
+	/** Palauttaa piilosyötteillä simuloidun malliratkaisun
+	 * sovelluksen
+	 */
+	
 	public TTK91Application getTeacherAppHidden() {
 		return this.teacherApplicationHidden;
 	}
 
+	/** Palauttaa julkisilla syötteillä tai ilman syötteitä
+	 * simuloidun opiskelijan ratkaisun jälkeisessä tilassa
+	 * olevan suorittimen.
+	 */
 	public TTK91Cpu getStudentCpuPublic(){
 		return controlPublicInputStudent.getCpu();
 	}
+
+	/** Palauttaa piilosyötteillä simuloidun opiskelijan ratkaisun
+	 * simuloinnin jälkeisessä tilassa olevan suorittimen.
+	 */
+	
 	public TTK91Cpu getStudentCpuHidden(){
 
 		if(controlHiddenInputStudent != null) {
@@ -500,6 +557,10 @@ public class TTK91AnalyseData{
 			return null;
 		}
 	}
+	/** Palauttaa julkisilla syötteillä tai ilman syötteitä
+	 * simuloidun malliratkaisun jälkeisessä tilassa
+	 * olevan suorittimen.
+	 */
 
 	public TTK91Cpu getTeacherCpuPublic(){
 		if(controlPublicInputTeacher != null) {
@@ -509,6 +570,10 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Palauttaa piilosyötteillä simuloidun malliratkaisun
+	 *  simuloinnin jälkeisessä tilassa olevan suorittimen.
+	 */
+	
 	public TTK91Cpu getTeacherCpuHidden(){
 
 		if(controlHiddenInputTeacher != null) {
@@ -518,9 +583,16 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Opiskelijan julkistensyötteiden koneen muisti.
+	 */
+	
 	public TTK91Memory getStudentMemoryPublic(){
 		return controlPublicInputStudent.getMemory();
 	}
+
+	/** Opiskelijan piilosyötteiden koneen muisti
+	 */
+	
 	public TTK91Memory getStudentMemoryHidden(){
 
 		if(controlHiddenInputStudent != null) {
@@ -530,6 +602,9 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Malliratkaisun julkistensyötteiden koneen muisti
+	 */
+	
 	public TTK91Memory getTeacherMemoryPublic(){
 		if(controlPublicInputTeacher != null) {
 			return controlPublicInputTeacher.getMemory();
@@ -538,6 +613,8 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Malliratkaisun piilosyötteiden koneen muisti
+	 */
 	public TTK91Memory getTeacherMemoryHidden(){
 
 		if(controlHiddenInputTeacher != null) {
@@ -547,42 +624,74 @@ public class TTK91AnalyseData{
 		}
 	}
 
+	/** Palauttaa TTK91TaskOptionsin, eli käytännössä tehtävän
+	 * kriteerit. Näitä siis ei erikseen analyserille tarvitse 
+	 * pallotella.
+	 */
 
 	public TTK91TaskOptions getTaskOptions() {
 		return taskOptions;
 	}
 
+	/**
+	 * Palautusarvona julkisilla syötteillä suoritetun opiskelijan ratkaisun konekäskyjen
+	 * lukumäärä.
+	 */
 	public int getCommandAmount() {
 		return  this.usedCommands;
 	}
 
+	/** 
+	 * Palautusarvona piilosyötteillä suoritetun ohjelman konekäskyjen
+	 * lukumäärä.
+	 */
 	public int getHiddenCommandAmount() {
 		return  this.hiddenUsedCommands;
 	}
 
+	/**
+	 * Palauttaa pinon maksimikoon opiskelijan ratkaisun (julkisilla syötteillä) simuloinnissa.
+	 */
 	public int getStackSize() {
 
 		return this.maxStackSize;
 
 	}
 
+	/**
+	 * Palauttaa muistiviitteiden määrän opiskelijan ratkaisun (julkisilla syötteillä) simuloinnissa.
+	 */
+	
 	public int getMemoryReferences() {
 		return this.memoryReferences;
 	}
 
-
+	/**
+	 * Palauttaa koodisegmentin koon opiskelijan ratkaisun (julkisilla syötteillä) simuloinnissa.
+	 */
+	
 	public int getHiddenMemoryReferences() {
 		return this.hiddenMemoryReferences;
 	}
 
-
+	/**
+	 * Palauttaa datasegmentin koon opiskelijan ratkaisun (julkisilla syötteillä) simuloinnissa.
+	 */
+	
 	public int getCodeSegmentSize() {
 		return this.codeSegmentSize;
 	}
 
+	/**Palauttaa datasegmentin koon opiskelijan ratkaisun (julkisilla syötteillä) simuloinnissa.
+	 */
+	
 	public int getDataSegmentSize() {
 		return this.dataSegmentSize;
 	}
+	/**
+	 * Palautusarvo kertoo miten simuloinnit on ajettu. Onko piilosyötteitä
+	 * ja simuloitiinko malliratkaisu.
+	 */
 
 	public int analyseSwitcher(){
 
@@ -608,6 +717,12 @@ public class TTK91AnalyseData{
 	
 	}
 
+	/**
+	 * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+	 * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+	 * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+	 */
+	
     public String getStudentScreenOutputPublic(){
 	if (studentApplicationPublic != null) {
 	    return studentApplicationPublic.readCrt();
@@ -616,6 +731,11 @@ public class TTK91AnalyseData{
 	}
     }
 
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     public String getStudentScreenOutputHidden(){
 	if (studentApplicationHidden != null && controlHiddenInputStudent != null) {
 	    return studentApplicationHidden.readCrt();
@@ -624,6 +744,11 @@ public class TTK91AnalyseData{
 	}
     }
     
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     public String getTeacherScreenOutputPublic(){
 	if (teacherApplicationPublic != null && controlPublicInputStudent != null) {
 	    return teacherApplicationPublic.readCrt();
@@ -632,6 +757,11 @@ public class TTK91AnalyseData{
 	}
     }
     
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     public String getTeacherScreenOutputHidden(){
 	if (teacherApplicationHidden != null && controlHiddenInputTeacher != null) {
 	    return teacherApplicationHidden.readCrt();
@@ -640,6 +770,11 @@ public class TTK91AnalyseData{
 	}
     }
 
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     public String getStudentFileOutputPublic(){
 	if (studentApplicationPublic != null) {
 	    return studentApplicationPublic.readStdOut();
@@ -648,6 +783,11 @@ public class TTK91AnalyseData{
 	}
     }
 
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     public String getStudentFileOutputHidden(){
 	if (studentApplicationHidden != null) {
 	    return studentApplicationHidden.readStdOut();
@@ -656,6 +796,12 @@ public class TTK91AnalyseData{
 	}
     }
     
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
+    
     public String getTeacherFileOutputPublic(){
 	if (teacherApplicationPublic != null) {
 	    return teacherApplicationPublic.readStdOut();
@@ -663,6 +809,12 @@ public class TTK91AnalyseData{
 	    return null;
 	}
     }
+    
+    /**
+     * Palauttavat opiskelijan ratkaisun (student) ja malliratkaisun
+     * (teacher) simuloinnissa syntyneet tulosteet. Eri metodit
+     * näyttötulosteille (Screen eli CRT) ja tiedostotulosteille (File).
+     */
     
     public String getTeacherFileOutputHidden(){
 	if (teacherApplicationHidden != null) {
