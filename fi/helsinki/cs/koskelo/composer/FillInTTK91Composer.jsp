@@ -73,10 +73,10 @@ out.print("EVENT"+event);
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<body bgcolor="#FFFFFF"> %>
+<body bgcolor="#FFFFFF">
 <h1>
-<%=cache.getAttribute("D", "fillinttk91taskcomposer",
-      "fillinHeader", lang)
+<%=cache.getAttribute("D", "staticttk91taskcomposer",
+      "fillinTTK91TaskLabel", lang)
 %>
 </h1>
 <%
@@ -100,7 +100,7 @@ out.print("EVENT"+event);
   value="<%=( task == null ? "" : "" + task.getTaskName() )%>" />
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
       "taskDescriptionHeader", lang)%>
    <br>
 
@@ -122,7 +122,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "publicInputHeader", lang)%>
   <br>
     <input type="text" name="publicInput" size="50"
@@ -144,7 +144,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "hiddenInputHeader", lang)%>
    <br>
    <input type="text" name="hiddenInput" size="50"
@@ -166,7 +166,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "exampleCodeHeader", lang)%>
    <br>
    <textarea name="exampleCode" cols="50" rows="15"><%
@@ -186,7 +186,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "maxCommandsHeader", lang)%>
    <input type="text" name="maxCommands" size="10" maxlength="4"
     value="<%
@@ -206,7 +206,7 @@ out.print("EVENT"+event);
    >
 
    <br>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "acceptedSizeHeader", lang)%> 
    <input type="text" name="acceptedSize" size="10" maxlength="4"
     value="<%
@@ -225,7 +225,7 @@ out.print("EVENT"+event);
      %>"
    >
    <br>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "optimalSizeHeader", lang)%>
    <input type="text" name="optimalSize" size="10" maxlength="4"
     value="<%
@@ -247,18 +247,18 @@ out.print("EVENT"+event);
 
   <p>
     <input type="radio" name="compareMethod" value="0">
-    <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+    <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod1Header", lang)%>
   </p>
   
   <p> 
     <input type="radio" name="compareMethod" value="1" checked>
-    <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+    <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "compareMethod2Header", lang)%>
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "requiredCommandsHeader", lang)%>
    <br>
    <textarea name="requiredCommands" rows="4" cols="50"><%
@@ -278,7 +278,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "forbiddenCommandsHeader", lang)%>
   <br>
    <textarea name="forbiddenCommands" rows="4" cols="50"><%
@@ -298,7 +298,7 @@ out.print("EVENT"+event);
   </p>
 
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "registerValuesHeader", lang)%>
    <br>
     <textarea name="registerValues" cols="50" rows="10"><%
@@ -318,7 +318,7 @@ out.print("EVENT"+event);
   </p>
   
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "memoryValuesHeader", lang)%>
    <br>
     <textarea name="memoryValues" cols="50" rows="10"><%
@@ -337,7 +337,7 @@ out.print("EVENT"+event);
      %></textarea>
 
     <br>
-    <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+    <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "memoryReferencesHeader", lang)%>
     <input type="text" name="memoryReferences" size="10" maxlength="8"
      value="<%
@@ -358,7 +358,7 @@ out.print("EVENT"+event);
   </p>
   
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "screenOutputHeader", lang)%>
    <br>
    <textarea name="screenOutput" cols="50" rows="5"><%
@@ -378,7 +378,7 @@ out.print("EVENT"+event);
   </p>
   
   <p>
-   <%=cache.getAttribute("D", "fillinttk91taskcomposer",
+   <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "fileOutputHeader", lang)%>
    <br>
    <textarea name="fileOutput" cols="50" rows="5"><%
@@ -399,7 +399,7 @@ out.print("EVENT"+event);
 
     <input type="submit" name="Submit"
      value="<%=cache.getAttribute(
-            "D", "fillinttk91taskcomposer",
+            "D", "staticttk91taskcomposer",
             "submitButtonText", lang)
             %>"
     >

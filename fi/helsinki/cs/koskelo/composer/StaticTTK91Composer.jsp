@@ -56,7 +56,7 @@ task = (TaskDTO)
  request.getSession(false).  
  getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); 
 
-out.print("EVENT"+event);
+out.print("SAATU EVENT: "+event);
 
 %>
 
@@ -74,9 +74,13 @@ out.print("EVENT"+event);
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <body bgcolor="#FFFFFF">
-<h1>Staattisen tehtävän luonti</h1>
 
 <%
+
+ out.print("<h1>" +
+   cache.getAttribute("D", "staticttk91taskcomposer", 
+   "staticTTK91TaskLabel", lang)
+ +"</h1>");
  
  if(syntaxError == true) {
   out.print("<h2>" + syntaxErrorMsg + "</h2>");
@@ -89,7 +93,7 @@ out.print("EVENT"+event);
 
  <input name="event" type="hidden" id="event"
   value="<%=Events.STATIC_TTK91_SUBMIT%>" />
-  
+
  <input name="taskid" type="hidden" id="taskid"
   value="<%=( task == null ? "" : "" + task.getTaskId() )%>" />
   
