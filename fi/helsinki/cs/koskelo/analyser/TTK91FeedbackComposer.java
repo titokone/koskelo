@@ -452,10 +452,17 @@ public class TTK91FeedbackComposer{
 	    cache.getAttribute("T", taskID, "negativefeedback", language);
 
 		if (feedbackSummaryPos == null) { // Jos null, niin laitetaan oletusviesti
-	    feedbackSummaryPos = "Oikein";
+	    if (language.equals("FI")) 
+					feedbackSummaryPos = "Oikea vastaus";
+			if (language.equals("EN")) 
+				feedbackSummaryNeg = "Correct answer";
 		}
+
 		if (feedbackSummaryNeg == null) { // Jos null, niin laitetaan oletusviesti
-	    feedbackSummaryNeg = "V‰‰rin";
+	    if (language.equals("FI"))
+					feedbackSummaryNeg = "V‰‰r‰ vastaus";
+			if (language.equals("EN"))
+				feedbackSummaryNeg = "Wrong answer";
 		}
 		
 		/**
