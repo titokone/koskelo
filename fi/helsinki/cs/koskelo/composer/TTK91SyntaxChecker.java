@@ -215,7 +215,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			
 				taskOptions.setExampleCode(exampleCode);
 			
-				}
+				
 			}
 		} catch (Exception e) {
 
