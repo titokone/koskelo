@@ -98,10 +98,11 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		setting.append(getHTMLElementBeforeEmpty(exampleCode));
 
 		if (initVal == null) {
-			setting.append(TTK91DisplayerUtils.getHTMLElementAnswerBox(ROWS, COLS));
+			setting.append(TTK91DisplayerUtils.
+										 getHTMLElementAnswerBox(ROWS/2, COLS));
 		} else {
-			setting.append(TTK91DisplayerUtils.getHTMLElementAnswerBox(initVal, 
-																																 ROWS, COLS));
+			setting.append(TTK91DisplayerUtils.
+										 getHTMLElementAnswerBox(initVal, ROWS/2, COLS));
 		}
 		
 		setting.append(getHTMLElementAfterEmpty(exampleCode));
@@ -146,7 +147,8 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		temp = exampleCode.substring(0,index);
 		
 		if(!temp.equals("")){
-		result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
+		result.append("<textarea cols =\"" +this.COLS +"\""
+									 +"rows =\"" +this.ROWS +"\" readonly>");
 		result.append(temp);
 		result.append("</textarea><br>");
 		}
@@ -171,7 +173,8 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		temp = exampleCode.substring(index+1);
 
 		if (!temp.equals("")) { //  Testataan tuleeko aukon jälkeen koodia.
-			result.append("<textarea cols =\"" +this.COLS +"\" readonly>");
+			result.append("<textarea cols =\"" +this.COLS +"\""
+										 +"rows =\"" +this.ROWS +"\" readonly>");
 			result.append(temp);
 			result.append("</textarea><br>");
 		}
