@@ -1,6 +1,9 @@
+/******************************************************************
+* @author       Harri Tuomikoski, Koskelo-projekti.
+* @version      0.1
+******************************************************************/
+
 package fi.helsinki.cs.koskelo.composer;
-//TODO: JAVADOCIT JA KOMMENTIT
-//by Harri Tuomikoski, 17.11.2004
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -12,7 +15,11 @@ import fi.hy.eassari.taskdefinition.util.datastructures.TaskDTO;
 
 public class TTK91TaskParser {
 
+ //Avain jolla TTK91TaskOptions talletettu sessioon.
+
  private static final String OPTIONS_KEY = "fi.helsinki.cs.koskelo.common.TTK91TaskOptions";
+
+ //Talletettavien TTK91-teht‰v‰n kenttien avaimet.
 
  private static final String REGISTER_VALUES  = "registerValues";
  private static final String MEMORY_VALUES = "memoryValues";
@@ -56,6 +63,14 @@ public class TTK91TaskParser {
  private static final String MEMORY_REFERENCES_FEEDBACK_POSITIVE = "memoryReferencesFeedbackPositive";
  private static final String MEMORY_REFERENCES_FEEDBACK_NEGATIVE = "memoryReferencesFeedbackNegative";
 
+ /******************************************************************
+ * Ker‰‰ tiedot annetuista olioista asettaa ne TaskDTO-olioon.
+ * @return TTK91-ohjelmointiteht‰v‰ TaskDTO:ssa.
+ * @param fi.hy.eassari.taskdefinition.util.PostParameterParser
+ * @param javax.servlet.http.HttpSession
+ * @see fi.hy.eassari.taskdefinition.util.datastructures.TaskDTO
+ ******************************************************************/
+
  public static TaskDTO assembleStaticTTK91Task(
 		PostParameterParser post,
 		HttpSession session) {
@@ -63,6 +78,16 @@ public class TTK91TaskParser {
    return assemble(post, session);
 
  }//assembleStaticTTK91Task
+
+
+
+ /******************************************************************
+ * Ker‰‰ tiedot annetuista olioista asettaa ne TaskDTO-olioon.
+ * @return TTK91-ohjelmointiteht‰v‰ TaskDTO:ssa.
+ * @param fi.hy.eassari.taskdefinition.util.PostParameterParser
+ * @param javax.servlet.http.HttpSession
+ * @see fi.hy.eassari.taskdefinition.util.datastructures.TaskDTO
+ ******************************************************************/
 
  public static TaskDTO assembleFillInTTK91Task(
 	 	PostParameterParser post,
@@ -72,6 +97,13 @@ public class TTK91TaskParser {
 
  }//assembleFillInTTK91Task
 
+
+
+ /******************************************************************
+ * Ker‰‰ tiedot annetuista olioista asettaa ne TaskDTO-olioon joka
+ * palautetaan kutsuneelle public metodille.
+ ******************************************************************/
+
  private static TaskDTO assemble(
 		 PostParameterParser post,
 		 HttpSession session) {
@@ -79,12 +111,17 @@ public class TTK91TaskParser {
   TTK91TaskOptions options;
   options = (TTK91TaskOptions)session.getAttribute(OPTIONS_KEY);
 
-  Object temp = session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); //KAATUU
-  if(temp == null) {return null;} //FIXME KAATUU TƒSSƒ
+  //Haetaan TaskDTO sessiosta
+
+  Object temp = session.getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
+  if(temp == null) {return null;}
 
   TaskDTO newTask = null;
   newTask = (TaskDTO)temp;
 
+
+  //Ker‰t‰‰n teht‰v‰n m‰‰rittelyt jotka talletettu
+  //TTK91TaskOptionsiin.
 
   TTK91TaskCriteria[] rc = options.getRegisterCriterias();
   newTask.set( REGISTER_VALUES, concatCriterias(rc) );
@@ -136,7 +173,10 @@ public class TTK91TaskParser {
   if(forbcomm != null) {
    newTask.set( FORBIDDEN_COMMANDS, concatCommands(forbcomm) );
   }//if
-  
+
+  //Ker‰t‰‰n request-olion mukana tulleet teht‰v‰‰n liittyv‰t
+  //palautteet.
+
   newTask.set( REGISTER_FEEDBACK_POSITIVE,
 	       post.getStringParameter(REGISTER_FEEDBACK_POSITIVE) );
   newTask.set( REGISTER_FEEDBACK_NEGATIVE,
@@ -144,7 +184,7 @@ public class TTK91TaskParser {
   newTask.set( MEMORY_FEEDBACK_POSITIVE,
 	       post.getStringParameter(MEMORY_FEEDBACK_POSITIVE) );
   newTask.set( MEMORY_FEEDBACK_NEGATIVE,
-	       post.getStringParameter(MEMORY_FEEDBACK_NEGATIVE) );  
+	       post.getStringParameter(MEMORY_FEEDBACK_NEGATIVE) );
   newTask.set( SCREEN_OUTPUT_FEEDBACK_POSITIVE,
 	       post.getStringParameter(SCREEN_OUTPUT_FEEDBACK_POSITIVE) );
   newTask.set( SCREEN_OUTPUT_FEEDBACK_NEGATIVE,
@@ -156,7 +196,7 @@ public class TTK91TaskParser {
   newTask.set( REQUIRED_COMMANDS_FEEDBACK_POSITIVE,
 	       post.getStringParameter(REQUIRED_COMMANDS_FEEDBACK_POSITIVE) );
   newTask.set( REQUIRED_COMMANDS_FEEDBACK_NEGATIVE,
-	       post.getStringParameter(REQUIRED_COMMANDS_FEEDBACK_NEGATIVE) );  
+	       post.getStringParameter(REQUIRED_COMMANDS_FEEDBACK_NEGATIVE) );
   newTask.set( FORBIDDEN_COMMANDS_FEEDBACK_POSITIVE,
 	       post.getStringParameter(FORBIDDEN_COMMANDS_FEEDBACK_POSITIVE) );
   newTask.set( FORBIDDEN_COMMANDS_FEEDBACK_NEGATIVE,
@@ -168,7 +208,7 @@ public class TTK91TaskParser {
   newTask.set( OPTIMAL_SIZE_FEEDBACK_POSITIVE,
 	       post.getStringParameter(OPTIMAL_SIZE_FEEDBACK_POSITIVE) );
   newTask.set( OPTIMAL_SIZE_FEEDBACK_NEGATIVE,
-	       post.getStringParameter(OPTIMAL_SIZE_FEEDBACK_NEGATIVE) );  
+	       post.getStringParameter(OPTIMAL_SIZE_FEEDBACK_NEGATIVE) );
   newTask.set( MEMORY_REFERENCES_FEEDBACK_POSITIVE,
 	       post.getStringParameter(MEMORY_REFERENCES_FEEDBACK_POSITIVE) );
   newTask.set( MEMORY_REFERENCES_FEEDBACK_NEGATIVE,
@@ -190,6 +230,13 @@ public class TTK91TaskParser {
 
  }//assemble
 
+
+
+ /******************************************************************
+ * Katenoi yhteen annetut TTK91TaskCriteriat ja palauttaa ne
+ * yhten‰ merkkijonona.
+ ******************************************************************/
+
  private static String concatCriterias(TTK91TaskCriteria[] criterias) {
 
   if(criterias == null) {return "";}
@@ -206,6 +253,13 @@ public class TTK91TaskParser {
 
  }//concatCriterias
 
+
+
+ /******************************************************************
+ * Katenoi yhteen m‰‰riteltyj‰ TTK91-k‰skyj‰ ja palauttaa ne
+ * yhten‰ merkkijonona.
+ ******************************************************************/
+
  private static String concatCommands(String[] commands) {
 
   if(commands == null) {return "";}
@@ -221,6 +275,13 @@ public class TTK91TaskParser {
   return commandString;
 
  }//concatCriterias
+
+
+
+ /******************************************************************
+ * Katenoi yhteen m‰‰riteltyj‰ tulosteita (crt ja file) ja
+ * palauttaa ne yhten‰ merkkijonona.
+ ******************************************************************/
 
  private static String concatInput(int[] input){
 
@@ -239,8 +300,15 @@ public class TTK91TaskParser {
   }//for
 
   return inputString;
- 
+
  }//concatInput
+
+
+
+ /******************************************************************
+ * Parsii muistiviitteet-kriteerin sopivaan talletettavaan muotoon.
+ * Eli: "looginen_operaatio kokonaisluku".
+ ******************************************************************/
 
  private static String concatMemoryReference(TTK91TaskCriteria memrefs) {
 

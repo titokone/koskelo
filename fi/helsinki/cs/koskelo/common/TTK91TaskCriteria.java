@@ -8,17 +8,6 @@ import java.lang.String.*;
 
 public class TTK91TaskCriteria{
 
- // Vakioita konstruktoria varten, m‰‰rittelev‰t vertailut
-//  public final int INVALID = -1; // Alustamaton vertailu.
-//  public final int LESS = 0; // <
-//  public final int LESSEQ = 1; // <=
-//  public final int GREATER = 2; // >
-//  public final int GREATEREQ = 3; // >=
-//  public final int EQUAL = 4; // =
-//  public final int NOTEQUAL = 5; // !=
-//  public final int NOTCOMPARABLE = 6; // Tulosteita varten joissa
-//                                    // ei ole loogista operaattoria
-
  // Olion sis‰iset muuttujat
 
  private int comparator; //Looginen operaattori tai ilmaisu sen puuttumisesta
@@ -44,10 +33,15 @@ public class TTK91TaskCriteria{
  /******************************************************************
  * Luo kriteerin saamastaan merkkijonoesityksest‰.
  * @throws InvalidTTK91CriteriaException
- * @param criteria TTK91-teht‰v‰n kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
- * @param isComparable true ilmoittaa ett‰ kriteeri sis‰lt‰‰ loogisen operaation,
- * false taas ilmoittaa ett‰ kyseess‰ on pari ilman loogista operaatiota.
- * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
+ * @param criteria TTK91-teht‰v‰n kriteeri muodossa: "(vertailtava_1
+ * looginen_operaatio vertailtava_2);" tai "(L, vertailtava_1
+ * looginen_operaatio vertailtava_2);".
+ * @param isComparable true ilmoittaa ett‰ kriteeri sis‰lt‰‰
+ * loogisen operaation, false taas ilmoittaa ett‰ kyseess‰ on pari
+ * ilman loogista operaatiota muodossa: "(parametri_1, parameteri_2);"
+ * tai "(L, parametri_1, parameteri_2);". L ilmoittaa kriteerin
+ * olevan laadullinen.
+ * @see fi.helsinki.cs.koskelo.common.TTK91Constant
  ******************************************************************/
 
  public TTK91TaskCriteria(String criteria, boolean isComparable)
@@ -70,8 +64,11 @@ public class TTK91TaskCriteria{
  /******************************************************************
  * Luo kriteerin saamastaan merkkijonoesityksest‰.
  * @throws InvalidTTK91CriteriaException
- * @param criteria TTK91-teht‰v‰n kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
- * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
+ * @param criteria TTK91-teht‰v‰n kriteeri muodossa: "(vertailtava_1
+ * looginen_operaatio vertailtava_2);" tai "(L, vertailtava_1
+ * looginen_operaatio vertailtava_2);". L ilmoittaa kriteerin
+ * olevan laadullinen.
+ * @see fi.helsinki.cs.koskelo.common.TTK91Constant
  ******************************************************************/
 
  public TTK91TaskCriteria(String criteria)
@@ -81,42 +78,11 @@ public class TTK91TaskCriteria{
 
  }// TTK91TaskCriteria(String criteria)
 
- /******************************************************************
- * Alustaa kriteerin annetuilla parametreilla.
- * @throws InvalidTTK91CriteriaException
- * @param firstComparable TTK91-teht‰v‰n ensimm‰inen vertailtava.
- * @param comparator
- * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
- ******************************************************************/
-
- /*FIMXE: EI ILMEISESTI TARVITAKKAAN [HT]***************************
-
- public TTK91TaskCriteria(
-		String firstComparable,
-		int comparator,
-		String secondComparable)
-		throws InvalidTTK91CriteriaException {
-
-  if(firstComparable == null ||
-     secondComparable == null) {
-
-      throw new InvalidTTK91CriteriaException("Invalid comparable");
-
-  }//if
-
-  setFirstComparable(firstComparable);
-  setSecondComparable(secondComparable);
-
-  setComparator(comparator);
-
- }//TTK91TaskCriteria
-
- *******************************************************************/
-
 
 
  /******************************************************************
- *Asettaa kriteerin vertailuoperaattorin.
+ * Asettaa kriteerin vertailun tyypin; onko laatua vai oikeellisuutta
+ * ilmaiseva kriteeri.
  * @param quality true jos kriteeri on laadullinen.
  ******************************************************************/
 
@@ -128,11 +94,13 @@ public class TTK91TaskCriteria{
 
 
 
+ /******************************************************************
+ * Asettaa vertailuoperaattorin.
+ * @param comparator Yksi luokan TTK91Constant julkisista vertailuvakioista.
+ * @throws InvalidTTK91CriteriaException
+ * @see fi.helsinki.cs.koskelo.common.TTK91Constant
+ ******************************************************************/
 
-/** Asettaa vertailuoperaattorin.
- * @param comparator Yksi luokan julkisista vertailuvakioista. Muiden kohdalla
- * heitet‰‰n poikkeus
- */
 
  public void setComparator(int comparator)
  				throws InvalidTTK91CriteriaException {
@@ -146,8 +114,10 @@ public class TTK91TaskCriteria{
 
  /******************************************************************
  * Asettaa vasemmanpuoleisen vertailtavan. Heitt‰‰ poikkeuksen jos
- * parametrina on null, tyhj‰ tai pelkki‰ sulkuja sis‰lt‰v‰ merkkijono.
+ * parametrina on null, tyhj‰ tai pelk‰st‰‰n sulkuja tai puolipisteit‰
+ * sis‰lt‰v‰ merkkijono.
  * @param comparable Merkkijonoesitys vertailtavasta.
+ * @throws InvalidTTK91CriteriaException
  ******************************************************************/
 
  public void setFirstComparable(String comparable)
@@ -169,8 +139,10 @@ public class TTK91TaskCriteria{
 
  /******************************************************************
  * Asettaa oikeanpuoleisen vertailtavan. Heitt‰‰ poikkeuksen jos
- * parametrina on null, tyhj‰ tai pelkki‰ sulkuja sis‰lt‰v‰ merkkijono.
+ * parametrina on null, tyhj‰ tai pelk‰st‰‰n sulkuja tai puolipisteit‰
+ * sis‰lt‰v‰ merkkijono.
  * @param comparable Merkkijonoesitys vertailtavasta.
+ * @throws InvalidTTK91CriteriaException
  ******************************************************************/
 
 
@@ -192,7 +164,7 @@ public class TTK91TaskCriteria{
 
 
  /******************************************************************
- * Palauttaa kriteerin laadullisuusttypin.
+ * Palauttaa tiedon kriteerin tyypist‰.
  * @return true jos kriteeri on laadullinen, muuten false.
  ******************************************************************/
 
@@ -208,6 +180,7 @@ public class TTK91TaskCriteria{
  * Palauttaa vertailuoperaattorin.
  * @return Vertailuoperaattorin kokonaislukuesitys, yksi m‰‰ritellyist‰
  * julkisista kokonaislukuvakioista.
+ * @see fi.helsinki.cs.koskelo.common.TTK91Constant
  ******************************************************************/
 
  public int getComparator() {
@@ -219,6 +192,7 @@ public class TTK91TaskCriteria{
  /******************************************************************
  * Palauttaa vertailuoperaattorin symbolin.
  * @return Vertailuoperaattorin symboli String-oliona.
+ * @throws InvalidTTK91CriteriaException
  ******************************************************************/
 
 
@@ -277,7 +251,8 @@ public class TTK91TaskCriteria{
 
 
  /******************************************************************
- * Parsitaan merkkijonoesityksest‰ TTK91TaskCriteriaolio.
+ * Parsitaan loogisen operaation sis‰lt‰v‰st‰ merkkijonoesityksest‰
+ * kaikki parametrit erilleen.
  ******************************************************************/
 
  private void parseComparableCriteria(String criteria)
@@ -286,7 +261,7 @@ public class TTK91TaskCriteria{
   String[] result = criteria.split(","); //Erota parametrit yksi ja kaksi
                                          //Saattaa olla vain yksi
 
-  if( result.length == 1 ) { // Jos oli vain yksi parametri
+  if( result.length == 1 ) { // Vain yksi parametri
 
    String cleanParameter = cleanString(result[0]);
    findComparableParameterValues(cleanParameter);
@@ -301,7 +276,7 @@ public class TTK91TaskCriteria{
 
 	setQuality(true);
 
-   } else {
+   } else { //Laatuparametri puuttui vaikka se piti lˆyty‰.
 
 	throw new InvalidTTK91CriteriaException("Invalid quality indicator");
 
@@ -322,6 +297,11 @@ public class TTK91TaskCriteria{
  }//parseComparableCriteria
 
 
+
+ /******************************************************************
+ * Parsitaan merkkijonoesityksest‰ joka ei sis‰ll‰ loogista
+ * operaatiota kaikki parametrit erilleen.
+ ******************************************************************/
 
  private void parseIncomparableCriteria(String criteria)
                             throws InvalidTTK91CriteriaException {
@@ -355,13 +335,13 @@ public class TTK91TaskCriteria{
 
 	setQuality(true);
 
-    } else {
+    } else { //Laatuparametri puuttui vaikka se piti lˆyty‰.
 
 	throw new InvalidTTK91CriteriaException("Invalid quality indicator");
 
     }//else
 
-    //Aseta loput parametrit
+    //Aseta parametrit kaksi ja kolme.
     cleanParameter_2 = cleanString(result[1]);
     cleanParameter_3 = cleanString(result[2]);
 
@@ -398,6 +378,11 @@ public class TTK91TaskCriteria{
  }//cleanString
 
 
+
+ /******************************************************************
+ * Etsit‰‰n oikea looginen operaatio ja asetetaan kaikki
+ * parametrit luokkamuuttujiin.
+ ******************************************************************/
 
  private void findComparableParameterValues(String cleanCriteria)
 						throws InvalidTTK91CriteriaException {
@@ -491,6 +476,16 @@ public class TTK91TaskCriteria{
 
 
 
+ /******************************************************************
+ * Palauttaa merkkijonoesityksen jonka muoto riippuu asetetuista
+ * parametreist‰.
+ * @return Kriteerin merkkijonoesitys muodossa: "(L, param_1 looginen_op param_2");".
+ * @return Kriteerin merkkijonoesitys muodossa: "(param_1 looginen_op param_2");".
+ * @return Kriteerin merkkijonoesitys muodossa: "(L, param_1, param_2");".
+ * @return Kriteerin merkkijonoesitys muodossa: "(param_1, param_2");".
+ * @return null jos kriteerin arvoja ei asetettu.
+ ******************************************************************/
+
  public String toString() {
 
   String criteria;
@@ -517,6 +512,11 @@ public class TTK91TaskCriteria{
  }//toString
 
 
+
+ /******************************************************************
+ * Palauttaa merkkijonona kriteerin loogisen operaation. Operaatiot
+ * m‰‰ritelty luokassa TTK91Constant.
+ ******************************************************************/
 
  private String comparatorSymbol()
 	 			throws InvalidTTK91CriteriaException {
