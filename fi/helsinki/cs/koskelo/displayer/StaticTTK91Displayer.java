@@ -10,152 +10,149 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 
 public class StaticTTK91Displayer extends CommonDisplayer{
     
+	/**
+	 * Tekee tehtävän tiedoista html-koodia ja palauttaa 
+	 * html-koodin String-oliona. Kutsutaan DisplayerServlet2- ja
+	 * Answer2-servleteistä.
+	 *
+	 * @param  initval tehtävän vastaus
+	 * @param  params  generoidut parametrit
+	 * @param  hiddens lomakkeen piilokentät String-oliona.
+	 * @param  allowTry kertoo tuleeko sivun loppuun vastauspainike  
+	 * @return tehtävän esitys html-muodossa
+	 * @throws CacheException jos tulee ongelmia attribuuttien 
+	 *                        hakemisessa AttributeCachesta
+	 */
+	public String getSetting(String [] initVal, 
+													 String params, 
+													 String hiddens,  
+													 boolean allowTry) throws CacheException{
+       
 		/**
-    * Tekee tehtävän tiedoista html-koodia ja palauttaa 
-    * html-koodin String-oliona. Kutsutaan DisplayerServlet2- ja
-    * Answer2-servleteistä.
-    *
-    * @param  initval tehtävän vastaus
-    * @param  params  generoidut parametrit
-    * @param  hiddens lomakkeen piilokentät String-oliona.
-    * @param  allowTry kertoo tuleeko sivun loppuun vastauspainike  
-    * @return tehtävän esitys html-muodossa
-    * @throws CacheException jos tulee ongelmia attribuuttien 
-    *                        hakemisessa AttributeCachesta
-    */
-		public String getSetting(String [] initVal, 
-														 String params, 
-														 String hiddens,  
-														 boolean allowTry) throws CacheException{
+		 * Servletin nimi, joka käynnistetäänn lomakkeen
+		 * täyttämisen jälkeen.
+		 */
+		String targetServlet = "Answer2.do2";
        
-				/**
-				 * Servletin nimi, joka käynnistetäänn lomakkeen
-				 * täyttämisen jälkeen.
-				 */
-				String targetServlet = "Answer2.do2";
-       
-				// StrinBufferiin kerätään palautettava html-sivu
+		// StrinBufferiin kerätään palautettava html-sivu
 	
-				StringBuffer setting = new StringBuffer();
+		StringBuffer setting = new StringBuffer();
 	   
-				hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
-										+"value=\"staticttk91task\">");
+		hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
+								+"value=\"staticttk91task\">");
 
-				// Haetaan tehtävänanto, syötteet ja kieliriippuvainen syöteteksti.
+		// Haetaan tehtävänanto, syötteet ja syötteen otsikko.
 	
-				String taskDescription = 
-						cache.getAttribute("T", taskid, "taskDescription", language);
-				String input = 
-						cache.getAttribute("T", taskid, "publicInput", language);
+		String taskDescription = 
+			cache.getAttribute("T", taskid, "taskDescription", language);
+		String input = 
+			cache.getAttribute("T", taskid, "publicInput", language);
 
-				//FIXME: Inputtext pitäisi oikeasti hakea tietokannasta
-				String inputText ="Syötteet"; 
-
-				//String inputText = 
-				//cache.getAttribute("D", "staticttk91displayer", 
-				//"input_text", language);
+		String inputHeader = 
+			cache.getAttribute("D", "staticttk91taskdisplayer", 
+												 "inputHeader", language);
 	
-				// Lomake alkaa
+		// Lomake alkaa
 	
-				setting.append("<form action=" + targetServlet + 
-											 " method=\"post\" name=\"staticttk91task\"" +
-                       "id=\"staticttk91task\">");
+		setting.append("<form action=" + targetServlet + 
+									 " method=\"post\" name=\"staticttk91task\"" +
+									 "id=\"staticttk91task\">");
 	
        
-				// Lisätään tehtävänanto ja syötteet
+		// Lisätään tehtävänanto ja syötteet
 
-				setting.append(getHTMLElementTask(taskDescription));
-				setting.append(getHTMLElementInput(inputText, input));
+		setting.append(getHTMLElementTask(taskDescription));
+		setting.append(getHTMLElementInput(inputHeader, input));
 
-				/** 
-				 * Lisätään vastauslaatikko. Jos parametri initVal on null,
-				 * näytetään opiskelijalle tyhjä tehtävälaatikko,
-				 * muutoin opiskelijan vastaus laitetaan laatikkoon.
-				 */
+		/** 
+		 * Lisätään vastauslaatikko. Jos parametri initVal on null,
+		 * näytetään opiskelijalle tyhjä tehtävälaatikko,
+		 * muutoin opiskelijan vastaus laitetaan laatikkoon.
+		 */
 
-				if (initVal == null) {
-						setting.append(getHTMLElementAnswerBox());
-				} else {
-						setting.append(getHTMLElementAnswerBox(initVal));
-				}
+		if (initVal == null) {
+			setting.append(getHTMLElementAnswerBox());
+		} else {
+			setting.append(getHTMLElementAnswerBox(initVal));
+		}
 
-				// Lisätäänn analyserin tarvitsemat piilokentät lomakkeeseen
+		// Lisätäänn analyserin tarvitsemat piilokentät lomakkeeseen
 	
-				setting.append(hiddens);
+		setting.append(hiddens);
 	
-				// Jos tehtävän lähetys sallitaan, luodaan lähetä-nappi
+		// Jos tehtävän lähetys sallitaan, luodaan lähetä-nappi
 	
-				if (allowTry) {
-						setting.append(super.getButton());
-				}
+		if (allowTry) {
+			setting.append(super.getButton());
+		}
        
 
-				// Lomake loppuu
+		// Lomake loppuu
 
-				setting.append("</form>");
-				return new String(setting);
+		setting.append("</form>");
+		return new String(setting);
 
-		}//getSetting
+	}//getSetting
     
-		/**
-		 * Palauttaa tehtävänannon html-muodossa.
-		 *
-		 * @param  task tehtävänanto 
-		 * @return tehtävänanto html-muodossa
-		 */
+	/**
+	 * Palauttaa tehtävänannon html-muodossa.
+	 *
+	 * @param  task tehtävänanto 
+	 * @return tehtävänanto html-muodossa
+	 */
 
-    private String getHTMLElementTask(String task){
+	private String getHTMLElementTask(String task){
 	
-				return new String("<p class=\"assignment\"><strong>" 
-													+task +"</strong></p>");
-    }//getHTMLElementTask
+		return new String("<p class=\"assignment\"><strong>" 
+											+task +"</strong></p>");
+	}//getHTMLElementTask
 
-		/**
-		 * Palauttaa syötteet html-muodossa.
-		 *
-		 * @param inputText kieliriippuvainen syöteteksti esim. suomeksi syötteet 
-		 *        -> englanniksi input jne.
-		 * @param input varsinaiset syötteet                     
-		 * @return syötteet html-muodossa
-		 */
+	/**
+	 * Palauttaa syötteet html-muodossa.
+	 *
+	 * @param inputText kieliriippuvainen syöteteksti esim. suomeksi syötteet 
+	 *        -> englanniksi input jne.
+	 * @param input varsinaiset syötteet                     
+	 * @return syötteet html-muodossa
+	 */
 
-    private String getHTMLElementInput(String inputText, String input){
+	private String getHTMLElementInput(String inputText, String input){
 	
-				return new String("<p class=\"input\"><strong>" 
-													+inputText +": " +input +"</strong></p>");
-    }//getHTMLELementInput
+		return new String("<p class=\"input\"><strong>" 
+											+inputText +": " +input +"</strong></p>");
+	}//getHTMLELementInput
     
-		/**
-		 * Palauttaa tyhjän vastauslaatikon html-muodossa.
-		 *
-		 * @return tyhjä vastauslaatikko html-muodossa
-		 */
+	/**
+	 * Palauttaa tyhjän vastauslaatikon html-muodossa.
+	 *
+	 * @return tyhjä vastauslaatikko html-muodossa
+	 */
 
-    private String getHTMLElementAnswerBox(){
+	private String getHTMLElementAnswerBox(){
 	
-				return new String("<textarea name=\"textfield\" cols=\"50\""+ 
-													"rows=\"20\"></textarea>\"<br>");
-    }//getHTMLElementAnswerBox
+		return new String("<textarea name=\"textfield\" cols=\"50\""+ 
+											"rows=\"20\"></textarea>\"<br>");
+	}//getHTMLElementAnswerBox
       
-		/**
-		 * Palauttaa vastauslaatikon, joka sisältää vastauksen
-		 *
-		 * @param  answer vastaus 
-		 * @return täytetty vastauslaatikko html-muodossa
-		 */
+	/**
+	 * Palauttaa vastauslaatikon, joka sisältää vastauksen
+	 *
+	 * @param  answer vastaus 
+	 * @return täytetty vastauslaatikko html-muodossa
+	 */
  
-    private String getHTMLElementAnswerBox(String[] answer){
+	private String getHTMLElementAnswerBox(String[] answer){
 	
-				StringBuffer answerbox = new StringBuffer();
+		StringBuffer answerbox = new StringBuffer();
 
-				answerbox.append("<textarea name=\"textfield\" cols=\"50\""+ 
-												 "rows=\"20\">");
+		answerbox.append("<textarea name=\"textfield\" cols=\"50\""+ 
+										 "rows=\"20\">");
 
-				for(int i = 0; i < answer.length; i++){
-						answerbox.append(answer[i] +"\n");
-				}
+		for(int i = 0; i < answer.length; i++){
+			answerbox.append(answer[i] +"\n");
+		}
 	
-				answerbox.append("</textarea><br>");
-				return new String(answerbox);
-		}//getHTMLElementAnswerBox
+		answerbox.append("</textarea><br>");
+		return new String(answerbox);
+	}//getHTMLElementAnswerBox
 }//class
