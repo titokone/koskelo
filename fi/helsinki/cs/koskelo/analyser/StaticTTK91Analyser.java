@@ -327,6 +327,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     int memrefs = mem.getMemoryReferences();
     TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
     boolean memrefsok = checkMemRefCriteria(memrefs, memRefCriteria.getComparator(), memRefCriteria.getSecondComparable());
+    results.setMemoryReferences(memrefsok);
 
     /*
       -Vaaditut käskys
@@ -386,22 +387,29 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    // rikkinäinen kriteeri - ei pitäisi tapahtua
 	    throw new RunTimeException("TTK91Analyser.checkMemRefCriteria(): Broken criteria, String to int conversion failed");
     }
-    switch (comparator) { // FIXME: vakiot vakioina! Joku kokoelmaluokka?
+    switch (comparator) { 
 	    
-    case 0: // LESS:
-      break;
-    case 1: // LESSEQ:
-	    break;
-    case 2: // GREATER:
-	    break;
-    case 3: // GREATEREQ:
-	    break;
-    case 4: // EQUAL:
-	    break;
-    case 5: // NOTEQUAL:
-	    break;
+    case TTK91Constant.LESS:
+	return (memrefs < checkAgainstMe);
+	break;
+    case TTK91Constant.LESSEQ:
+	return (memrefs <= checkAgainstMe);
+	break;
+    case TTK91Constant.GREATER: 
+	return (memrefs > checkAgainstMe);
+	break;
+    case TTK91Constant.GREATEREQ: 
+	return (memrefs >= checkAgainstMe);
+	break;
+    case TTK91Constant.EQUAL: 
+	return (memrefs == checkAgainstMe);
+	break;
+    case TTK91Constant.NOTEQUAL: 
+	return (memrefs != checkAgainstMe);
+	break;
     default:
+	return false; // tanne ei pitaisi paasta koskaan
     }
-  }
+  } // checkMemRefCriteria
 
 } // StaticTTK91Analyser
