@@ -235,6 +235,12 @@ public class TaskDefinitionController extends HttpServlet {
 				  session.setAttribute("java.util.Collection", tasks);
 				  request.getRequestDispatcher("/jsp/tasks.jsp").forward(request,response);
 				  break;
+			/*ADDED by HT, Koskelo-projekti, 08.11.2004*/
+			case Events.STATIC_TTK91_COMPOSE:
+                                  session.removeAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
+				  RequestDispatcher request_dispatcher = request.getRequestDispatcher("/jsp/StaticTTK91Composer.jsp")
+				  request_dispatcher.forward(request,response);
+				  break;
 			  default:
 				  response.sendRedirect("http://www.helsinki.fi/cgi-bin/dump-all");
 				  break;
