@@ -66,12 +66,18 @@ public class TTK91AnalyseData{
 
 
 	// Opiskelijan tietokoneen statistiikkamuuttujat
-	
-	private int usedCommands;
-	private int maxStackSize;
-	private int memoryReferences;
-	private int codeSegmentSize;
+
 	private int dataSegmentSize;
+	private int codeSegmentSize;
+
+	//Analysointia varten
+
+	private int maxStackSize;
+	private int usedCommands;
+	private int memoryReferences;
+	private int hiddenUsedCommands;
+	private int hiddenMemoryReferences;
+
 
 	// Titokoneiden muistit (FIXME, n‰it‰ ei taideta tarvita?):
 
@@ -94,12 +100,12 @@ public class TTK91AnalyseData{
 		compileTeacherApplication();
 		compileStudentApplication();
 		getTaskData();
-		
+
 		// compilet ovat voineet p‰‰tty‰ virheeseen
 		if(!this.errors) {
 			run();
 		}
-		
+
 		// ohjelmien ajo on voinut p‰‰tty‰ virheeseen
 		if(!this.errors) {
 			setStatistics();
@@ -110,40 +116,54 @@ public class TTK91AnalyseData{
 	private void setStatistics() {
 
 		if(controlPublicInputStudent != null && !errors) {
-		RandomAccessMemory ram = (RandomAccessMemory) 
-			controlPublicInputStudent.getMemory();
 
-		Processor cpu = (Processor) controlPublicInputStudent.getCpu(); // FIXME, t‰m‰ on titokoneen rajapinnan puutteen kiertoa!!
-		
-		
-		usedCommands = cpu.giveCommAmount();
-		maxStackSize = cpu.giveStackSize();
-		memoryReferences = ram.getMemoryReferences();
-		codeSegmentSize = ram.getCodeAreaSize();
-		dataSegmentSize = ram.getDataAreaSize();
-		
-		
-		} 
+			// FIXME, t‰m‰ on titokoneen rajapinnan puutteen kiertoa!!
+			RandomAccessMemory ram = (RandomAccessMemory) 
+				controlPublicInputStudent.getMemory();
 
+			Processor cpu = (Processor)
+				controlPublicInputStudent.getCpu(); 
+
+			usedCommands = cpu.giveCommAmount();
+			maxStackSize = cpu.giveStackSize();
+			memoryReferences = ram.getMemoryReferences();
+			codeSegmentSize = ram.getCodeAreaSize();
+			dataSegmentSize = ram.getDataAreaSize();
+
+			if(controlHiddenInputStudent != null) {
+
+				// FIXME, t‰m‰ on titokoneen rajapinnan puutteen kiertoa!!
+				ram = (RandomAccessMemory) 
+					controlHiddenInputStudent.getMemory();
+
+				cpu = (Processor)
+					controlHiddenInputStudent.getCpu(); 
+
+				hiddenUsedCommands = cpu.giveCommAmount();
+				hiddenMemoryReferences = ram.getMemoryReferences();
+
+			} 
+
+		}
 	}
-	
+
 	private void compileTeacherApplication() {
 
 
 		// compile teacherapp
-		
+
 		TTK91CompileSource src = null;
-		
+
 		if(exampleCode == null) {
 			return; // FIXME: virheenk‰sittely
 		}
-		
-		
+
+
 		src = (TTK91CompileSource) new Source(exampleCode);
 
 		if (src == null) {
-this.teacherCompileError = "Malliratkaisua ei pystytty"+
-					" muuntamaan TTK91CompileSource-muotoon";
+			this.teacherCompileError = "Malliratkaisua ei pystytty"+
+				" muuntamaan TTK91CompileSource-muotoon";
 		}//if
 
 
@@ -163,7 +183,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 		}//catch
 
 		this.teacherApplicationPublic = app;
-	
+
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
@@ -183,7 +203,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 
 
 		// compile studentapp
-		
+
 		TTK91CompileSource src = null;
 
 		if (this.answer != null) {
@@ -195,7 +215,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 
 		if (src == null) {
 			this.studentCompileError = "Ratkaisua ei pystytty"+
-					" muuntamaan TTK91CompileSource-muotoon";
+				" muuntamaan TTK91CompileSource-muotoon";
 			this.errors = true;
 		}//if
 
@@ -216,7 +236,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 		}//catch
 
 		this.studentApplicationPublic = app;
-		
+
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
@@ -225,7 +245,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 			this.errors = true;
 			return;
 		}//catch
-		
+
 		this.studentApplicationHidden = app;
 
 		// get the student app and the
@@ -311,7 +331,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 						this.studentApplicationHidden,
 						steps
 						);
-			
+
 			} catch (TTK91Exception e) {
 				this.studentRunError = "Student run error" + 
 					e.getMessage();
@@ -370,15 +390,15 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 	public String getStudentCompileError() {
 		return this.studentCompileError;
 	}
-	
+
 	public String getTeacherCompileError() {
 		return this.teacherCompileError;
 	}
-	
+
 	public String getStudentRunError() {
 		return this.studentRunError;
 	}
-	
+
 	public String getTeacherRunError() {
 		return this.teacherRunError;
 	}
@@ -389,10 +409,10 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 		errors[1] = teacherCompileError;
 		errors[2] = studentRunError;
 		errors[3] = teacherRunError;
-	
+
 		return errors;
 	}
-	
+
 	public boolean errors() {
 		return this.errors;
 	}
@@ -417,7 +437,7 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 		return controlPublicInputStudent.getCpu();
 	}
 	public TTK91Cpu getStudentCpuHidden(){
-		
+
 		if(controlHiddenInputStudent != null) {
 			return controlHiddenInputStudent.getCpu();
 		} else {
@@ -428,9 +448,9 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 	public TTK91Cpu getTeacherCpuPublic(){
 		return controlPublicInputTeacher.getCpu();
 	}
-	
+
 	public TTK91Cpu getTeacherCpuHidden(){
-		
+
 		if(controlHiddenInputTeacher != null) {
 			return controlHiddenInputTeacher.getCpu();
 		} else {
@@ -445,28 +465,39 @@ this.teacherCompileError = "Malliratkaisua ei pystytty"+
 	public int getCommandAmount() {
 
 		return  this.usedCommands;
-	
+
 	}
-	
+
+	public int getHiddenCommandAmount() {
+
+		return  this.hiddenUsedCommands;
+
+	}
+
 	public int getStackSize() {
-	
+
 		return this.maxStackSize;
 
 	}
-	
+
 	public int getMemoryReferences() {
 		return this.memoryReferences;
 	}
 
-	
+
+	public int getHiddenMemoryReferences() {
+		return this.hiddenMemoryReferences;
+	}
+
+
 	public int getCodeSegmentSize() {
 		return this.codeSegmentSize;
 	}
-	
+
 	public int getDataSegmentSize() {
 		return this.dataSegmentSize;
 	}
 
 
-			
-	}// class
+
+}// class
