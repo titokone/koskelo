@@ -5,6 +5,8 @@ import fi.helsinki.cs.koskelo.common.TTK91TaskCriteria;
 
 import fi.hu.cs.titokone.MemoryLine;
 
+import fi.hu.cs.ttk91.TTK91Cpu;
+
 import java.util.HashMap;
 
 /**
@@ -321,6 +323,123 @@ public final class TTK91AnalyserExtraUtils {
 				);
 
 		return (publiccrit && hiddencrit);
+
+	}
+
+	public static boolean checkRegisterCriteria(
+			TTK91TaskCriteria criteria,
+			TTK91Cpu studentCpu, 	//not null
+			TTK91Cpu compareCpu
+			) {
+
+	String studentRegister = criteria.getFirstComparable();
+	String compareRegister = criteria.getSecondComparable();
+
+	int studentRegisterValue;
+	int compareRegisterValue;
+	
+	try {
+		compareRegisterValue = Integer.parseInt(compareRegister);
+
+	} catch (NumberFormatException nfe) {
+
+		if ( compareCpu != null) {
+		
+			int registerNumber = getRegisterNumber(compareRegister);
+			
+			if( registerNumber == -1 ) {
+				return false;
+			}
+
+			compareRegisterValue = compareCpu.getValueOf(registerNumber);
+
+		} else {
+			return false;
+		}
+	}
+	
+
+	int studentRegisterNumber = getRegisterNumber(studentRegister);
+
+	if(studentRegisterNumber == -1) {
+		return false;
+	}
+	
+	studentRegisterValue = studentCpu.getValueOf(studentRegisterNumber);
+	
+	return compare(
+			studentRegisterValue,
+			criteria.getComparator(),
+			compareRegisterValue
+			);
+	
+	}
+ 
+	private static int getRegisterNumber( String register ){
+
+		String compare = register.toUpperCase();
+		
+		if(compare.equals("TR")) {
+			
+			return fi.hu.cs.ttk91.TTK91Cpu.CU_TR;
+			
+		} else if(compare.equals("IR")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.CU_IR;
+
+		} else if(compare.equals("PC")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.CU_PC;
+
+		} else if(compare.equals("SR")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.CU_SR;
+
+		} else if(compare.equals("R0")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R0;
+
+		} else if(compare.equals("R1")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R1;
+
+		} else if(compare.equals("R2")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R2;
+
+		} else if(compare.equals("R3")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R3;
+
+		} else if(compare.equals("R4")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R4;
+
+		} else if(compare.equals("R5")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R5;
+
+		} else if(compare.equals("R6")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R6;
+
+		} else if(compare.equals("R7")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_R7;
+		
+		} else if(compare.equals("SP")) {
+		
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_SP;
+
+		} else if(compare.equals("FP")) {
+
+			return fi.hu.cs.ttk91.TTK91Cpu.REG_FP;
+
+		} else {
+
+			// ei tunnettu rekisteri.
+			return -1;
+		}
 
 	}
 }
