@@ -1390,7 +1390,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				name+
 				"QualityFeedback\">";
 			if(editTask){
-				feedback =  (String)task.get(name + "FeedbackQuality");
+				feedback =  (String)task.get(name + "QualityFeedback");
 				if (feedback != null && !feedback.equals("") && !feedback.equals("null")) {
 					tmp = tmp + feedback;
 				}
