@@ -27,8 +27,10 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			) throws ServletException, java.io.IOException {
 
 
+		TTK91TaskOptions = new TTK91TaskOptions();
+		
 		// N‰m‰ muuttujat ovat edellisen sivun inputin 
-		// lukemsita varten parametrista req.
+		// lukemista varten parametrista req.
 		// Jokainen arvo tarkistetaan siten ett‰ katsotaan onko
 		// sen tyyppi ja syntaksi oikein.
 
@@ -76,7 +78,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		try { // maxCommands
 			maxCommands = (Integer.parseint(reqHiddenInput))
 				.getValue();
-
+			taskOptions.setMaxCommands(maxCommands);
 		} catch (Exception e) { 
 			// TODO lis‰‰ virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -116,6 +118,8 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 			}
 
+			taskOptions.setPublicInput(publicInput);
+
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
@@ -141,7 +145,8 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 				hiddenInput[i] = ((Integer)(tmp.get(i))).intValue();
 
 			}
-
+			
+			taskOptions.setHiddenInput(hiddenInput);
 
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
