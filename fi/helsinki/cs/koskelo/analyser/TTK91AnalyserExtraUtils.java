@@ -1,6 +1,11 @@
 package fi.helsinki.cs.koskelo.analyser;
 
 import fi.helsinki.cs.koskelo.common.TTK91Constant;
+import fi.helsinki.cs.koskelo.common.TTK91TaskCriteria;
+
+import fi.hu.cs.titokone.MemoryLine;
+
+import java.util.HashMap;
 
 /**
  * Kirjastoluokka analyserien tarpeisiin
@@ -125,13 +130,12 @@ public final class TTK91AnalyserExtraUtils {
 
 	public static boolean checkStaticMemoryCriteria(
 			TTK91TaskCriteria criteria,
-			Hashmap symboltable,
-			MemoryLine[] memorylines
+			HashMap symboltable,
+			MemoryLine[] memoryLines
 			) {
 
 		String studentsymbol = criteria.getFirstComparable();
 		
-		String comparevalue = criteria.getSecondComparable();
 		int studentMemoryValue;
 		int memoryslot = -1;
 		MemoryLine memoryLine = null;
@@ -143,7 +147,7 @@ public final class TTK91AnalyserExtraUtils {
 		} catch (NumberFormatException nfe) {
 
 			Integer memoryInteger = (Integer)
-				(studentSymbolTable.get(studentMemSymbol));
+				(symboltable.get(studentsymbol));
 			
 			if(memoryInteger != null) {
 				memoryslot = memoryInteger.intValue();
@@ -154,7 +158,7 @@ public final class TTK91AnalyserExtraUtils {
 
 		if(
 				(memoryslot >= 0) && 
-				(memoryslot < memorylines.length())
+				(memoryslot < memoryLines.length)
 				){
 			memoryLine = memoryLines[memoryslot];
 		
@@ -166,7 +170,11 @@ public final class TTK91AnalyserExtraUtils {
 		studentMemoryValue = memoryLine.getBinary();
 
 
-		return compare(studentMemoryValue, criteria.getComparator(), comparevalue);
+		return compare(
+				studentMemoryValue, 
+				criteria.getComparator(), 
+				criteria.getSecondComparable()
+				);
 
 
 	
@@ -174,10 +182,10 @@ public final class TTK91AnalyserExtraUtils {
 
 	public static boolean checkStaticMemoryCriteria(
 			TTK91TaskCriteria criteria,
-			Hashmap studentPublicSymbolTable,
-			Hashmap studentHiddenSymbolTable,
+			HashMap studentPublicSymbolTable,
+			HashMap studentHiddenSymbolTable,
 			MemoryLine[] studentPublicMemoryLines,
-			MemoryLine[] studentHiddentMemoryLines) {
+			MemoryLine[] studentHiddenMemoryLines) {
 
 		boolean publiccrit = false;
 		boolean hiddencrit = false;
