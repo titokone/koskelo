@@ -182,28 +182,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // publicInput
 			
 			if(reqPublicInput != null) {
-				StringTokenizer st = new StringTokenizer(
-						reqPublicInput, ","
-						);
-				Vector tmp = new Vector();
-
-				while(st.hasMoreTokens()){
-
-					tmp.add(st.nextToken());
-				}
-
-				publicInput = new int[tmp.size()];
-
-
-				for(int i = 0; i < tmp.size(); i++) {
-				
-					publicInput[i] = parsePostInt((String)tmp.get(i));
-
-				}
-
+				publicInput = parseInputString(reqPublicInput);	
 				taskOptions.setPublicInput(publicInput);
 			}
+
 		} catch (Exception e) {
+			
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, res);
@@ -211,31 +195,18 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // hiddenInput
+			
 			if(reqHiddenInput != null) {
-				StringTokenizer st = new StringTokenizer(
-						reqHiddenInput, ","
-						);
-				Vector tmp = new Vector();
-
-				while(st.hasMoreTokens()){
-
-					tmp.add(st.nextToken());
-				}
-
-				hiddenInput = new int[tmp.size()];
-
-
-				for(int i = 0; i < tmp.size(); i++) {
-					hiddenInput[i] = parsePostInt((String)tmp.get(i));
-
-				}
-
+				hiddenInput = parseInputString(reqHiddenInput); 
 				taskOptions.setHiddenInput(hiddenInput);
 			}
+		
 		} catch (Exception e) {
+		
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, res);
+		
 		}
 	
 		try { // compareMethod
@@ -348,6 +319,39 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		
 	} // doPost
+
+
+	private int[] parseInputString(String input) {
+
+
+		StringTokenizer st = new StringTokenizer(
+				input, ","
+				);
+
+		Vector tmp = new Vector();
+		int[] retInput;
+
+		while(st.hasMoreTokens()){
+
+			tmp.add(st.nextToken());
+		}
+
+		retInput = new int[tmp.size()];
+
+
+		for(int i = 0; i < tmp.size(); i++) {
+
+			retInput[i] = parsePostInt(
+					(String)
+					tmp.get(i)
+					);
+
+		}
+
+		return retInput;
+
+	}
+
 
 	private String feedbackForm() {
 
@@ -497,7 +501,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String[] foo = new String[2];
 		foo[0] = "bar";
 		
-		return ;
+		return foo;
 	}//parsePostText
 
 
