@@ -1,7 +1,7 @@
 /**
  * Luokka, joka huolehtii staattisten tehtävien
  * html-koodin tuottamisesta.
- * @author Tom Bertell
+ * @author Tom Bertell, Koskelo-projekti
  */
 
 package fi.helsinki.cs.koskelo.displayer;

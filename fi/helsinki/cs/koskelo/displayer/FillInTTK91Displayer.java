@@ -5,7 +5,7 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 /**
  * Luokka, joka huolehtii staattisten tehtävien
  * html-koodin tuottamisesta.
- * @author Tom Bertell
+ * @author Tom Bertell, Koskelo-projekti
  */
 
 public class FillInTTK91Displayer extends CommonDisplayer{
@@ -47,7 +47,9 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		String inputHeader;     // syötteen otsikko
 		String exampleCode;     // malliratkaisu
 		StringBuffer setting = new StringBuffer();  // kerätään html-sivu
-	   
+	  
+		// Lisätään piilokenttiin tehtävän tyyppi.
+		
 		hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
 								+"value=\"fillinttk91task\">");
 		/*
