@@ -1,4 +1,4 @@
-package fi.helsinki.cs.koskelo.analyser;
+dpackage fi.helsinki.cs.koskelo.analyser;
 
 import fi.hu.cs.ttk91.TTK91CompileSource;
 import fi.hu.cs.ttk91.TTK91Cpu;
@@ -125,24 +125,30 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     // toiminnallisuus
     // kesken
 
+		// FIXME: FillInAnalyserin super.fetchExampleCode() tarvitsee 
+		// taskOptionsin ennen super.analyse() kutsua. Eli tämä seuraava
+		// pitäisi siirtää jonnekin aikaisemmin. Testasin heittää sen
+		// registerCacheen ja kyllähähän se toimii, mutta ei kauhean siistiä... 
+		// Tom 10.12.2004
+
     this.utils = new TTK91AnalyserUtils(this.cache, this.taskID, this.language); // Rumaa, mutta pakko tehdä vasta täällä, jotta registerCache ajettu...
 
     try {
 	    this.taskOptions = this.utils.getTTK91TaskOptions();
     }
     catch (CacheException ce) {
-	    return new Feedback(TTK91Common.FATAL_ERROR, 
+	    return new Feedback(TTK91Constant.FATAL_ERROR, 
                           "*TTK91Analyser.getTTK91TaskOptions()->"+
                           "CacheException: "+ce.getMessage());
     }
     catch (InvalidTTK91CriteriaException ie) {
-	    return new Feedback(TTK91Common.FATAL_ERROR, 
+	    return new Feedback(TTK91Constant.FATAL_ERROR, 
                           "*TTK91Analyser.getTTK91TaskOptions()->"+
                           "InvalidTTK91CriteriaException: "+ie.getMessage());
     }	    
     
     if (this.taskOptions == null) {
-      return new Feedback(TTK91Common.FATAL_ERROR, "this.taskOptions on null,"+
+      return new Feedback(TTK91Constant.FATAL_ERROR, "this.taskOptions on null,"+
                           "vastauksen tarkastamista ei voi tehdä");
     }
 
@@ -264,7 +270,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
    * @return esimerkkikoodi
    */
   
-  private String[] fetchExampleCode() {
+  protected String[] fetchExampleCode() {
     String[] exampleCode = new String[1];
     if (this.taskOptions != null) {
       exampleCode[0] = this.taskOptions.getExampleCode();
