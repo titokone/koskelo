@@ -302,8 +302,26 @@ public class TTK91AnalyseData{
 		return this.teacherRunError;
 	}
 
+	public String[] getErrorMessages() { //FIXME rumaa!
+		String[] errors = new String[4];
+		errors[0] = studentCompileError;
+		errors[1] = teacherCompileError;
+		errors[2] = studentRunError;
+		errors[3] = teacherRunError;
+	
+		return errors;
+	}
+	
 	public boolean Errors() {
 		return this.errors;
+	}
+
+	public TTK91Application getStudentApp() {
+		return this.studentApplication;
+	}
+
+	public TTK91Application getTeacherApp() {
+		return this.teacherApplication;
 	}
 
 }// class
