@@ -6,13 +6,15 @@ import fi.helsinki.cs.koskelo.displayer.*;
 
 public class StaticTTK91DisplayerTest extends TestCase {
 
+	StaticTestCache cache = new StaticTestCache();
 	String [] answer = {"LOAD R1, =3; LOAD R2, =2"};
 	String hiddens = ("<input type=\"hidden\" name=\"test\"" 
 										+"value=\"test\">");
 	String testString ="";
 	public void testgetSetting() {
 
-		TestStaticDisplayer test = new TestStaticDisplayer();
+		StaticTTK91Displayer test = new StaticTTK91Displayer();
+		test.registerCache(cache);
 		try{
 			testString = test.getSetting (answer,"",hiddens,false);
 			}
