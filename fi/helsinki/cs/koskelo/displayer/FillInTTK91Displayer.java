@@ -58,6 +58,8 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 
 		taskDescription = 
 			cache.getAttribute("T", taskid, "taskDescription", language);
+		if (taskDescription == null || taskDescription.equals("null"))
+			taskDescription = "";
 		input = 
 			cache.getAttribute("T", taskid, "publicInput", language);
 		if (input == null || input.equals("null"))
@@ -67,6 +69,8 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 												 "inputHeader", language);
 		exampleCode =
 			cache.getAttribute("T", taskid, "exampleCode", language);
+		if (exampleCode == null || exampleCode.equals("null"))
+			exampleCode = "";
 	
 		/*
 		 * Lomake alkaa

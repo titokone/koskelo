@@ -60,6 +60,8 @@ public class StaticTTK91Displayer extends CommonDisplayer {
 
 		taskDescription = 
 			cache.getAttribute("T", taskid, "taskDescription", language);
+		if (taskDescription == null || taskDescription.equals("null"))
+			taskDescription = "";
 		input = 
 			cache.getAttribute("T", taskid, "publicInput", language);
 		if (input == null || input.equals("null"))
