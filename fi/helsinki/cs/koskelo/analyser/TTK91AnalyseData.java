@@ -37,7 +37,7 @@ public class TTK91AnalyseData{
 	// Malliratkaisu
 
 	private String exampleCode = null;                // haetaan taskoptionsista - malliratkaisun koodi
-	private String[] answer = null;
+	private String answer = null;
 
 	// Virheilmoitukset
 
@@ -65,7 +65,15 @@ public class TTK91AnalyseData{
 	private String hiddenInput = null;
 
 
-	// Titokoneiden muistit:
+	// Opiskelijan tietokoneen statistiikkamuuttujat
+	
+	private int usedCommands;
+	private int maxStackSize;
+	private int memoryReferences;
+	private int codeSegmentSize;
+	private int dataSegmentSize;
+
+	// Titokoneiden muistit (FIXME, näitä ei taideta tarvita?):
 
 	private    RandomAccessMemory studentPublicMemory = null; 
 	private    RandomAccessMemory teacherPublicMemory = null; 
@@ -74,21 +82,25 @@ public class TTK91AnalyseData{
 
 
 	public TTK91AnalyseData(
-			String[] answer, 
-			TTK91TaskOptions taskOptions
+			TTK91TaskOptions taskOptions,
+			String answer, 
+			String exampleCode
 			) {
 
 		this.taskOptions = taskOptions;
 		this.answer = answer;
+		this.exampleCode = exampleCode;
 
 		compileTeacherApplication();
 		compileStudentApplication();
 		getTaskData();
 		
+		// compilet ovat voineet päättyä virheeseen
 		if(!this.errors) {
 			run();
 		}
 		
+		// ohjelmien ajo on voinut päättyä virheeseen
 		if(!this.errors) {
 			setStatistics();
 		}
@@ -96,6 +108,22 @@ public class TTK91AnalyseData{
 
 
 	private void setStatistics() {
+
+		if(controlPublicInputStudent != null && !errors) {
+		RandomAccessMemory ram = (RandomAccessMemory) 
+			controlPublicInputStudent.getMemory();
+
+		Processor cpu = (Processor) controlPublicInputStudent.getCpu(); // FIXME, tämä on titokoneen rajapinnan puutteen kiertoa!!
+		
+		
+		usedCommands = cpu.giveCommAmount();
+		maxStackSize = cpu.giveStackSize();
+		memoryReferences = ram.getMemoryReferences();
+		codeSegmentSize = ram.getCodeAreaSize();
+		dataSegmentSize = ram.getDataAreaSize();
+		
+		
+		} 
 
 	}
 	
@@ -114,7 +142,7 @@ public class TTK91AnalyseData{
 		src = (TTK91CompileSource) new Source(exampleCode);
 
 		if (src == null) {
-			this.teacherCompileError = "Malliratkaisua ei pystytty"+
+this.teacherCompileError = "Malliratkaisua ei pystytty"+
 					" muuntamaan TTK91CompileSource-muotoon";
 		}//if
 
@@ -128,7 +156,8 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = "Teacher compile error" + e.getMessage();
+			this.teacherCompileError = "Teacher compile error" + 
+				e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -138,7 +167,8 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = "Teacher compile error" + e.getMessage();
+			this.teacherCompileError = "Teacher compile error" + 
+				e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -157,7 +187,7 @@ public class TTK91AnalyseData{
 		TTK91CompileSource src = null;
 
 		if (this.answer != null) {
-			String ans = this.answer[0];
+			String ans = this.answer;
 			ans = ans + "\n SVC SP, =HALT";
 			src = (TTK91CompileSource) new Source(ans);
 			// FIXME: toimiiko tosiaan näin helposti?
@@ -179,7 +209,8 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = "Student compile error" + e.getMessage();
+			this.studentCompileError = "Student compile error" + 
+				e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -189,7 +220,8 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = "Student compile error" + e.getMessage();
+			this.studentCompileError = "Student compile error" + 
+				e.getMessage();
 			this.errors = true;
 			return;
 		}//catch
@@ -230,17 +262,23 @@ public class TTK91AnalyseData{
 
 			this.studentApplicationPublic.setKbd(publicInput);
 			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
-				this.teacherApplicationPublic.setKbd(publicInput);
+				this.teacherApplicationPublic.setKbd(
+						publicInput
+						);
 			}
 		}
 
 		this.controlPublicInputStudent = new Control(null, null);
 
 		try {
-			this.controlPublicInputStudent.run(this.studentApplicationPublic, steps);
+			this.controlPublicInputStudent.run(
+					this.studentApplicationPublic, 
+					steps
+					);
 			// 1. simulointi
 		} catch (TTK91Exception e) {
-			this.studentRunError = "Student run error" + e.getMessage();
+			this.studentRunError = "Student run error" + 
+				e.getMessage();
 			this.errors = true;
 			return;
 		}
@@ -249,9 +287,13 @@ public class TTK91AnalyseData{
 			// 1. simulointi malliratkaisua
 			this.controlPublicInputTeacher = new Control(null, null);
 			try {
-				this.controlPublicInputTeacher.run(this.teacherApplicationPublic, steps);
+				this.controlPublicInputTeacher.run(
+						this.teacherApplicationPublic,
+						steps
+						);
 			} catch (TTK91Exception e) {
-				this.teacherRunError = "Teacher run error" +  e.getMessage();
+				this.teacherRunError = "Teacher run error" +
+					e.getMessage();
 				this.errors = true;
 				return;
 			}
@@ -265,9 +307,14 @@ public class TTK91AnalyseData{
 			this.studentApplicationHidden.setKbd(hiddenInput);
 
 			try {
-				this.controlHiddenInputStudent.run(this.studentApplicationHidden, steps);
+				this.controlHiddenInputStudent.run(
+						this.studentApplicationHidden,
+						steps
+						);
+			
 			} catch (TTK91Exception e) {
-				this.studentRunError = "Student run error" + e.getMessage();
+				this.studentRunError = "Student run error" + 
+					e.getMessage();
 				this.errors = true;
 				return;
 			}
@@ -277,11 +324,17 @@ public class TTK91AnalyseData{
 				// 2. simulointi malliratkaisua
 
 				this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput määritelty --> "optimointia"
-				this.teacherApplicationHidden.setKbd(hiddenInput);
+				this.teacherApplicationHidden.setKbd(
+						hiddenInput
+						);
 				try {
-					this.controlHiddenInputTeacher.run(this.teacherApplicationHidden, steps);
+					this.controlHiddenInputTeacher.run(
+							this.teacherApplicationHidden,
+							steps
+							);
 				} catch (TTK91Exception e) {
-					teacherRunError = "Teacher run error" + e.getMessage();
+					teacherRunError = "Teacher run error" +
+						e.getMessage();
 					this.errors = true;
 					return;
 				}
