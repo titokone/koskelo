@@ -96,7 +96,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 
 	if (answer == null) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR,
+	    return new Feedback(TTK91Constant.ERROR,
 				"Virhe vastauksen välityksessä. Ei voida"+
 				"analysoida.");
 	}
@@ -108,6 +108,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	// FIXME FillInissä tämä malliratkaisun käsittelytapa ei taida toimia?
 	// FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+	//  
+	// Ööh, miksei toimi? [LL]
 
 	if (analyseData.errors()) { // tapahtuiko simulaatioissa virheitä?
 	    String[] messages = analyseData.getErrorMessages();
@@ -118,7 +120,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		}
 	    }
 	    
-	    return new Feedback(TTK91Constant.FATAL_ERROR,
+	    return new Feedback(TTK91Constant.ERROR,
 				"Ratkaisun simulointi epäonnistui:"+
 				errorMessage);
 	} // if (analyseData.errors())
@@ -176,7 +178,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 						 this.taskID,
 						 this.language);
 	if (this.cacheUtils == null) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR,
+	    return new Feedback(TTK91Constant.ERROR,
 				"*TTK91Analyser.fetchTTK91AnalyserUtils():"+
 				" TTK91AnalyserUtilsia ei saatu. Analyysia ei"+
 				" voida tehdä.");
@@ -194,18 +196,18 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    this.taskOptions = this.cacheUtils.getTTK91TaskOptions();
 	}
 	catch (CacheException ce) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR, 
+	    return new Feedback(TTK91Constant.ERROR, 
 				"*TTK91Analyser.getTTK91TaskOptions()->"+
 				"CacheException: "+ce.getMessage());
 	}
 	catch (InvalidTTK91CriteriaException ie) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR, 
+	    return new Feedback(TTK91Constant.ERROR, 
 				"*TTK91Analyser.getTTK91TaskOptions()->"+
 				"InvalidTTK91CriteriaException: "+
 				ie.getMessage());
 	}	    
 	if (this.taskOptions == null) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR, 
+	    return new Feedback(TTK91Constant.ERROR, 
 				"this.taskOptions on null,"+
 				"vastauksen tarkastamista ei voi tehdä");
 	}
