@@ -161,8 +161,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
   private void getStudentApplication(String[] answer) {
 
-    TTK91CompileSource src = 
-	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
+    TTK91CompileSource src = parseSourceFromAnswer(answer);
 
     if (src == null) {
 	    // return new Feedback(); 
@@ -171,6 +170,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    // TTK91CompileSource-muotoon - voiko
 	    // näin edes käydä?
     }//if
+
 
     TTK91Application app = null;
 
@@ -196,8 +196,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
   private void getTeacherApplication(String[] answer) {
 
 
-    TTK91CompileSource src = 
-	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
+    TTK91CompileSource src = parseSourceFromAnswer(answer);
 
     if (src == null) {
 	    //	    return new Feedback(); 
@@ -227,8 +226,10 @@ public class StaticTTK91Analyser extends CommonAnalyser {
    * @param answer
    */
 
-  private static TTK91CompileSource parseSourceFromAnswer(String[] answer) {
-    if (answer != null) { 
+  private void TTK91CompileSource parseSourceFromAnswer(String[] answer) {
+    if (answer != null) {
+	    String ans = answer[0];
+	    ans = ans + "\n SVC SP, =HALT;";
 	    return (TTK91CompileSource) new Source(answer[0]);
 	    // FIXME: toimiiko tosiaan näin helposti?
     }
