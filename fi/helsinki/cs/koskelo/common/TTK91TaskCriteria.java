@@ -1,6 +1,6 @@
 //TODO: Kommentit ym. sössö
 
-//package fi.helsinki.cs.koskelo.common;
+package fi.helsinki.cs.koskelo.common;
 
 import java.lang.String.*;
 
@@ -51,11 +51,17 @@ public class TTK91TaskCriteria{
 		String secondComparable)
 		throws InvalidTTK91CriteriaException {
 
-  this.firstComparable = firstComparable;
-  this.secondComparable = secondComparable;
+  if(firstComparable == null ||
+     secondComparable == null) {
 
-  checkComparator(comparator);
-  this.comparator = comparator;
+      throw new InvalidTTK91CriteriaException("Invalid comparable");
+
+  }//if
+
+  setFirstComparable(firstComparable);
+  setSecondComparable(secondComparable);
+
+  setComparator(comparator);
 
  }//TTK91TaskCriteria
 
@@ -79,7 +85,14 @@ public class TTK91TaskCriteria{
 
 
 
- public void setFirstComparable(String comparable) {
+ public void setFirstComparable(String comparable)
+             throws InvalidTTK91CriteriaException {
+
+     String cleanedString = cleanString(comparable);
+
+     if(cleanedString == null || cleanedString.length() == 0) {
+	 throw new InvalidTTK91CriteriaException("Invalid comparator");
+     }//if
 
   this.firstComparable = comparable;
 
@@ -87,7 +100,14 @@ public class TTK91TaskCriteria{
 
 
 
- public void setSecondComparable(String comparable) {
+ public void setSecondComparable(String comparable)
+             throws InvalidTTK91CriteriaException {
+
+  String cleanedString = cleanString(comparable);
+
+  if(cleanedString == null || cleanedString.length() == 0) {
+      throw new InvalidTTK91CriteriaException("Invalid comparator");
+  }//if
 
   this.secondComparable = comparable;
 
