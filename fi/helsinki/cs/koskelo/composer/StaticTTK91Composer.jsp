@@ -78,8 +78,8 @@ out.print("SAATU EVENT: "+event);
 <%
 
  out.print("<h1>" +
-   cache.getAttribute("D", "staticttk91taskcomposer", 
-   "staticTTK91TaskLabel", lang)
+   cache.getAttribute("D", "teachertaskdef", 
+   "staticttk91tasktypelabel", lang)
  +"</h1>");
  
  if(syntaxError == true) {

@@ -75,8 +75,8 @@ out.print("EVENT"+event);
 
 <body bgcolor="#FFFFFF">
 <h1>
-<%=cache.getAttribute("D", "staticttk91taskcomposer",
-      "fillinTTK91TaskLabel", lang)
+<%=cache.getAttribute("D", "teachertaskdef",
+      "fillinttk91tasktypelabel", lang)
 %>
 </h1>
 <%
