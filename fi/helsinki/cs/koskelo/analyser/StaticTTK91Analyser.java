@@ -429,27 +429,76 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     //      -Vaaditut k‰skyt
     String[] requiredCommands = taskOptions.getRequiredCommands();
     if (requiredCommands != null) {
+      System.err.println("L‰hdet‰‰n tutkimaan vaadittuja k‰skyj‰");
+
+      boolean qualityCritFound = false;
+      boolean requiredCritFound = false;
       boolean requiredCommandFound = true;
+      boolean requiredQualityCommandFound = true;
+
       for (int i = 0; i < requiredCommands.length; ++i) {
-        requiredCommandFound = isCommandFound(answer, requiredCommands[i]);
-        if (!requiredCommandFound) {
-          break; // jos yksikin vaadittu j‰‰ puuttumaan -> ei kelpaa
+        String[] needle = requiredCommands[i].split(",");
+        if (needle.length > 1) {
+          qualityCritFound = true;
+          if (requiredQualityCommandFound) { // jos false, on jo rikki
+            requiredQualityCommandFound = isCommandFound(answer, needle[1]);
+          }
+        }
+        else {
+          requiredCritFound = true;
+          if (requiredCommandFound) { // jos false, on jo rikki
+            requiredCommandFound = isCommandFound(answer, needle[0]);
+          }
+        }
+        if (!requiredCommandFound && !requiredQualityCommandFound) {
+          break; // jos molemmat jo rikki -> ei kelpaa
+        }
+            
+        if (requiredCritFound) {
+          results.setRequiredCommands(requiredCommandFound);
+        }
+        if (qualityCritFound) {
+          results.setRequiredCommandsQuality(requiredQualityCommandFound);
         }
       }
-	    
-	    results.setRequiredCommands(requiredCommandFound);
     }
+
     //      -Kielletyt k‰skyt
     String[] forbiddenCommands = taskOptions.getForbiddenCommands();
     if (forbiddenCommands != null) {
+      System.err.println("L‰hdet‰‰n tutkimaan kiellettyj‰ k‰skyj‰");
+      
+	    boolean qualityCritFound = false;
+	    boolean forbiddenCritFound = false;
 	    boolean forbiddenCommandFound = false;
+	    boolean forbiddenQualityCommandFound = false;
+      
       for (int i = 0; i < forbiddenCommands.length; ++i) {
-        forbiddenCommandFound = isCommandFound(answer, forbiddenCommands[i]);
-        if (forbiddenCommandFound) {
-          break; // jos yksikin kielletty k‰sky lˆytyy -> ei kelpaa
+        String[] needle = forbiddenCommands[i].split(",");
+        if (needle.length > 1) {
+          qualityCritFound = true;
+          if (!forbiddenQualityCommandFound) { // jos true, on jo rikki
+            forbiddenQualityCommandFound = !isCommandFound(answer, needle[1]);
+          }
         }
+        else {
+          forbiddenCritFound = true;
+          if (!forbiddenCommandFound) { // jos true, on jo rikki
+            forbiddenCommandFound = !isCommandFound(answer, needle[0]);
+          }
+        }
+        if (forbiddenCommandFound && forbiddenQualityCommandFound) {
+          break; // jos molemmat jo rikki -> ei kelpaa
+        }
+        
+        if (forbiddenCritFound) {
+          results.setForbiddenCommands(!forbiddenCommandFound);
+        }
+        if (qualityCritFound) {
+          results.setForbiddenCommandsQuality(!forbiddenQualityCommandFound);
+        }
+        results.setForbiddenCommands(!forbiddenCommandFound);
       }
-	    results.setForbiddenCommands(!forbiddenCommandFound);
     }
   }//generalAnalysis
 
@@ -662,18 +711,21 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     //         }
     // 	    }
     //    }
-
+    System.err.println("Saavuttiin isCommandFound()iin");
     if ((answer != null) && (answer[0] != null) && (cmd != null)) {
-
+      System.err.println("P‰‰stiin sis‰‰n varsinaiseen isCommandFound()iin, eli alkuehdot kunnossa");
       String haystack = answer[0].toLowerCase();
       String needle = cmd.toLowerCase();
+      System.err.println("needle: "+needle);
       String pat = 
         "(.*|\\n*|\\r*|\\f*|\\s*)*\\s*"+
         needle+
         "\\s*(.*|\\n*|\\r*|\\f*|\\s*)*";
+      System.err.println("pat: "+pat);
       // Eli '.' mik‰ tahansa merkki, '\\n', '\\r', '\\f'
       // rivinvaihtoja, \\s whitespace ja '*' tarkoittaa [0..n] kertaa
       // toistettuna
+      System.err.println("valmiina ajamaan matchays...");
       return Pattern.matches(pat, haystack); 
     }
     System.err.println("isCommandFound: answer != null: "+
