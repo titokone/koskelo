@@ -281,6 +281,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					"util.datastructures.TeacherSession"
 					);
 
+
+		this.session.removeAttribute("TTK91ERROR");
+		
 		// Asetuksia ei välttämättä ole
 		if (settings != null){
 			// Asetuksista löytyy mahdollisesti korvaava
@@ -322,6 +325,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
+
+
+		
 		try { // catch CacheException kun haetaan virheilmotusta tietokannasta
 		
 		try {
