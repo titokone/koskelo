@@ -124,8 +124,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			
 			if(reqMaxCommands != null) {
 			
-				maxCommands = (new Integer(reqMaxCommands))
-				.intValue();
+				maxCommands = parsePostInt(reqMaxCommands);
 			
 			} else {
 			
@@ -167,7 +166,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		}
 
 		try { // publicInput
-
+			
 			if(reqPublicInput != null) {
 				StringTokenizer st = new StringTokenizer(
 						reqPublicInput, ","
@@ -176,7 +175,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 				while(st.hasMoreTokens()){
 
-					tmp.add(new Integer(st.nextToken()));
+					tmp.add(st.nextToken());
 				}
 
 				publicInput = new int[tmp.size()];
@@ -184,8 +183,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 				for(int i = 0; i < tmp.size(); i++) {
 				
-					publicInput[i] = ((Integer)tmp.get(i))
-						.intValue();
+					publicInput[i] = parsePostInt((String)tmp.get(i));
 
 				}
 
@@ -207,15 +205,14 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 				while(st.hasMoreTokens()){
 
-					tmp.add(new Integer(st.nextToken()));
+					tmp.add(st.nextToken());
 				}
 
 				hiddenInput = new int[tmp.size()];
 
 
 				for(int i = 0; i < tmp.size(); i++) {
-					hiddenInput[i] = ((Integer)(tmp.get(i)))
-						.intValue();
+					hiddenInput[i] = parsePostInt((String)tmp.get(i));
 
 				}
 
@@ -225,15 +222,73 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			// TODO lisää virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, resp);
-			return;
+		}
+		try { // compareMethod
+
+			if(reqCompareMethod != null) {
+				compareMethod = parsePostInt(reqCompareMethod);
+			}
+
+			
+		} catch (Exception e) {
 
 		}
 
-		try { // compareMethod
+		try { //  acceptedSize
+			if(reqAcceptedSize != null) {
+				acceptedSize = parsePostInt(reqAcceptedSize);
+			
+				taskOptions.setAcceptedSize(acceptedSize);
+			
+			}
 
 		} catch (Exception e) {
 
 		}
+
+
+		try { // optimalSize
+			if(reqOptimalSize != null) {
+				optimalSize = parsePostInt(reqOptimalSize);
+				
+				taskOptions.setOptimalSize(optimalSize);
+			}
+
+
+			
+		} catch (Exception e) {
+
+		}
+
+		try { // requiredCommands
+
+			if( reqRequiredCommands != null) {
+
+				requiredCommands = reqRequiredCommands.split(",");
+
+				taskOptions.setRequiredCommands(requiredCommands);
+
+			}
+			
+		} catch (Exception e) {
+
+		}
+
+		try { // forbiddenCommands
+
+			if( reqForbiddenCommands != null) {
+
+				forbiddenCommands = reqForbiddenCommands.split(",");
+
+				taskOptions.setForbiddenCommands(forbiddenCommands);
+			}
+
+		} catch (Exception e) {
+
+		}
+
+
+
 
 		session.setAttribute("TTK91TaskOptions", taskOptions);
 
@@ -248,6 +303,13 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 	} // init()
 
+
+	private int parsePostInt(String s) throws Exception {
+
+		return ((new Integer(s)).intValue());
+		
+	}
+	
 	/** Servletin oma sisäinen apumetodi. Tätä hyödynnetään
 	 * doPostin parsiessa kriteereitä erilleen saamastaan 
 	 * HttpRequestista.
