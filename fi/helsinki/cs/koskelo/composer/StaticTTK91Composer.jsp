@@ -54,9 +54,7 @@ if(syntaxErrorMsg != null) {
 
 task = (TaskDTO)  
  request.getSession(false).  
- getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); 
-
-out.print("SAATU EVENT: "+event);
+ getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO");
 
 %>
 

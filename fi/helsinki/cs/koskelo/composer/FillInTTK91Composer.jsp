@@ -56,8 +56,6 @@ task = (TaskDTO)
  request.getSession(false).  
  getAttribute("fi.hy.taskdefinition.util.datastructures.TaskDTO"); 
 
-out.print("EVENT"+event);
-
 %>
 
 <html>
