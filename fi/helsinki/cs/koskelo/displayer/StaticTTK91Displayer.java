@@ -6,7 +6,6 @@
 package fi.helsinki.cs.koskelo.displayer;
 
 import fi.hy.eassari.showtask.trainer.CacheException;
-//import fi.hy.eassari.displayers.*;
 
 public class StaticTTK91Displayer extends CommonDisplayer{
     
@@ -27,53 +26,52 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 													 String params, 
 													 String hiddens,  
 													 boolean allowTry) throws CacheException{
+
+		String taskDescription; // tehtävänanto
+		String input;           // syötteet
+		String inputHeader;     // syötteen otsikko
        
-		/**
-		 * Servletin nimi, joka käynnistetäänn lomakkeen
-		 * täyttämisen jälkeen.
-		 */
-		String targetServlet = "Answer2.do2";
+		final String TARGETSERVLET = "Answer2.do2"; // kohdeservletin nimi
        
-		// StrinBufferiin kerätään palautettava html-sivu
-	
-		StringBuffer setting = new StringBuffer();
-	   
+		StringBuffer setting = new StringBuffer(); // kerätään palautettava htlm-sivu
+	  
+		// Lisätään piilokenttä tehtäväntyypille
+		
 		hiddens += ("<input type=\"hidden\" name=\"tasktype\"" 
 								+"value=\"staticttk91task\">");
 
 		// Haetaan tehtävänanto, syötteet ja syötteen otsikko.
 	
-		String taskDescription = 
+		taskDescription = 
 			cache.getAttribute("T", taskid, "taskDescription", language);
-		String input = 
+		input = 
 			cache.getAttribute("T", taskid, "publicInput", language);
-
-		String inputHeader = 
+		inputHeader = 
 			cache.getAttribute("D", "staticttk91taskdisplayer", 
 												 "inputHeader", language);
 	
 		// Lomake alkaa
 	
-		setting.append("<form action=" + targetServlet + 
-									 " method=\"post\" name=\"staticttk91task\"" +
-									 "id=\"staticttk91task\">");
+		setting.append("<form action=" + TARGETSERVLET + 
+									 " method=\"post\" name=\"answer\"" +
+									 "id=\"answer\">");
 	
        
 		// Lisätään tehtävänanto ja syötteet
 
-		setting.append(getHTMLElementTask(taskDescription));
-		setting.append(getHTMLElementInput(inputHeader, input));
+		setting.append(TTK91DisplayerUtils.getHTMLElementTask(taskDescription));
+		setting.append(TTK91DisplayerUtils.getHTMLElementInput(inputHeader, input));
 
 		/** 
 		 * Lisätään vastauslaatikko. Jos parametri initVal on null,
-		 * näytetään opiskelijalle tyhjä tehtävälaatikko,
-		 * muutoin opiskelijan vastaus laitetaan laatikkoon.
+		 * luodann tyhjä tehtävälaatikko, muutoin opiskelijan vastaus 
+		 * laitetaan laatikkoon.
 		 */
 
 		if (initVal == null) {
-			setting.append(getHTMLElementAnswerBox());
+			setting.append(TTK91DisplayerUtils.getHTMLElementAnswerBox());
 		} else {
-			setting.append(getHTMLElementAnswerBox(initVal));
+			setting.append(TTK91DisplayerUtils.getHTMLElementAnswerBox(initVal));
 		}
 
 		// Lisätäänn analyserin tarvitsemat piilokentät lomakkeeseen
@@ -101,11 +99,11 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 	 * @return tehtävänanto html-muodossa
 	 */
 
-	private String getHTMLElementTask(String task){
+	//	private String getHTMLElementTask(String task){
 	
-		return new String("<p class=\"assignment\"><strong>" 
-											+task +"</strong></p>");
-	}//getHTMLElementTask
+	//		return new String("<p class=\"assignment\"><strong>" 
+	//									+task +"</strong></p>");
+	//}//getHTMLElementTask
 
 	/**
 	 * Palauttaa syötteet html-muodossa.
@@ -116,11 +114,11 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 	 * @return syötteet html-muodossa
 	 */
 
-	private String getHTMLElementInput(String inputHeader, String input){
+	//private String getHTMLElementInput(String inputHeader, String input){
 	
-		return new String("<p class=\"input\"><strong>" 
-											+inputHeader +": " +input +"</strong></p>");
-	}//getHTMLELementInput
+//return new String("<p class=\"input\"><strong>" 
+//										+inputHeader +": " +input +"</strong></p>");
+//}//getHTMLELementInput
     
 	/**
 	 * Palauttaa tyhjän vastauslaatikon html-muodossa.
@@ -128,11 +126,11 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 	 * @return tyhjä vastauslaatikko html-muodossa
 	 */
 
-	private String getHTMLElementAnswerBox(){
-	
-		return new String("<textarea name=\"textfield\" cols=\"50\""+ 
-											"rows=\"20\"></textarea>\"<br>");
-	}//getHTMLElementAnswerBox
+	//private String getHTMLElementAnswerBox(){
+	//
+	//	return new String("<textarea name=\"textfield\" cols=\"50\""+ 
+	//										"rows=\"20\"></textarea>\"<br>");
+	//}//getHTMLElementAnswerBox
       
 	/**
 	 * Palauttaa vastauslaatikon, joka sisältää vastauksen
@@ -141,18 +139,18 @@ public class StaticTTK91Displayer extends CommonDisplayer{
 	 * @return täytetty vastauslaatikko html-muodossa
 	 */
  
-	private String getHTMLElementAnswerBox(String[] answer){
+	//private String getHTMLElementAnswerBox(String[] answer){
 	
-		StringBuffer answerbox = new StringBuffer();
+//StringBuffer answerbox = new StringBuffer();
 
-		answerbox.append("<textarea name=\"textfield\" cols=\"50\""+ 
-										 "rows=\"20\">");
-
-		for(int i = 0; i < answer.length; i++){
-			answerbox.append(answer[i] +"\n");
-		}
+//	answerbox.append("<textarea name=\"textfield\" cols=\"50\""+ 
+//									 "rows=\"20\">");
+//
+//	for(int i = 0; i < answer.length; i++){
+//		answerbox.append(answer[i] +"\n");
+//	}
 	
-		answerbox.append("</textarea><br>");
-		return new String(answerbox);
-	}//getHTMLElementAnswerBox
+//	answerbox.append("</textarea><br>");
+//	return new String(answerbox);
+//}//getHTMLElementAnswerBox
 }//class
