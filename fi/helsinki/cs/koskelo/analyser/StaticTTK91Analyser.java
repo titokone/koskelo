@@ -9,6 +9,8 @@ import fi.hu.cs.ttk91.TTK91Core;
 
 import fi.hu.cs.titokone.Source;
 import fi.hu.cs.titokone.Control;
+import fi.hu.cs.titokone.Processor;
+import fi.hu.cs.titokone.RandomAccessMemory;
 
 import fi.hy.eassari.showtask.trainer.Feedback;
 import fi.hy.eassari.showtask.trainer.ParameterString;
@@ -19,6 +21,8 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
 import fi.helsinki.cs.koskelo.common.TTK91Constant;
 import fi.helsinki.cs.koskelo.common.TTK91TaskCriteria;
+
+import java.util.regex.Pattern;
 
 /**
  * Luokka staattisten TTK-91 -teht‰vien vastauksien tarkastamiseen
@@ -105,20 +109,29 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     //Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
 
-    //generalAnalysis() a.k.a. "hilut"
+    generalAnalysis(answer); // "valmis"
+
     //analyseMemory() Lauri
     //analyseRegisters()
     //analyseOutput()
-
+    
     //Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
-
+    
     try {
-	    feedback = TTK91FeedbackComposer.formFeedback( results, taskOptions.getTaskFeedback(), cache, taskID, language );
+	    feedback = 
+        TTK91FeedbackComposer.formFeedback(results, 
+                                           taskOptions.getTaskFeedback(), 
+                                           cache, 
+                                           taskID, 
+                                           language);
     }
     catch (CacheException e) {
-	    feedback = TTK91FeedbackComposer.formFeedback("Error while retrieving error message :( "+e.getMessage() );
+	    feedback = 
+        TTK91FeedbackComposer.formFeedback("Error while retrieving "+
+                                           "error message :( "+
+                                           e.getMessage() );
     }
-	
+    
     return feedback;
 
   } // analyse
@@ -167,7 +180,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 
   /**
-   * Apumetodi, jolla kaivetaan malliratkaisun l‰hdekoodi vastauksesta ja k‰‰nnet‰‰n siit‰ TTK91Application
+   * Apumetodi, jolla kaivetaan malliratkaisun l‰hdekoodi vastauksesta
+   * ja k‰‰nnet‰‰n siit‰ TTK91Application
    * @param answer
    */
 
@@ -200,7 +214,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
   }//getTTK91Application
 
   /**
-   * Apumetodi, joka suorittaa varsinaisen l‰hdekoodin kaivamisen vastauksesta
+   * Apumetodi, joka suorittaa varsinaisen l‰hdekoodin kaivamisen
+   * vastauksesta
    * @param answer
    */
 
@@ -266,7 +281,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
         this.controlPublicInputTeacher.run(this.teacherApplication, steps);
 	    }
 	    catch (TTK91Exception e) {
-        feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
+        feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
+                                                      e.getMessage());
         return false;
 	    }
     }
@@ -297,7 +313,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
           this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
         }
         catch (TTK91Exception e) {
-          feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+e.getMessage());
+          feedback = 
+            TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
+                                               e.getMessage());
           return false;
         }
 	    }
@@ -307,34 +325,50 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
   }//run
 
+  /**
+   * Yksityinen apumetodi, joka suorittaa yleisanalyysin.
+   * - konek‰skyjen maksimim‰‰r‰ (oikeellisuus)
+   * - konek‰skyjen ihannem‰‰r‰  (laatu)
+   * - muistiviitteiden m‰‰r‰
+   * - vaaditut k‰skyt
+   * - kielletyt k‰skyt
+   */
 
-  private void generalAnalysis() { // Laurin heini‰ FIXME: kesken
+  private void generalAnalysis(String[] answer) { // Laurin heini‰ - "valmis"
 
-    /* Kaikille seuraaville kenties 
-     */
-	
     //  -Suoritettujen konek‰skyjen m‰‰r‰ (oikeellisuus)
-
-    TTK91Cpu cpu = controlPublicInputStudent.getCPU();
-    int size = cpu.giveCommAmount();
+    TTK91Cpu cpu = controlPublicInputStudent.getCpu();
+    int size = ((Processor)cpu).giveCommAmount(); // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
     int sizeLimit = taskOptions.getMaxCommands();
     results.setAcceptedSize(size <= sizeLimit);
+
 
     //	  -Ihannekoko (laatu)
     results.setOptimalSize(size <= taskOptions.getOptimalSize());
 
-    //	  -Muistiviitteiden m‰‰r‰
 
+    //	  -Muistiviitteiden m‰‰r‰
     TTK91Memory mem = controlPublicInputStudent.getMemory();
-    int memrefs = mem.getMemoryReferences();
+    int memrefs = ((RandomAccessMemory)mem).getMemoryReferences();  // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
     TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
-    boolean memrefsok = checkMemRefCriteria(memrefs, memRefCriteria.getComparator(), memRefCriteria.getSecondComparable());
+    boolean memrefsok = 
+      checkMemRefCriteria(memrefs, 
+                          memRefCriteria.getComparator(),
+                          memRefCriteria.getSecondComparable());
     results.setMemoryReferences(memrefsok);
 
-    /*
-      -Vaaditut k‰skys
-      -Kielletyt k‰skyt
-    */
+    //      -Vaaditut k‰skyt
+    boolean requiredCommandFound = 
+      isCommandFound(answer, taskOptions.getRequiredCommands());
+    
+    results.setRequiredCommands(requiredCommandFound);
+
+    //      -Kielletyt k‰skyt
+    boolean forbiddenCommandFound = 
+      isCommandFound(answer, taskOptions.getForbiddenCommands());
+
+    results.setForbiddenCommands(forbiddenCommandFound);
+
     //results.setBLAAH(boolean)
 
   }//generalAnalysis
@@ -380,7 +414,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     return input;
   }
 
+  /**
+   * Tarkistaa muistiviitekriteerin
+   * @param memrefs
+   * @param comparator
+   * @param secondcomparable
+   */
   private boolean checkMemRefCriteria(int memrefs, int comparator, String secondcomparable) {
+    boolean ret = false;
     int checkAgainstMe = -1;
     try {
 	    checkAgainstMe = Integer.parseInt(secondcomparable);
@@ -392,26 +433,46 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     switch (comparator) { 
 	    
     case TTK91Constant.LESS:
-	return (memrefs < checkAgainstMe);
-	break;
+      ret = (memrefs < checkAgainstMe);
+      break;
     case TTK91Constant.LESSEQ:
-	return (memrefs <= checkAgainstMe);
-	break;
+      ret = (memrefs <= checkAgainstMe);
+      break;
     case TTK91Constant.GREATER: 
-	return (memrefs > checkAgainstMe);
-	break;
+      ret = (memrefs > checkAgainstMe);
+      break;
     case TTK91Constant.GREATEREQ: 
-	return (memrefs >= checkAgainstMe);
-	break;
+      ret = (memrefs >= checkAgainstMe);
+      break;
     case TTK91Constant.EQUAL: 
-	return (memrefs == checkAgainstMe);
-	break;
+      ret = (memrefs == checkAgainstMe);
+      break;
     case TTK91Constant.NOTEQUAL: 
-	return (memrefs != checkAgainstMe);
-	break;
+      ret = (memrefs != checkAgainstMe);
+      break;
     default:
-	return false; // tanne ei pitaisi paasta koskaan
+      // tanne ei pitaisi paasta koskaan
     }
+    return ret;
   } // checkMemRefCriteria
+
+  /**
+   * Tarkistaa lˆytyykˆ vastauksesta toisen parametrin osoittamia k‰skyj‰
+   * @param answer
+   * @param cmds
+   */
+  private boolean isCommandFound(String[] answer, String[] cmds) {
+    if ((answer != null) && (answer[0] != null) && (cmds != null)) {
+      String src = answer[0].toLowerCase();
+      for (int i=0; i < cmds.length; ++i) {
+        String pat = "\\s"+cmds[0].toLowerCase()+"\\s";
+        if ( Pattern.matches(pat, src) ) {
+          // sis‰lt‰‰kˆ src merkkijonoa "whitespace+komento+whitespace" ?
+          return true;
+        }
+      }
+    }
+    return false;
+  } // isCommandFound
 
 } // StaticTTK91Analyser
