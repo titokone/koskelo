@@ -47,7 +47,7 @@ public class TTK91DisplayerUtils {
 	public static String getHTMLElementAnswerBox(int rows, int cols){
 	
 		return new String("<textarea name=\"answer\" cols=\"" +cols +"\"" + 
-											"rows=\"" +rows +"\"></textarea><br>");
+											" rows=\"" +rows +"\"></textarea><br>");
 	}//getHTMLElementAnswerBox
       
 	/**
@@ -65,7 +65,7 @@ public class TTK91DisplayerUtils {
 		StringBuffer answerbox = new StringBuffer();
 
 		answerbox.append("<textarea name=\"answer\" cols=\"" +cols +"\""+ 
-										 "rows=\"" +rows +"\">");
+										 " rows=\"" +rows +"\">");
 
 		answerbox.append(answer[0]);
 		answerbox.append("</textarea><br>");
