@@ -417,6 +417,11 @@ public class TTK91AnalyseData{
 		return this.errors;
 	}
 
+
+	public String getAnswer() {
+		return this.answer;
+	}
+	
 	public TTK91Application getStudentAppPublic() {
 		return this.studentApplicationPublic;
 	}
