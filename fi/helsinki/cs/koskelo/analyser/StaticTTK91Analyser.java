@@ -373,11 +373,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
   }//generalAnalysis
 
-  private void analyseMemory() {
-
-    /*
-     *MUISTIPAIKKOJEN JA MUUTTUJIEN SISÄLTÖ
+    /**
+     * Tutkitaan muistipaikkojen ja muuttujien sisältöön liittyvät kriteerit 
      */
+    private void analyseMemory() {
+
+	RandomAccessMemory mem = 
+	    (RandomAccessMemory) controlPublicInputStudent.getMemory();
+	
 
     //results.setBLAAH(boolean)
   } //analyseMemory
