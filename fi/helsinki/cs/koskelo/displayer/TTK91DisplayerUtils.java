@@ -1,6 +1,7 @@
 /**
  * Luokka sis‰lt‰‰ TTK91Displayer-luokille yhteisi‰ apumetodeita.
  * Ne palauttavat yhteisi‰ html-elementtej‰.
+ * @author Tom Bertell
  */
 
 package fi.helsinki.cs.koskelo.displayer;
@@ -38,34 +39,37 @@ public class TTK91DisplayerUtils {
 	/**
 	 * Palauttaa tyhj‰n vastauslaatikon html-muodossa.
 	 *
+	 * @param  rows vastaslaatikon korkeus
+	 * @param  cols vastauslaatikon leveys
 	 * @return tyhj‰ vastauslaatikko html-muodossa
 	 */
 
-	public static String getHTMLElementAnswerBox(){
+	public static String getHTMLElementAnswerBox(int rows, int cols){
 	
-		return new String("<textarea name=\"answer\" cols=\"50\""+ 
-											"rows=\"20\"></textarea>\"<br>");
+		return new String("<textarea name=\"answer\" cols=\"" +cols +"\"" + 
+											"rows=\"" +rows +"\"></textarea><br>");
 	}//getHTMLElementAnswerBox
       
 	/**
 	 * Palauttaa vastauslaatikon, joka sis‰lt‰‰ vastauksen
 	 *
-	 * @param  answer vastaus 
+	 * @param  answer vastaus
+	 * @param  rows vastaslaatikon korkeus
+	 * @param  cols vastauslaatikon leveys
 	 * @return t‰ytetty vastauslaatikko html-muodossa
 	 */
  
-	public static String getHTMLElementAnswerBox(String[] answer){
+	public static String getHTMLElementAnswerBox(String[] answer, int rows, 
+																							 int cols){
 	
 		StringBuffer answerbox = new StringBuffer();
 
-		answerbox.append("<textarea name=\"textfield\" cols=\"50\""+ 
-										 "rows=\"20\">");
+		answerbox.append("<textarea name=\"answer\" cols=\"" +cols +"\""+ 
+										 "rows=\"" +rows +"\">");
 
-		for(int i = 0; i < answer.length; i++){
-			answerbox.append(answer[i] +"\n");
-		}
-	
+		answerbox.append(answer[0]);
 		answerbox.append("</textarea><br>");
 		return new String(answerbox);
 	}//getHTMLElementAnswerBox
+
 }//class
