@@ -79,13 +79,13 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
       "taskDescriptionHeader", lang)%>
    <br>
-   <textarea name="taskDescription" cols="100" rows="4">
-    <%
-     if(syntaxError != null) {
-      out.print( request.getAttribute("taskDescription") );
-     }//if
-    %>
-   </textarea>
+
+  <textarea name="taskDescription" cols="100" rows="4"><%
+   if(syntaxError != null) {
+    out.print(request.getAttribute("taskDescription"));
+   }//if
+  %></textarea>
+
   </p>
 
   <p>
@@ -93,13 +93,11 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     "publicInputHeader", lang)%>
   <br>
     <input type="text" name="publicInput" size="50"
-     value="
-     <%
+     value="<%
       if(syntaxError != null) {
        out.print( request.getAttribute("publicInput") );
       }//if
-     %>
-     "
+     %>"
     >
   </p>
 
@@ -108,13 +106,11 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
     "hiddenInputHeader", lang)%>
    <br>
    <input type="text" name="hiddenInput" size="50"
-    value="
-    <%
+    value="<%
      if(syntaxError != null) {
       out.print( request.getAttribute("hiddenInput") );
      }//if
-    %>
-    "
+    %>"
    >
   </p>
 
@@ -122,53 +118,43 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "exampleCodeHeader", lang)%>
    <br>
-   <textarea name="exampleCode" cols="50" rows="15">
-
-    <%
+   <textarea name="exampleCode" cols="50" rows="15"><%
      if(syntaxError != null) {
       out.print( request.getAttribute("exampleCode") );
      }//if
-    %>
-
-   </textarea>
+    %></textarea>
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "maxCommandsHeader", lang)%>
    <input type="text" name="maxCommands" size="10" maxlength="4"
-    value="
-    <%
+    value="<%
      if(syntaxError != null) {
       out.print( request.getAttribute("maxCommands") );
      }//if
-    %>
-    "
+    %>"
    >
 
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "acceptedSizeHeader", lang)%> 
    <input type="text" name="acceptedSize" size="10" maxlength="4"
-    value="
-     <%
+    value="<%
       if(syntaxError != null) {
        out.print( request.getAttribute("acceptedSize") );
       }//if
-     %>
-    "
+     %>"
    >
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "optimalSizeHeader", lang)%>
    <input type="text" name="optimalSize" size="10" maxlength="4"
-    value="
-     <%
+    value="<%
       if(syntaxError != null) {
        out.print( request.getAttribute("taskDescription") );
       }//if
-     %>
-    "
+     %>"
    >
   </p>
 
@@ -188,65 +174,53 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "requiredCommandsHeader", lang)%>
    <br>
-   <textarea name="requiredCommands" rows="4" cols="50">
-
-    <%
+   <textarea name="requiredCommands" rows="4" cols="50"><%
      if(syntaxError != null) {
       out.print( request.getAttribute("requiredCommands") );
      }//if
-    %>
-
-   </textarea>
+    %></textarea>
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "forbiddenCommandsHeader", lang)%>
   <br>
-   <textarea name="forbiddenCommands" rows="4" cols="50">
-    <%
+   <textarea name="forbiddenCommands" rows="4" cols="50"><%
      if(syntaxError != null) {
       out.print( request.getAttribute("forbiddenCommands") );
      }//if
-    %>
-   </textarea>
+    %></textarea>
   </p>
 
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "registerValuesHeader", lang)%>
    <br>
-    <textarea name="registerValues" cols="50" rows="10">
-     <%
+    <textarea name="registerValues" cols="50" rows="10"><%
       if(syntaxError != null) {
        out.print( request.getAttribute("registerValues") );
       }//if
-     %>
-    </textarea>
+     %></textarea>
   </p>
   
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "memoryValuesHeader", lang)%>
    <br>
-    <textarea name="memoryValues" cols="50" rows="10">
-     <%
+    <textarea name="memoryValues" cols="50" rows="10"><%
       if(syntaxError != null) {
        out.print( request.getAttribute("memoryValues") );
       }//if
-     %>
-    </textarea>
+     %></textarea>
     <br>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "memoryReferencesHeader", lang)%>
     <input type="text" name="memoryReferences" size="10" maxlength="8"
-     value="
-      <%
+     value="<%
        if(syntaxError != null) {
         out.print( request.getAttribute("memoryReferences") );
        }//if
-      %>
-     "
+      %>"
     >
   </p>
   
@@ -254,30 +228,22 @@ String syntaxError = (String)session.getAttribute("TTK91ERROR");
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "screenOutputHeader", lang)%>
    <br>
-   <textarea name="screenOutput" cols="50" rows="5">
-
-    <%
+   <textarea name="screenOutput" cols="50" rows="5"><%
      if(syntaxError != null) {
       out.print( request.getAttribute("screenOutput") );
      }//if
-    %>
-
-   </textarea>
+    %></textarea>
   </p>
   
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "fileOutputHeader", lang)%>
    <br>
-   <textarea name="fileOutput" cols="50" rows="5">
-
-    <%
+   <textarea name="fileOutput" cols="50" rows="5"><%
      if(syntaxError != null) {
       out.print( request.getAttribute("fileOutput") );
      }//if
-    %>
-
-   </textarea>
+    %></textarea>
   </p>
   
     <input type="submit" name="Submit"
