@@ -1217,7 +1217,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					) +
 				"</p>\n</td></tr><tr>"+
 				feedbackBox("acceptedSize", false, task, editTask) +
-				"</tr>
+				"</tr>"
 				);
 		// optimikoko
 		page = page.concat(
@@ -1243,7 +1243,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					) +
 				"</p>\n</td></tr><tr>"+
 				feedbackBox("requiredCommands", true, task, editTask)+
-				"</tr>
+				"</tr>"
 				);
 		// kielletyt käskyt
 		page = page.concat(
