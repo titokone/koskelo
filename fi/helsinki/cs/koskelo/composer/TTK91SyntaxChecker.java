@@ -483,7 +483,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						   );
 					return;
 				}
-
+				taskOptions.setCompareMethod(compareMethod);
 
 		} catch (Exception e) {
 			returnError(this.staticResponse,
