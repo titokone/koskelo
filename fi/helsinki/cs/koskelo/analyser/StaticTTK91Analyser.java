@@ -33,7 +33,6 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      */
 
     public StaticTTK91Analyser() {
-	// FIXME: to be implemented
 	this.taskID = null;
 	this.language = null;
 	this.cacheUtils = null;
@@ -57,7 +56,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     
     /**
-     * Ilmoitetaan StaticTTK91Analyserille tietokanta-cache. 
+     * Ilmoitetaan StaticTTK91Analyserille tietokanta-cache.  Samassa
+     * yhteydessä noudetaan TTK91AnalyserUtils- ja
+     * TTK91TaskOptions-oliot.
      * @param AttributeCache
      */
     
