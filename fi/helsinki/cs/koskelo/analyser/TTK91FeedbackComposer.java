@@ -446,6 +446,13 @@ public class TTK91FeedbackComposer{
 
 		String feedbackSummaryNeg = 
 	    cache.getAttribute("T", taskID, "negativefeedback", language);
+
+		if (feedbackSummaryPos == null) { // Jos null, niin laitetaan oletusviesti
+	    feedbackSummaryPos = "Oikein";
+		}
+		if (feedbackSummaryNeg == null) { // Jos null, niin laitetaan oletusviesti
+	    feedbackSummaryNeg = "V‰‰rin";
+		}
 		
 		/**
 		 * Lopuksi luodaan uusi Feedback-olio. Parametreja ovat:
@@ -513,7 +520,7 @@ public class TTK91FeedbackComposer{
 	}//getHTMLElementFeedbackRow
 
 		
-  /*  
+  /* 
 	public static void main(String [] args){
 		FeedbackTestCache cache = new FeedbackTestCache();
 		TTK91FeedbackComposer fbcomposer = new TTK91FeedbackComposer();

@@ -84,9 +84,13 @@ public class TTK91AnalyserUtils {
  
 	TTK91TaskCriteria[] temp = 
 	    (getTaskCriteriaFromCache("memoryReferences"));
-	 
-	this.taskOptions.setMemRefCriteria(temp[0]);
-	
+
+	if (temp == null) { // Lisätty 29.11.2004 / Tom
+		this.taskOptions.setMemRefCriteria(null);
+	} else {
+		this.taskOptions.setMemRefCriteria(temp[0]);
+	}
+
 	return this.taskOptions; // Lisätty 26.11.2004 / Lauri
 
     }//TTK91TaskOptions
@@ -139,7 +143,7 @@ public class TTK91AnalyserUtils {
 
 	String temp = cache.getAttribute("T", this.taskid, 
 					 name, this.language);
-	if (temp.equals("null") || temp == null) // lisätty tännekin == null / Tom
+	if (temp == null || temp.equals("null")) // lisätty tännekin == null / Tom
 	    return null;
 
 	String[] result = temp.split(",");
@@ -172,7 +176,7 @@ public class TTK91AnalyserUtils {
 
 	// Jos saadaan "null" palautetaan "".
 
-	if (temp.equals("null") || temp == null) // lisätty temp == null / Tom
+	if (temp == null || temp.equals("null")) // lisätty temp == null / Tom
 	    return null;
 
 	String[] result = temp.split(";");
