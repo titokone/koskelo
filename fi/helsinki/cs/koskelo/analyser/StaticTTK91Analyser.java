@@ -29,6 +29,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     private String language;
     private ParameterString initP;
     // k‰yt‰nnˆn toteutus Control.java
+    private TTK91Core controlCompiler;           // k‰‰nt‰j‰ -> saadaan mahdolliset k‰‰nnˆsvirheet n‰timmin (kunhan ajetaan malli ensin... 
+                                                 // Jos se ei k‰‰nny, ei varmaan ole tarvetta k‰‰nt‰‰ opiskelijankaan ratkaisua...
     private TTK91Core controlPublicInputStudent; // publicinputeilla tai ilman unputteja opiskelijan vastaus
     private TTK91Core controlPublicInputTeacher; // publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
     private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
@@ -82,7 +84,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	// toiminnallisuus
 	// kesken
 
-	getTTK91Application();
+	getTeacherApplication();
+	getStudentApplication();
 	getTTK91TaskOptions();
 
 	//RUN()
@@ -133,10 +136,10 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param answer
      */
 
-    private void getTTK91Application(String[] answer) {
+    private void getStudentApplication(String[] answer) {
 
-	TTK91CompileSource src = StaticTTK91Analyser
-	    .parseSourceFromAnswer(answer);
+	TTK91CompileSource src = 
+	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
 
 	if (src == null) {
 	    return new Feedback(); 
@@ -150,14 +153,42 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	try {
 	    //	    app = core.compile(src);
-	    controlPublicInputStudent.compile(src);
+	    controlCompiler.compile(src);
 	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
 	    //	    // FIXME: oikeanlainen palaute, kun
 	    // k‰‰nnˆs ep‰onnistuu
 	}//catch
 
-	this.studentApplication = app; // FIXME: Teacher myˆs
+	this.studentApplication = app;
+
+    }//getStudentApplication
+
+    private void getTeacherApplication(String[] answer) {
+
+	TTK91CompileSource src = 
+	    StaticTTK91Analyser.parseSourceFromAnswer(answer);
+
+	if (src == null) {
+	    return new Feedback(); 
+	    // FIXME: oikeanlainen palaute kun sorsa
+	    // ei suostu menem‰‰n edes
+	    // TTK91CompileSource-muotoon - voiko
+	    // n‰in edes k‰yd‰?
+	}//if
+
+	TTK91Application app = null;
+
+	try {
+	    //	    app = core.compile(src);
+	    controlCompiler.compile(src);
+	} catch (TTK91Exception e) {
+	    //	    return new Feedback(); 
+	    //	    // FIXME: oikeanlainen palaute, kun
+	    // k‰‰nnˆs ep‰onnistuu
+	}//catch
+
+	this.teacherApplication = app;
 
     }//getTTK91Application
 
