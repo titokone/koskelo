@@ -34,9 +34,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     /**
      * Konstruktori, joka luo alustetun StaticTTK91Analyserin,
      * cache-m‰‰rittely puuttuu. Teht‰v‰ registerCache-metodilla.
-     * @param taskid 
-     * @param language
-     * @param initparams
+     * @param taskid teht‰v‰tunnus
+     * @param language kielikoodi
+     * @param initparams FIXME: kuvaus
      *
      */
 
@@ -49,9 +49,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     /**
      * Alustaa alustamattoman StaticTTK91Analyserin
-     * @param taskid 
-     * @param language
-     * @param initparams
+     * @param taskid teht‰v‰tunnus
+     * @param language kielikoodi
+     * @param initparams FIXME: kuvaus
      */
 
   public void init(String taskid, String language, String initparams) {
@@ -63,9 +63,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
     /**
      * Analysoi vastauksen Titokoneella
-     * @param answer
-     * @param params
-     * @return Feedback 
+     * @param answer TTK91-kielinen l‰hdekoodi
+     * @param params 
+     * @return palaute
      */
 
   public Feedback analyse(String[] answer, String params) { // FIXME: varsinainen toiminnallisuus puuttuu

@@ -2,6 +2,10 @@ package fi.helsinki.cs.koskelo.common;
 
 import java.util.Vector;
 
+/**
+ * K‰‰reluokka teht‰v‰tiedoille
+ * @author Lauri Liuhto
+ */
 public class TTK91TaskOptions {
 
   private final static int MAX_COMMANDS = 10000; //FIXME: kai t‰m‰
