@@ -7,6 +7,7 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 
 /**
  * Luokka, joka luo kriteerien perusteella palautteen.
+ * @author Tom Bertell, Koskelo-projekti
  */
 
 public class TTK91FeedbackComposer{
@@ -271,7 +272,6 @@ public class TTK91FeedbackComposer{
 																										 correct.booleanValue()));
 		}//if
 
-		
 		// Tulosteet näytölle
 		
 		correct = analyseResults.getScreenOutput();
@@ -351,7 +351,7 @@ public class TTK91FeedbackComposer{
 		// Haetaan rekisterien arvot int-taulukkoon.
 
 		int[] registers = analyseResults.getRegisterValues();
-		if (registers != null) { // FIXME: Tom; fiksattiin eevan kanssa näin, koska tuolta voi oikeasti tulla nullia. Eihän rikota sun hötömlejä? / [LL]
+		if (registers != null) { 
 	    for(int i = 0; i < registers.length; ++i) {
 				feedbackTable.append("<tr><td>R" +i +": "
 														 +registers[i] +"</td>"
@@ -423,7 +423,7 @@ public class TTK91FeedbackComposer{
 													 +outputLabel +"</td>"
 													 +"</tr>");
 
-			if (crt != null) { // FIXME: Tom; tämä ja seuraava vastaava iffi, fiksattiin eevan kanssa samoin kuin aiemmpi... [LL]
+			if (crt != null) { 
 				for(int i = 0; i < crt.length; ++i) {
 					feedbackTable.append("<td>CRT " +(i+1) +":  " +crt[i] +"</td></tr>");
 				}

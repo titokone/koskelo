@@ -8,6 +8,10 @@ import fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException;
 import fi.hy.eassari.showtask.trainer.AttributeCache;
 import fi.hy.eassari.showtask.trainer.CacheException;
 
+/**
+ * Luokka sisältää TTK91Analyser-luokille yhteisiä apumetodeita.
+ */
+
 public class TTK91AnalyserUtils {
 
     TTK91TaskOptions taskOptions = new TTK91TaskOptions(); 
@@ -18,9 +22,9 @@ public class TTK91AnalyserUtils {
     /**
      * Konstruktori, jossa välitetään oleelliset parametrit
      * @author Lauri Liuhto
-     * @param cache
-     * @param taskid
-     * @param language
+     * @param cache    haetaan attribuutteja
+     * @param taskid   käsiteltävän tehtävän tunnus
+     * @param language käsiteltävän tehtävän kieli
      */
     public TTK91AnalyserUtils(AttributeCache cache, String taskid, String language) {
 	this.cache = cache;
@@ -97,6 +101,11 @@ public class TTK91AnalyserUtils {
 
     /**
      * Apumetodi, joka hakee cachesta Stringin, jonka muuttaa kokonaisluvuksi.
+		 * 
+		 * @param cachesta haettavan attribuutin nimi tietokannassa
+		 * @return haun tulos kokonaislukuna, jos attribuuttia ei löytynyt
+		 *         palautetaan -1
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 
     private int getIntFromCache(String name) throws CacheException {
@@ -119,6 +128,11 @@ public class TTK91AnalyserUtils {
 
     /**
      * Apumetodi, joka hakee cachesta Stringin.
+		 *
+		 * @param  haettavan attribuutin nimi tietokannassa
+		 * @return haun tulos, jos attribuuttia ei löytynyt
+		 *         palautetaan ""
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 
     private String getStringFromCache(String name) throws CacheException {
@@ -137,6 +151,11 @@ public class TTK91AnalyserUtils {
 
     /**
      * Apumetodi hakee cachesta Stringin ja luo sen perusteella int-taulukon.
+		 *
+		 * @param  haettavan attribuutin nimi tietokannassa
+		 * @return haun tulos, jos attribuuttia ei löytynyt
+		 *         palautetaan null
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 
     private int[] getIntTableFromCache(String name) throws CacheException{
@@ -167,6 +186,11 @@ public class TTK91AnalyserUtils {
 
     /**
      * Apumetodi hakee cachesta Stringin ja luo sen perusteella String-taulukon.
+		 *
+		 * @param  haettavan attribuutin nimi tietokannassa
+		 * @return haun tulos, jos attribuuttia ei löytynyt
+		 *         palautetaan null
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 
     private String[] getStringTableFromCache(String name) throws CacheException{
@@ -174,7 +198,7 @@ public class TTK91AnalyserUtils {
 	String temp = cache.getAttribute("T", this.taskid, 
 					 name, this.language);
 
-	// Jos saadaan "null" palautetaan "".
+	// Jos saadaan "null" palautetaan null.
 
 	if (temp == null || temp.equals("null")) // lisätty temp == null / Tom
 	    return null;
@@ -185,7 +209,13 @@ public class TTK91AnalyserUtils {
     }//getStringTableFromCache
 	
     /**
-     * Apumetodi Hakee Stringin ja luo sen perusteella TTK91TaskCriteria-taulukon.
+     * Apumetodi hakee Stringin ja luo sen perusteella 
+		 * TTK91TaskCriteria-taulukon.
+		 *
+		 * @param  haettavan attribuutin nimi tietokannassa
+		 * @return haun tulos, jos attribuuttia ei löytynyt
+		 *         palautetaan null
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 
     private TTK91TaskCriteria[] getTaskCriteriaFromCache(String name) 
@@ -229,6 +259,9 @@ public class TTK91AnalyserUtils {
      * Metodi hakee jokaista kriteeriä vastaavat palautteet ja lisää ne 
      * taskFeedback-olioon. AcceptedSize, OptimalSize ja MemoryReferences
      * eivät saa laadullista palautetta.
+		 *
+		 * @return sisältää palautteet
+		 * @throws CacheException jos tietokannan käsittelyssä ongelmia
      */
 	
     private TTK91TaskFeedback getTaskFeedbackFromCache()throws CacheException {
