@@ -157,7 +157,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			HttpServletRequest req,
 			HttpServletResponse res
 			) throws ServletException, java.io.IOException{
-		// TODO kunnollinen javadoc n‰ist‰ muuttujista
 
 		this.req = req;
 		this.res = res;
@@ -173,7 +172,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			return;
 		}//if
 
-		String exampleCode; //TODO tarkista koodin k‰‰ntyminen
+		String exampleCode; // Malliratkaisu
 		String taskDescription; // tarviiko tarkistaa?
 		String[] requiredCommands; // JUMP
 		String[] forbiddenCommands; // EQU
@@ -355,7 +354,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}// catch
 
 		try { // exampleCode eli ohjelman malliratkaisu
-			// TODO validin TTK91-koodin tarkistaminen
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
 
@@ -385,7 +383,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // taskDescription, eli teht‰v‰nanto
-			// TODO vaaditaanko?
 			// TODO dynaamisen teht‰v‰n syntaksin tarkistaminen
 			// TODO dynaamisen teht‰v‰n vertailu mallikoodiin
 
@@ -840,7 +837,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		String[] tmp = commandString.split(",");
 
 		//siivotaan kukin
-		// TODO tarvitaanko muitakin?
 		for(int i = 0; i < tmp.length; i++) {
 			tmp[i].trim();
 		} // for
