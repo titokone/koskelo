@@ -16,7 +16,7 @@ public class TTK91ParserUtils {
 
 	static public boolean validateTTK91Command(String command) {
 
-		command.toUpperCase();
+		command = command.toUpperCase();
 
 		if( 
 				command.equals("LOAD") || 
