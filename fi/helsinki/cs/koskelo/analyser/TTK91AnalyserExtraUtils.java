@@ -515,7 +515,11 @@ public final class TTK91AnalyserExtraUtils {
 		    int[] output, 
 		    int[] compareOutput
 		    ) {
-    
+	
+	if (output == null) {
+	    return false;  // output ei voi olla oikea, jos sitä ei ole!
+	}
+
 	if(compareOutput == null) {
 		return checkOutputCriteria(
 				crit,
