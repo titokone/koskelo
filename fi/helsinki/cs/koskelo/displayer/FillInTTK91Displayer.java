@@ -142,14 +142,16 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		String beginSeparator = "[";
 		StringBuffer result = new StringBuffer();
 		String temp = "";
+		String tempClean = "";
 
 		int index = exampleCode.indexOf(beginSeparator);
 		temp = exampleCode.substring(0,index);
-		
-		if(!temp.equals("")){
+		tempClean = temp.trim(); // Otetaan whitespace pois
+
+		if(!tempClean.equals("")){
 		result.append("<textarea cols =\"" +this.COLS +"\""
 									 +"rows =\"" +this.ROWS +"\" readonly>");
-		result.append(temp);
+		result.append(tempClean);
 		result.append("</textarea><br>");
 		}
 
@@ -168,14 +170,16 @@ public class FillInTTK91Displayer extends CommonDisplayer{
 		String endSeparator = "]";
 		StringBuffer result = new StringBuffer();
 		String temp = "";
-		
+		String tempClean = "";
+
 		int index = exampleCode.indexOf(endSeparator);
 		temp = exampleCode.substring(index+1);
+		tempClean = temp.trim(); // Otetaan whitespace pois
 
-		if (!temp.equals("")) { //  Testataan tuleeko aukon jälkeen koodia.
+		if (!tempClean.equals("")) { //  Testataan tuleeko aukon jälkeen koodia.
 			result.append("<textarea cols =\"" +this.COLS +"\""
 										 +"rows =\"" +this.ROWS +"\" readonly>");
-			result.append(temp);
+			result.append(tempClean);
 			result.append("</textarea><br>");
 		}
 
