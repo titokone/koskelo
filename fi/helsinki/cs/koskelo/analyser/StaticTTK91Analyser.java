@@ -13,6 +13,7 @@ import fi.hy.eassari.showtask.trainer.CommonAnalyser;
 
 /**
  * Luokka staattisten TTK-91 -tehtävien vastauksien tarkastamiseen
+ * Varsinainen analysointityö tehdään TTK91RealAnalyser-luokassa
  * @author Lauri Liuhto
  *  
  */
