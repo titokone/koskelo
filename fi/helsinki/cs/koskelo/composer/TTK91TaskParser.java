@@ -1,87 +1,98 @@
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-/*
- * Apuluokka TaskDefinitionControlleria varten. Koostaa annetusta datasta
- * TaskDTO-olion. TTK91Taskparser saa parametrin‰ PostParameterParserin
- * sek‰ HttpSession. PostParameterParser tarjoaa post-kutsun mukana
- * tulleet palaute-kent‰t ja HttpSessiosta saadaan TTK91TaskOptions-olio
- * joka sis‰lt‰‰ kaiken muun teht‰v‰n m‰‰rittelyn.
- *
- * Luokka saa tiet‰‰ TTK91TaskOptionsin metodien avulla montako kriteerin
- * palautetta PostParameterParser tarjoaa (tarkistamalla ko. kriteereiden
- * taulukon koon esim. getMemoryCriterias.size()).
- *
- * Postin mukana tulleet kent‰t on nimetty juoksevasti
- * (ks. luokka SyntaxChecker)
- * samalla tavalla. Kun TTK91TaskParser tiet‰‰ palautteiden m‰‰r‰n, niin
- * se voi liitt‰‰ ne oikeisiin kriteereihin.
- *
- */
 public class TTK91TaskParser {
+	/*
+	   Ei, seuraavista huolimatta t‰m‰ luokka ei ole mik‰‰n pikkuvarasto.
+	   Kent‰t ovat t‰ss‰ vain parametrinv‰lityst‰ helpottamassa.
+	   V‰h‰n kˆmpelˆ‰, mutta kukin taapertaa omalla tyylill‰‰n jne.
+	 */
+	private PostParameterParser post;
+	private TTK91TaskOptions tops;
+	private TaskDTO newTask;
 
-	private static final String EXAMPLE_CODE
-		= "exampleCode";
-	private static final String TASK_DESCRIPTION
-		= "taskDescription";
-	private static final String REGISTER_FEEDBACK_POSITIVE
-		= "registerFeedbackPositive";
-	private static final String REGISTER_FEEDBACK_NEGATIVE
-		= "registerFeedbackNegative";
-	private static final String MEMORY_FEEDBACK_POSITIVE
-		= "memoryFeedbackPositive";
-	private static final String MEMORY_FEEDBACK_NEGATIVE
-		= "memoryFeedbackNegative";
-	//Jne.
+	private static final String SPOT
+		= "fi.helsinki.cs.koskelo.common.TTK91TaskOptions";
+
+	/**
+	 * Konstruktori luo sis‰iseen tiedonv‰litykseen tarkoitetun
+	 * olion ja est‰‰ luokan ulkopuoliset ilmentym‰pyynnˆt.
+	 */
+	private TTK91TaskParser(
+			PostParameterParser post,
+			HttpSession session
+			) {
+		this.post = post;
+		this.tops = (TTK91TaskOptions)session.getAttribute(SPOT);
+		this.newTask = new TaskDTO();
+	}
+
+	public static TaskDTO assembleFillInTTK91Task(
+			PostParameterParser post,
+			HttpSession session
+			) {
+		TTK91TaskParser turf // (lue turf suomeksi hiekkalaatikoksi)
+			= new TTK91TaskParser(post, session);
+		turf.assembleCommon();
+		turf.assembleFillIn();
+		return turf.newTask;
+	}
 
 	public static TaskDTO assembleStaticTTK91Task(
 			PostParameterParser post,
 			HttpSession session
 			) {
+		TTK91TaskParser turf
+			= new TTK91TaskParser(post, session);
+		turf.assembleCommon();
+		turf.assembleStatic();
+		return turf.newTask;
+	}
 
-		TaskDTO newTask = new TaskDTO();
-		TTK91TaskOptions taskData
-			= (TTK91TaskOptions)session.getAttribute(
-					"fi.helsinki.cs.koskelo.common."+
-					"TTK91TaskOptions"
-					);
+	public static TaskDTO assembleDynamicTTK91Task(
+			PostParameterParser post,
+			HttpSession session
+			) {
+		TTK91TaskParser turf
+			= new TTK91TaskParser(post, session);
+		turf.assembleCommon();
+		turf.assembleDynamic();
+		return turf.newTask;
+	}
 
-		newTask.set( EXAMPLE_CODE, taskData.getExampleCode() );
-		newTask.set( TASK_DESCRIPTION, taskData.getTaskDescription() );
-		//Jne.
-		/*
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   newTask.set(, );
-		   */
+	private void assembleCommon() {
+		newTask.set("acceptedSize", tops.getAcceptedSize);
+		newTask.set("compareMethod", tops.getCompareMethod);
+		newTask.set("exampleCode", tops.getExampleCode);
+		newTask.set("fileOutputCriterias", tops.getFileOutputCriterias);
+		newTask.set("forbiddenCommands", tops.getForbiddenCommands);
+		newTask.set("hiddenInput", tops.getHiddenInput);
+		newTask.set("maxCommands", tops.getMaxCommands);
+		newTask.set("memoryCriterias", tops.getMemoryCriterias);
+		newTask.set("memoryReferences", tops.getMemoryReferences); // ?
+		newTask.set("optimalSize", tops.getOptimalSize);
+		newTask.set("publicInput", tops.getPublicInput);
+		newTask.set("registerCriterias", tops.getRegisterCriterias);
+		newTask.set("requiredCommands", tops.getRequiredCommands);
+		newTask.set("screenOutputCriterias",
+				tops.getScreenOutputCriterias);
+		newTask.set("taskDescription", tops.getTaskDescription);
+		newTask.set("taskFeedback", tops.getTaskFeedback); // ?
 
-		String regpos = post.getStringParameter(REGISTER_FEEDBACK_POSITIVE);
-		newTask.set(REGISTER_FEEDBACK_POSITIVE, regpos);
-		String regneg = post.getStringParameter(REGISTER_FEEDBACK_NEGATIVE);
-		newTask.set(_FEEDBACK_POSITIVE, regneg);
-		String mempos = post.getStringParameter(MEMORY_FEEDBACK_POSITIVE);
-		newTask.set(MEMORY_FEEDBACK_POSITIVE, mempos);
-		String memneg = post.getStringParameter(MEMORY_FEEDBACK_NEGATIVE);
-		newTask.set(MEMORY_FEEDBACK_NEGATIVE, memneg);
-		//Jne.
+		// ?:lliset  n‰ytt‰v‰t puuttuvan TTK91TaskOptionsista...
 
-		return newTask;
+		// FIXME: kuuluisikohan jokin yll‰olevista set-kutsuista
+		// alla oleviin metodeihin?
+	}
 
-	}//assembleStaticTTK91Task
+	private void assembleDynamic() {
+	}
 
-}//class
+	private void assembleStatic() {
+	}
+
+	private void assembleFillIn() {
+	}
+
+	// Hmm... PostParameterParser postillakin piti kai tehd‰ jotakin?
+}
