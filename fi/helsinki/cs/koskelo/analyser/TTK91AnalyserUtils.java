@@ -34,8 +34,8 @@ public class TTK91AnalyserUtils {
 
     /**
      * Hakee kaikki kriteerit cachesta apumetodeinen avulla ja 
-     * lis‰‰ ne taskOptions-luokkamuuttujaan.
-     *
+     * lis‰‰ ne taskOptions-muuttujaan.
+     * @return kaikki kriteerit sis‰lt‰v‰n TTK91TaskOptions-luokan ilmentym‰n
      * @throws CacheException jos cachen kanssa ongelmia
      * @throws InvalidTTK91CriteriaException jos kriteerien parsinta ei onnistu
      */
