@@ -192,6 +192,8 @@ public class TTK91TaskParser {
 
  private static String concatCriterias(TTK91TaskCriteria[] criterias) {
 
+  if(criterias == null) {return "";}
+
   String criteriaString = "";
 
   for(int i = 0; i<criterias.length;++i) {
@@ -200,39 +202,13 @@ public class TTK91TaskParser {
 
   }//for
 
-  return criteriaString;
+   return criteriaString;
 
  }//concatCriterias
 
- /*
- private static String concatCriterias(int[][] criterias) {
-
-     StringBuffer sb = new StringBuffer();
-
-     if(criterias != null) {
-	 for(int i = 0; i < criterias.length; i++) {
-	     // voidaan olettaa että taulukon koko
-	     // on kaksi, sillä outputteille joille
-	     // tätä käytetään niiden jälkimmäisessä taulukossa
-	     // on aina kaksi alkiota. Jos ei ole niin jossain
-	     // aikaisemmin on tehty virhe.
-	     // FIXME järkevämpi toteutus kuin int[][] output
-	     // eille
-	     sb.append("(");
-	     sb.append(criterias[i][0]);
-	     sb.append(",");
-	     sb.append(criterias[i][1]);
-	     sb.append(")");
-	     sb.append(";");
-	 }//for
-     }//if
-
-     return sb.toString();
-
- }//concatCriterias
-*/
- 
  private static String concatCommands(String[] commands) {
+
+  if(commands == null) {return "";}
 
   String commandString = "";
 
@@ -247,6 +223,8 @@ public class TTK91TaskParser {
  }//concatCriterias
 
  private static String concatInput(int[] input){
+
+  if(input == null) {return "";}
 
   String inputString = "";
 
