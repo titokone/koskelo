@@ -4,7 +4,7 @@ package fi.helsinki.cs.koskelo.common;
 public class TTK91ParserUtils { 
 
 
-	public boolean validateTTK91Command(String command) {
+	static public boolean validateTTK91Command(String command) {
 
 		command.toUpperCase();
 
