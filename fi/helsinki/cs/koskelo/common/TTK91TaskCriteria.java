@@ -280,7 +280,9 @@ public class TTK91TaskCriteria{
 
 
 
- private void parseIncomparableCriteria(String criteria) {
+ private void parseIncomparableCriteria(String criteria)
+                            throws InvalidTTK91CriteriaException {
+
 
   String cleanParameter_1 = null;
   String cleanParameter_2 = null;
