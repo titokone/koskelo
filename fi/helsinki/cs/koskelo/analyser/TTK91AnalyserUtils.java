@@ -10,6 +10,11 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 
 public class TTK91AnalyserUtils {
 
+	TTK91TaskOptions taskOptions = new TTK91TaskOptions(); 
+	AttributeCache cache;
+	String taskid;
+	String language;
+
 	/**
 	 * Hakee kaikki kriteerit cachesta apumetodeinen avulla ja 
 	 * lis‰‰ ne taskOptions-luokkamuuttujaan.
@@ -18,9 +23,9 @@ public class TTK91AnalyserUtils {
 	 * @throws InvalidTTK91CriteriaException jos kriteerien parsinta ei onnistu
 	 */
 
-	private void getTTK91TaskOptions(TTK91 TaskOptions taskOptions) 
+	private void getTTK91TaskOptions() 
 		throws CacheException, InvalidTTK91CriteriaException {
-
+		
 		this.taskOptions.setCompareMethod
 			(getIntFromCache("compareMethod"));
 		

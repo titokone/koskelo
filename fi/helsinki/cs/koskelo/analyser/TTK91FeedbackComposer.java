@@ -6,7 +6,7 @@ import fi.hy.eassari.showtask.trainer.Feedback;
 import fi.hy.eassari.showtask.trainer.CacheException;
 
 /**
- * Luo kriteerien perusteella palautteen.
+ * Luokka, joka luo kriteerien perusteella palautteen.
  */
 
 public class TTK91FeedbackComposer{
@@ -16,9 +16,10 @@ public class TTK91FeedbackComposer{
 
 
 	/**
-	 * Metodi, joka muodostaa palautteen. Tutkii jokaista kriteeri‰ kohden
-	 * onko se oikein ja muodostaa palautteen sen mukaisesti. Palaute on
-	 * html-muodossa.
+	 * Metodi, joka muodostaa palautteen. Ensin tutkii jokaista kriteeri‰ 
+	 * kohden onko se oikein ja muodostaa palautteen sen mukaisesti. 
+	 * Seuraavaksi haetaan rekisterien arvot, statistiikka ja tulosteet, 
+	 * jotka laitetaan taulukoihin. Palaute on html-taulukoissa.
 	 *
 	 * @param analyseResults Analyserin teht‰v‰‰n antama analyysin tulos
 	 * @param taskFeedback   teht‰v‰‰n liittyv‰t palautteet
@@ -27,41 +28,40 @@ public class TTK91FeedbackComposer{
 	 * @param language       k‰ytetty kieli
 	 * @return Feedback-olion, joka sis‰lt‰‰ palautteen
 	 * @throws CacheException jos tulee ongelmia attribuuttien 
-	 *                        hakemisessa AttributeCachesta
+	 *                        hakemisessa cachesta
 	 */
 
 	public static Feedback formFeedback(TTK91AnalyseResults analyseResults,
-															 TTK91TaskFeedback taskFeedback,
-															 AttributeCache cache,
-															 String taskID,
-															 String language) throws CacheException {
+																			TTK91TaskFeedback taskFeedback,
+																			AttributeCache cache,
+																			String taskID,
+																			String language) throws CacheException {
 		
 		StringBuffer feedbackTable = new StringBuffer(); // palaute html-muodossa
-		
-		String criteriaLabel = ""; // kriteerin otsikko, haetaan cachesta
-		String feedbackLabel = ""; // palautteen otsikko, haetaan cachesta
-		String qualityLabel = "";  // Laadullisen pal. otsikko, haetaan cachesta
 
 		String criteriaHeader = ""; // k‰sitelt‰v‰n kriteerin nimi
 		String feedback = "";       // k‰sitelt‰v‰ palaute
 		String quality = "";        // k‰sitelt‰v‰ laadullinen palaute
-		int evaluation = 100;        // oletetaan, ett‰ teht‰v‰ on oikein
-		Boolean correct = null;
+		int evaluation = 100;       // oletetaan aluksi, ett‰ teht‰v‰ on oikein
+		Boolean correct = null;     // sis‰lt‰‰ tiedon kriteerin oikeellisuudesta
 
 
-		criteriaLabel = cache.getAttribute
+		String criteriaLabel = cache.getAttribute // kriteerin otsikko
 			("A", "ttk91feedbackcomposer", "criteriaLabel", language);
 
-		feedbackLabel = cache.getAttribute
+		String feedbackLabel = cache.getAttribute // palautteen otsikko
 			("A", "ttk91feedbackcomposer", "criteriaLabel", language);
 
-		qualityLabel = cache.getAttribute
+		String qualityLabel = cache.getAttribute // laadullisen pal. otsikko
 			("A", "ttk91feedbackcomposer", "criteriaLabel", language);
 
 
-		/**
-		 * Luodaan taulukon alkuosa.
-		 */
+
+		/************************************************
+		 * Kriteerikohtaisen palautteen lis‰‰minen
+		 ************************************************/
+		
+		// Luodaan taulukon alkuosa.
 
 		feedbackTable.append("<table width=\"100%\" border=\"1\" cellspacing=\"0\"" 
 												 +"cellpadding=\"3\">"
@@ -317,18 +317,106 @@ public class TTK91FeedbackComposer{
  
 		feedbackTable.append("</table><br>");
 
-		/**
-		 * TODO: Statistiikkan lis‰ys palautteeseen
-		 */
+		/************************************************
+		 * Rekisterien sis‰llˆn lis‰‰minen
+		 ************************************************/
 		
+		String registervaluesLabel = cache.getAttribute // rekisterien otsikko
+			("A", "ttk91feedbackcomposer", "registersLabel", language);
+	
 		
+		feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
+												 +"cellpadding=\"3\">"
+												 +"<tr align=\"center\">" 
+												 +"<td class=\"tableHeader\" align =\"left\">" 
+												 +registervaluesLabel +"</td>"
+												 +"</tr>");
+		
+		// Haetaan rekisterien arvot int-taulukkoon.
+
+		int[] registers = analyseResults.getRegisterValues();
+
+		for(int i = 0; i < registers.length; ++i) {
+			feedbackTable.append("<tr><td>R" +i +": "
+													 +registers[i] +"</td>"
+													 +"</tr>");
+		}
+		feedbackTable.append("</table><br>");
+
+		/************************************************
+		 * Statistiikan lis‰‰minen
+		 ************************************************/
+		
+		// Kielikohtaisten otsikkojen hakeminen cachesta
+
+		String statisticsLabel = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "statisticsLabel", language);
+		String memoryReference = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "memoryReference", language);
+		String stackSize = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "stackSize", language);
+		String codeSegment = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "codeSegment", language);
+		String dataSegment = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "dataSegment", language);
+		String executedCommands = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "executedCommands", language);
+		
+
+		feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
+												 +"cellpadding=\"3\">"
+												 +"<tr align=\"center\">" 
+												 +"<td class=\"tableHeader\" align =\"left\">" 
+												 +statisticsLabel +"</td>"
+												 +"</tr>");
+
+		feedbackTable.append("<td>" +	memoryReference +": "
+												 +analyseResults.getMemoryReferenceCount()
+												 +"</tr>");
+    feedbackTable.append("<td>" +	stackSize +": "
+												 +analyseResults.getStackSize()
+												 +"</tr>");
+		feedbackTable.append("<td>" +	codeSegment +": "
+												 +analyseResults.getCodeSegmentSize()
+												 +"</tr>");
+		feedbackTable.append("<td>" +	dataSegment +": "
+												 +analyseResults.getDataSegmentSize()
+												 +"</tr>");	
+		feedbackTable.append("<td>" +	executedCommands +": "
+												 +analyseResults.getExecutedCommandsCount()
+												 +"</tr>");
+		feedbackTable.append("</table><br>");
+
+		/************************************************
+		 * Tulosteiden (CRT, file) lis‰ys palautteeseen
+		 ************************************************/
+
+		String outputLabel = cache.getAttribute
+			("A", "ttk91feedbackcomposer", "outputLabel", language);
+
+		int[] crt = analyseResults.getCrt();
+		int[] file = analyseResults.getFile();
+
+		feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
+												 +"cellpadding=\"3\">"
+												 +"<tr align=\"center\">" 
+												 +"<td class=\"tableHeader\" align =\"left\">" 
+												 +outputLabel +"</td>"
+												 +"</tr>");
+
+		for(int i = 0; i < crt.length; ++i) {
+			feedbackTable.append("<td>CRT " +i +":  " +crt[i] +"</td></tr>");
+		}
+		for(int i = 0; i < file.length; ++i) {
+			feedbackTable.append("<td>FILE " +i +": " +file[i] +"</td></tr>");
+		}
+		feedbackTable.append("</table><br>");
 
 		/** 
 		 * Haetaan teht‰v‰‰ vastaava yleinen positiivinen 
 		 * ja negatiivinen palaute.
 		 */
 
-	
 		String feedbackSummaryPos = 
 			cache.getAttribute("T", taskID, "positivefeedback", language);	
 
@@ -339,7 +427,7 @@ public class TTK91FeedbackComposer{
 		 * Lopuksi luodaan uusi Feedback-olio. Parametreja ovat:
 		 * 0 (onnistumisen koodi), evaluation (oikeellisuusprosentti),
 		 * feedbackSummary/Pos/Neg (teht‰v‰n positiivinen/negatiivinen palaute),
-		 * new String(feedbackTable) (kriteerien palaute).
+		 * new String(feedbackTable) (palaute).
 		 */
 
 		return new Feedback(0, evaluation, feedbackSummaryPos, 
@@ -362,6 +450,15 @@ public class TTK91FeedbackComposer{
 		return new Feedback(2, errorMessage);
 	}//formFeedback
 
+	/**
+	 * Luo parametrien perusteella yhden html-taulukon rivin.
+	 *
+	 * @param criteriaName kriteerin nimi
+	 * @param feedback     palaute
+	 * @param quality      mahdollinen laadullinen palaute
+	 * @param correct      oliko kriteeri oikein
+	 * @return html-taulukon rivi             
+	 */
 
 	private static String getHTMLElementFeedbackRow(String criteriaName,
 																					 String feedback,
@@ -370,17 +467,20 @@ public class TTK91FeedbackComposer{
 
 		String feedbackRow; // palautettava html-taulukon rivi
 		
-		feedbackRow = ("<tr><td width=\"20\">" +criteriaName +"</td>");
+		feedbackRow = ("<tr><td width=\"20\"><strong>" +criteriaName 
+									 +"</strong></td>");
 
-		if (correct) {
+		if (correct) { // jos kriteeri oikein
 			feedbackRow += ("<td class=\"positivefeedback\" width=\"40\">" 
 											+feedback +"</td>"); 
 										
-		} else {
+		} else {       // jos kriteeri v‰‰rin
 			feedbackRow += ("<td class=\"negativefeedback\" width=\"40\">" 
 											+feedback +"</td>");
 		}
 							 	  
+		// Lis‰t‰‰n laadullinen palaute.
+
 		feedbackRow +=("<td class=\"positivefeedback\" width=\"40\">" 
 									 +quality +"</td></tr>");
 
@@ -388,8 +488,8 @@ public class TTK91FeedbackComposer{
 	
 	}//getHTMLElementFeedbackRow
 
-	/*	
-
+		
+	/*
 	public static void main(String [] args){
 		FeedbackTestCache cache = new FeedbackTestCache();
 		TTK91FeedbackComposer fbcomposer = new TTK91FeedbackComposer();
@@ -398,6 +498,16 @@ public class TTK91FeedbackComposer{
 		analyseRe.setAcceptedSize(false);
 		analyseRe.setRequiredCommands(true);
 		analyseRe.setRequiredCommandsQuality(true);
+		int[] temp = {1,2,3,4,5,6,7};
+		analyseRe.setRegisterValues(temp);
+		analyseRe.setMemoryReferenceCount(20);
+		analyseRe.setStackSize(15);
+		analyseRe.setDataSegmentSize(50);
+		analyseRe.setCodeSegmentSize(5);
+		analyseRe.setStackSize(30);
+		analyseRe.setCrt(temp);
+		analyseRe.setFile(temp);
+		analyseRe.setExecutedCommandsCount(100);
 		taskFb.setAcceptedSizeFeedback("hyv‰","huono", "tosi hyv‰");
 		taskFb.setRequiredCommandsFeedback("hyv‰ com","huono com", "tosi hyv‰ com");
 		String [] crit = {"acceptedSize","requiredCommands"};
