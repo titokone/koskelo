@@ -101,8 +101,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 
 	TTK91AnalyseResults results = null;
+	String[] exampleCode = fetchExampleCode();
 	TTK91AnalyseData analyseData = 
-	    new TTK91AnalyseData(answer, this.taskOptions);
+	    new TTK91AnalyseData(this.taskOptions, answer[0], exampleCode[0]);
 
 	if (analyseData.errors()) { // tapahtuiko simulaatioissa virheitä?
 	    String[] messages = analyseData.getErrorMessages();
