@@ -61,6 +61,7 @@ if (editTask)
           <option selected="selected" value="<%=TaskTypes.OPTION_TASK%>"><%=cache.getAttribute("D", "teachertaskdef", "optiontasktypelabel", lang)%></option>
           <option value="<%=TaskTypes.BLANKFILL_TASK%>"><%=cache.getAttribute("D", "teachertaskdef", "blankfilltasktypelabel", lang)%></option>
           <option value="<%=TaskTypes.ORDERING_TASK%>"><%=cache.getAttribute("D", "teachertaskdef", "orderingtasktypelabel", lang)%></option>
+          <option value="<%=TaskTypes.STATIC_TT91_TASK%>"><%=cache.getAttribute("D", "staticttk91taskcomposer", "staticTTK91TaskLabel", lang)%></option>
         </select>
 <%	} 
 	else {
