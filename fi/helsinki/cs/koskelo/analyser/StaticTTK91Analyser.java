@@ -80,10 +80,10 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      */
 
     public Feedback analyse(String[] answer, String params) { // FIXME:
-	// FIXME: to be implemented
 
-	if (this.errorFeedback != null) { // virheitä initialisoinnissa, ei syytä jatkaa.
-	    return this.errorFeedback;
+	if (this.errorFeedback != null) { 
+	    // virheitä initialisoinnissa, ei syytä jatkaa.
+	    return this.errorFeedback; 
 	}
 
 	if (answer == null) {
@@ -93,7 +93,8 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
 
 	TTK91AnalyseResults results = null;
-	TTK91AnalyseData analyseData = new TTK91AnalyseData(answer, this.taskOptions);
+	TTK91AnalyseData analyseData = 
+	    new TTK91AnalyseData(answer, this.taskOptions);
 
 	if (analyseData.errors()) { // tapahtuiko simulaatioissa virheitä?
 	    String[] messages = analyseData.getErrorMessages();
@@ -121,8 +122,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 						   cache,
 						   taskID,
 						   language);
-	}
-	catch (CacheException e) {
+	} catch (CacheException e) {
 	    fb = 
 		TTK91FeedbackComposer.formFeedback("Error while retrieving "+
 						   "error message :( "+
@@ -188,10 +188,12 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	catch (InvalidTTK91CriteriaException ie) {
 	    return new Feedback(TTK91Constant.FATAL_ERROR, 
 				"*TTK91Analyser.getTTK91TaskOptions()->"+
-				"InvalidTTK91CriteriaException: "+ie.getMessage());
+				"InvalidTTK91CriteriaException: "+
+				ie.getMessage());
 	}	    
 	if (this.taskOptions == null) {
-	    return new Feedback(TTK91Constant.FATAL_ERROR, "this.taskOptions on null,"+
+	    return new Feedback(TTK91Constant.FATAL_ERROR, 
+				"this.taskOptions on null,"+
 				"vastauksen tarkastamista ei voi tehdä");
 	}
 	return null; // kaikki ok
