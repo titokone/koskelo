@@ -62,7 +62,7 @@ if (event == Events.BLANKFILL_TEXT_EDIT) {
 <body bgcolor="#FFFFFF">
 <h1>Staattisen tehtävän luonti</h1>
 <form method="post" action="
- <%=request.getContextPath()%>/fi/helsinki/cs/koskelo/composer/TTK91SyntaxChecker" name="StaticTTK91Composer">
+ <%=request.getContextPath()%>/koskelo/composer/TTK91SyntaxChecker" name="StaticTTK91Composer">
 
  <input name="event" type="hidden" id="event"
   value="<%=Events.STATIC_TTK91_SUBMIT%>" />
