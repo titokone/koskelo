@@ -46,6 +46,8 @@ public class TTK91TaskCriteria{
  * Luo kriteerin saamastaan merkkijonoesityksestä. 
  * @throws InvalidTTK91CriteriaException
  * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
+ * @param isComparable true ilmoittaa että kriteeri sisältää loogisen operaation,
+ * false taas ilmoittaa että kyseessä on pari ilman loogista operaatiota.
  * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
  ******************************************************************/
 
@@ -54,11 +56,11 @@ public class TTK91TaskCriteria{
 
   if(isComparable == false) {
 
-   parseComparableCriteria(criteria);
+   parseIncomparableCriteria(criteria);
 
   } else {
 
-   parseIncomparableCriteria(criteria);
+   parseComparableCriteria(criteria);
 
   }//else
 
@@ -66,10 +68,17 @@ public class TTK91TaskCriteria{
 
 
 
+ /******************************************************************
+ * Luo kriteerin saamastaan merkkijonoesityksestä. 
+ * @throws InvalidTTK91CriteriaException
+ * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
+ * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
+ ******************************************************************/
+
  public TTK91TaskCriteria(String criteria)
 		throws InvalidTTK91CriteriaException {
 
-     this(criteria, false);
+     this(criteria, true);
 
  }// TTK91TaskCriteria(String criteria)
 
@@ -80,6 +89,8 @@ public class TTK91TaskCriteria{
  * @param comparator 
  * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
  ******************************************************************/
+
+ /*FIMXE: EI ILMEISESTI TARVITAKKAAN [HT]***************************
 
  public TTK91TaskCriteria(
 		String firstComparable,
@@ -100,6 +111,8 @@ public class TTK91TaskCriteria{
   setComparator(comparator);
 
  }//TTK91TaskCriteria
+
+ *******************************************************************/
 
 
 
@@ -502,7 +515,7 @@ public class TTK91TaskCriteria{
          symbol = ">=";
          break;
    case EQUAL:
-         symbol = "=";
+         symbol = "==";
          break;
    case NOTEQUAL:
          symbol = "!=";

@@ -49,9 +49,9 @@ public class CriteriaTest extends TestCase {
 		ebl = new TTK91TaskCriteria("(L,A =! B);");
 		fl = new TTK91TaskCriteria("(L,A == B);");
 
-		aa = new TTK91TaskCriteria( "(A, B);", true );
+		//		aa = new TTK91TaskCriteria( "(A, B);", true );
 		ab = new TTK91TaskCriteria( "(A, B);", false );
-		ala = new TTK91TaskCriteria( "(L, A, B);", true );
+		//		ala = new TTK91TaskCriteria( "(L, A, B);", true );
 		abl = new TTK91TaskCriteria( "(L, A, B);", false );
 	
 		g = new TTK91TaskCriteria();
@@ -67,11 +67,11 @@ public class CriteriaTest extends TestCase {
 		Assert.assertTrue(el.getQuality());
 		Assert.assertTrue(fl.getQuality());
 
-   		Assert.assertTrue(ala.getQuality());
+		//   		Assert.assertTrue(ala.getQuality());
 		Assert.assertTrue(abl.getQuality());
 
 		Assert.assertFalse(a.getQuality());
-		Assert.assertFalse(aa.getQuality());
+		//		Assert.assertFalse(aa.getQuality());
 
 	}
 
@@ -91,9 +91,9 @@ public class CriteriaTest extends TestCase {
 		Assert.assertEquals(el.toString(), "(L,A!=B);");
 		Assert.assertEquals(fl.toString(), "(L,A==B);");
 
-		Assert.assertEquals(aa.toString(), "(A,B);");
+		//		Assert.assertEquals(aa.toString(), "(A,B);");
 		Assert.assertEquals(ab.toString(), "(A,B);");
-		Assert.assertEquals(ala.toString(), "(L,A,B);");
+		//		Assert.assertEquals(ala.toString(), "(L,A,B);");
 		Assert.assertEquals(abl.toString(), "(L,A,B);");
 
 	}
@@ -119,21 +119,21 @@ public class CriteriaTest extends TestCase {
 				);
 
 		Assert.assertTrue(
-				(aa.getFirstComparable())
+				(ab.getFirstComparable())
 				.equals(
-					ab.getFirstComparable()
+					a.getFirstComparable()
 				       )
 				);
 
 		Assert.assertTrue(
-				(ab.getSecondComparable())
+				(a.getSecondComparable())
 				.equals(
-					aa.getSecondComparable()
+					ab.getSecondComparable()
 				       )
 				);
 
 		Assert.assertFalse(
-				(ab.getComparator())== aa.getComparator()
+				(ab.getComparator())== a.getComparator()
 				);
 
 	}
@@ -178,8 +178,7 @@ public class CriteriaTest extends TestCase {
 			fail("Ei tyhj‰‰ merkkijonoa)");
 		} catch (Exception e) {
 			// t‰nne ei tulla
-		}	
-
+		}
 
 
 		g.setComparator(e.LESS);
@@ -205,7 +204,7 @@ public class CriteriaTest extends TestCase {
 
 
 
-		g.setComparator(aa.NOTCOMPARABLE);
+		g.setComparator(ab.NOTCOMPARABLE);
 		g.setFirstComparable("A");
 		g.setSecondComparable("B");
 		g.setQuality(true);
@@ -213,17 +212,17 @@ public class CriteriaTest extends TestCase {
 		Assert.assertTrue(
 				(g.getFirstComparable())
 				.equals(
-					aa.getFirstComparable()
+					ab.getFirstComparable()
 				       )
 				);
 		Assert.assertTrue(
 				(g.getSecondComparable())
 				.equals(
-					aa.getSecondComparable()
+					ab.getSecondComparable()
 				       )
 				);
 		Assert.assertTrue(
-				(g.getComparator())== aa.getComparator()
+				(g.getComparator())== ab.getComparator()
 				);
 	}
 
@@ -235,34 +234,34 @@ public class CriteriaTest extends TestCase {
 		Assert.assertFalse(a.getComparator() == d.getComparator());
 		Assert.assertFalse(a.getComparator() == e.getComparator());
 		Assert.assertFalse(a.getComparator() == f.getComparator());
-		Assert.assertFalse(a.getComparator() == aa.getComparator());
+		Assert.assertFalse(a.getComparator() == ab.getComparator());
 
 		Assert.assertFalse(b.getComparator() == c.getComparator());
 		Assert.assertFalse(b.getComparator() == d.getComparator());
 		Assert.assertFalse(b.getComparator() == e.getComparator());
 		Assert.assertFalse(b.getComparator() == f.getComparator());
-		Assert.assertFalse(b.getComparator() == aa.getComparator());
+		Assert.assertFalse(b.getComparator() == ab.getComparator());
 
 		Assert.assertFalse(c.getComparator() == d.getComparator());
 		Assert.assertFalse(c.getComparator() == e.getComparator());
 		Assert.assertFalse(c.getComparator() == f.getComparator());
-		Assert.assertFalse(c.getComparator() == aa.getComparator());
+		Assert.assertFalse(c.getComparator() == ab.getComparator());
 
 		Assert.assertFalse(d.getComparator() == e.getComparator());
 		Assert.assertFalse(d.getComparator() == f.getComparator());
-		Assert.assertFalse(d.getComparator() == aa.getComparator());
+		Assert.assertFalse(d.getComparator() == ab.getComparator());
 
 		Assert.assertFalse(e.getComparator() == f.getComparator());
-		Assert.assertFalse(e.getComparator() == aa.getComparator());
+		Assert.assertFalse(e.getComparator() == ab.getComparator());
 
-		Assert.assertFalse(f.getComparator() == aa.getComparator());
+		Assert.assertFalse(f.getComparator() == ab.getComparator());
 
 		Assert.assertTrue(c.getComparator() == cb.getComparator());
 		Assert.assertTrue(d.getComparator() == db.getComparator());
 		
 		Assert.assertTrue(f.getComparator() == fb.getComparator());
 
-       		Assert.assertFalse(aa.getComparator() == ab.getComparator());
+       		Assert.assertFalse(ab.getComparator() == a.getComparator());
 
 	}
 
