@@ -277,4 +277,21 @@ public class TTK91AnalyseData{
 
 	/* Tarvitaan vielä: sopivat getterit */
 
+	public String getStudentCompileError() {
+		return studentCompileError;
+	}
+	
+	public String getTeacherCompileError() {
+		return teacherCompileError;
+	}
+	
+	public String getStudentRunError() {
+		return studentRunError;
+	}
+	
+	public String getTeacherRunError() {
+		return teacherRunError;
+	}
+
+
 }// class
