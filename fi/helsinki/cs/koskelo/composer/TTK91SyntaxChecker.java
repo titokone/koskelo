@@ -164,7 +164,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		if (settings != null){
 			lang = settings.getSelectedLanguageId();
 		}
-		
+
 		try {
 			event = parsePostInt(reqEvent);
 		} catch (Exception e) {
@@ -183,10 +183,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
 			fillIn = true;
-		// FIXME
+			// FIXME
 			staticResponse = "fillinaddress";
 		}
-		
+
 		try {
 			// maxCommands ei voi olla null
 
@@ -213,10 +213,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				if(fillIn) {
 					fillInValidate(exampleCode);	
 				}
-			
+
 				taskOptions.setExampleCode(exampleCode);
-			
-				
+
+
 			}
 		} catch (Exception e) {
 
@@ -361,10 +361,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				screenOutput = parseOutputString(
 						reqScreenOutput
 						);
-			// FIXME
+				// FIXME
 				//	taskOptions.setScreenOutput(
-			//			screenOutput
-			//			);
+				//			screenOutput
+				//			);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
@@ -376,10 +376,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				fileOutput = parseOutputString(
 						reqFileOutput
 						);
-		// FIXME
-			//	taskOptions.setFileOutput(
-			//			fileOutput
-			//			);
+				// FIXME
+				//	taskOptions.setFileOutput(
+				//			fileOutput
+				//			);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
@@ -396,8 +396,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		this.res.setContentType ("text/html");
 		ServletOutputStream out = this.res.getOutputStream();
 		try{
-		out.print(feedbackForm());
+			if(cache != null) {
+				out.print(feedbackForm());
 
+			} else {
+				// FIXME
+				out.print("Didn't get any cache");
+			}
 		} catch (CacheException e) {
 			//FIXME
 			out.print("CacheException");
@@ -414,21 +419,21 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				forward(this.req, this.res);
 		}
 
-/** Heitt‰‰ poikkeuksen jos code-string ei ole validi FillIn esimerkkiohjelma.
- * Vaatimukset sopivuudelle ovat, ett‰ merkkijonossa esiintyy [ ensin 
- * ja sitten ].
- * Molempia saa esiinty‰ tasan yksi.
- * @param code fillIn teht‰v‰n esimerkkikoodi.
- */
+	/** Heitt‰‰ poikkeuksen jos code-string ei ole validi FillIn esimerkkiohjelma.
+	 * Vaatimukset sopivuudelle ovat, ett‰ merkkijonossa esiintyy [ ensin 
+	 * ja sitten ].
+	 * Molempia saa esiinty‰ tasan yksi.
+	 * @param code fillIn teht‰v‰n esimerkkikoodi.
+	 */
 	private void fillInValidate(String code) 
 		throws Exception {
 
 			if(code.indexOf("[")> -1) {
 				if(
-				(code.indexOf("[") < code.indexOf("]"))&&
-				(code.indexOf("[") == code.lastIndexOf("[")) &&
-				(code.indexOf("]") == code.lastIndexOf("]"))
-				){
+						(code.indexOf("[") < code.indexOf("]"))&&
+						(code.indexOf("[") == code.lastIndexOf("[")) &&
+						(code.indexOf("]") == code.lastIndexOf("]"))
+				  ){
 					return;
 				}
 			} else {
@@ -443,7 +448,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			String[] tmp = input.split(",");
 			int[] retInput;
 			retInput = new int[tmp.length];
-			
+
 			for(int i = 0; i < tmp.length; i++) {
 				retInput[i] = parsePostInt(tmp[i].trim());
 			} // for
@@ -624,20 +629,20 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					lang
 					) +
 				"</div>" +
-				"</td>" +
-				"<td>" +
-				"       <div align=\"center\">" +
-				cache.getAttribute(
+			"</td>" +
+			"<td>" +
+			"       <div align=\"center\">" +
+			cache.getAttribute(
 					"D",
 					"ttk91syntaxchecker",
 					"criteriaqualitytitle", 
 					lang
 					) +
-				"</div>" +
-				"</td>" +
-				"</tr>" +
-				"</table>\n"
-				);
+			"</div>" +
+			"</td>" +
+			"</tr>" +
+			"</table>\n"
+			);
 		// k‰skyjen lukum‰‰r‰
 		page = page.concat(
 				"  <p>"+
