@@ -470,13 +470,17 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// simuloituun vai täysin staattiseen lopputilaan.
 			// Jälkimmäisessä tapauksessa titokoneella ei
 			// simuloida mahdollisesti annettua malliratkaisua.
-			// FIXME: not like this
 
 			if(validParam(reqCompareMethod)) {
 				compareMethod = parsePostInt(reqCompareMethod);
 
-				if(compareMethod == 0 && !validParam(exampleCode)) {
+				if(compareMethod == TTK91Constants.COMPARE_TO_SIMULATED && !validParam(exampleCode)) {
 
+
+					// Vaaditaan esimerkkikoodi, jos
+					// vaadittiin vertailua simuloituun
+					// malliratkaisuun
+					
 					returnError(this.staticResponse,
 							cache.getAttribute(
 								"D",
