@@ -101,11 +101,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		int maxCommands;
 		int acceptedSize; // 200 riviä
 		int optimalSize; // 10 riviä
-		int memoryReferences;
 		int[][] screenOutput; // (1,3) (2,4) (4,3)
 		int[][] fileOutput; // (1,3)(2,4)(4,3)
 		int[] publicInput;
 		int[] hiddenInput; // 1,2,3,5,2...
+		TTK91TaskCriteria memoryReferences;
 		TTK91TaskCriteria[] registerCriteria; // R2 > 1
 		TTK91TaskCriteria[] memoryCriteria; // Mikko < Ville
 
@@ -211,7 +211,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			lang = settings.getSelectedLanguageId();
 		}
 
-		try {
+		try { // event
 			event = parsePostInt(reqEvent);
 		} catch (Exception e) {
 			System.out.println(
@@ -220,6 +220,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 					);
 		}
 
+		// päätetään mitä meidän haluttiiin tekevän. Jos
+		// fillin, asetetaan samantien myös kohdeosoite oikein.
+		// TODO fillinedit
 		if(event == Events.STATIC_TTK91_EDIT){
 			editTask = true;
 			task = (TaskDTO)
@@ -229,7 +232,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						);
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
 			fillIn = true;
-			// FIXME
 			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
@@ -345,6 +347,23 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		}
 
+		try { // memoryReferences. Odotetaan vertailu
+			//operaattoria ja numeroa. 
+			if(validParam(reqMemoryReferences)) {
+				String tmp = "MEMORYREFERENCES"+
+					reqMemoryReferences;
+				memoryReferences = new TTK91TaskCriteria(
+						tmp
+						);
+				taskOptions.setMemRefCriteria(
+						memoryReferences
+						);
+			}
+		} catch (Exception e) {
+			returnError(this.staticResponse, "foo");
+			return;
+		}
+
 		try { // requiredCommands
 
 			if(validParam(reqRequiredCommands)) {
@@ -409,10 +428,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				screenOutput = parseOutputString(
 						reqScreenOutput
 						);
-				// FIXME
-				//	taskOptions.setScreenOutput(
-				//			screenOutput
-				//			);
+					taskOptions.setScreenOutputCriterias(
+							screenOutput
+							);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
@@ -424,10 +442,9 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				fileOutput = parseOutputString(
 						reqFileOutput
 						);
-				// FIXME
-				//	taskOptions.setFileOutput(
-				//			fileOutput
-				//			);
+					taskOptions.setFileOutputCriterias(
+							fileOutput
+							);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
