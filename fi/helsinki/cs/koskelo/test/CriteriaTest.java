@@ -263,6 +263,7 @@ public class CriteriaTest extends TestCase {
 
        		Assert.assertFalse(ab.getComparator() == a.getComparator());
 
+       		Assert.assertTrue(ab.getComparator() == abl.getComparator());
 	}
 
 	/*	public static void main(String args[]) throws Exception{
