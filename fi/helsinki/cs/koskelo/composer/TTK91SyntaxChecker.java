@@ -622,7 +622,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			//liittyvät vertailukriteerit. 
 			//Tyyppiä TTK91TaskCriteria.
 			if(validParam(reqRegisterCriteria)) {
-				registerCriteria = PARSEcRITeriaString(
+				registerCriteria = parseCriteriaString(
 						reqRegisterCriteria
 						);
 				taskOptions.setRegisterCriterias(
