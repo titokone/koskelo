@@ -211,7 +211,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if(validParam(reqExampleCode)){
 				exampleCode = reqExampleCode;
+				if(fillin) {
+					fillInValidate(exampleCode);	
+				}
+			
 				taskOptions.setExampleCode(exampleCode);
+			
+				}
 			}
 		} catch (Exception e) {
 
@@ -402,6 +408,28 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			this.session.setAttribute("TTK91ERROR", error);
 			this.req.getRequestDispatcher(target).
 				forward(this.req, this.res);
+		}
+
+/** Heittää poikkeuksen jos code-string ei ole validi FillIn esimerkkiohjelma.
+ * Vaatimukset sopivuudelle ovat, että merkkijonossa esiintyy [ ensin 
+ * ja sitten ].
+ * Molempia saa esiintyä tasan yksi.
+ * @param code fillIn tehtävän esimerkkikoodi.
+ */
+	private void fillinValidate(String code) 
+		throws Exception {
+
+			if(code.indexOf("[")> -1) {
+				if(
+				(code.indexOf("[") < code.indexOf("]"))&&
+				(code.indexOf("[") == code.lastIndexOf("[")) &&
+				(code.indexOf("]") == code.lastIndexOf("]"))
+				){
+					return;
+				}
+			} else {
+				throw new Exception("Invalid fillin");
+			}
 		}
 
 	private int[] parseInputString(String input)
