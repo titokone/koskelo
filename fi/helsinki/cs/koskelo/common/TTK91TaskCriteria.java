@@ -66,6 +66,13 @@ public class TTK91TaskCriteria{
 
 
 
+ public TTK91TaskCriteria(String criteria)
+		throws InvalidTTK91CriteriaException {
+
+     this(criteria, false);
+
+ }// TTK91TaskCriteria(String criteria)
+
  /******************************************************************
  * Alustaa kriteerin annetuilla parametreilla.
  * @throws InvalidTTK91CriteriaException
