@@ -106,6 +106,9 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	TTK91AnalyseData analyseData = 
 	    new TTK91AnalyseData(this.taskOptions, answer[0], exampleCode[0]);
 
+	// FIXME FillInissä tämä malliratkaisun käsittelytapa ei taida toimia?
+	// FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+
 	if (analyseData.errors()) { // tapahtuiko simulaatioissa virheitä?
 	    String[] messages = analyseData.getErrorMessages();
 	    String errorMessage = "";
