@@ -816,12 +816,12 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			String[] splitted = output.split(";");
 			TTK91TaskCriteria[] outputRet = new TTK91TaskCriteria[splitted.length];
 			
-			for(int i = 0; i < splitted.length(); i++){
-				this.outputRet[i] = new TTK91TaskCriteria(splitted[i], true);
+			for(int i = 0; i < splitted.length; i++){
+				outputRet[i] = new TTK91TaskCriteria(splitted[i], true);
 			}
 			
 			
-			return this.outputRet;
+			return outputRet;
 		}
 	/** Apumetodi, jolla tarkistetaan syötteistä ovatko ne pilkulla
 	 * toisistaan erotettuja TTK91-käskyjä.
