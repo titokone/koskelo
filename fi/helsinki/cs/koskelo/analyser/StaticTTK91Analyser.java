@@ -22,6 +22,7 @@ import fi.hy.eassari.showtask.trainer.CacheException;
 import fi.helsinki.cs.koskelo.common.TTK91TaskOptions;
 import fi.helsinki.cs.koskelo.common.TTK91Constant;
 import fi.helsinki.cs.koskelo.common.TTK91TaskCriteria;
+import fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException;
 
 import java.util.regex.Pattern;
 import java.util.HashMap;
@@ -58,6 +59,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     private TTK91AnalyseResults results; //Uusi luokka.
     private TTK91FeedbackComposer fbcomposer;
     private Feedback feedback;
+    private TTK91AnalyserUtils utils;
 
     /**
      * Konstruktori, joka luo uuden alustamattoman
@@ -73,6 +75,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	this.results = null;
 	this.fbcomposer = new TTK91FeedbackComposer();
 	this.feedback = null;
+	this.utils = null;
     } // StaticTTK91Analyser()
 
 
@@ -85,7 +88,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
     public void init(String taskid, String language, String initparams) {
 	this.taskID = taskid;
 	this.language = language;
-	this.initP = new ParameterString(initparams);
+	//	this.initP = new ParameterString(initparams);
 	//	this.control = new Control(null, null); // ei tarvittane en‰‰
 	this.results = new TTK91AnalyseResults(); //Oletuksena kaikki tulokset false
     } // init
@@ -102,10 +105,21 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	// toiminnallisuus
 	// kesken
 
+	this.utils = new TTK91AnalyserUtils(this.cache, this.taskID, this.language); // Rumaa, mutta pakko tehd‰ vasta t‰‰ll‰, jotta registerCache ajettu...
+
+	try {
+	    this.taskOptions = this.utils.getTTK91TaskOptions();
+	}
+	catch (CacheException ce) {
+	    throw new RuntimeException("*TTK91Analyser.getTTK91TaskOptions()->CacheException: "+ce.getMessage());
+	}
+	catch (InvalidTTK91CriteriaException ie) {
+	    throw new RuntimeException("*TTK91Analyser.getTTK91TaskOptions()->InvalidTTK91CriteriaException: "+ie.getMessage());
+	}	    
+
 	getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu 
 	// FIXME: v‰‰r‰ parametri
 	getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
-	getTTK91TaskOptions();
 
 	boolean runnedOK = false;
 	runnedOK = run(); // varsinainen ratkaisu(je)n simulointi
@@ -172,12 +186,16 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	TTK91Application app = null;
 
+	if (controlCompiler == null) {
+	    controlCompiler = new Control(null, null);
+	}
+
 	try {
-	    controlCompiler.compile(src);
+	    app = controlCompiler.compile(src);
 	} catch (TTK91Exception e) {
-	    //	    return new Feedback(); 
 	    //	    // FIXME: oikeanlainen palaute, kun
 	    // k‰‰nnˆs ep‰onnistuu
+	    throw new RuntimeException("*TTK91Analyser.getStudentApplication: "+e.getMessage());
 	}//catch
 
 	this.studentApplication = app;
@@ -202,17 +220,25 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    // ei suostu menem‰‰n edes
 	    // TTK91CompileSource-muotoon - voiko
 	    // n‰in edes k‰yd‰?
+	    return;
 	}//if
 
 	TTK91Application app = null;
 
+	if (controlCompiler == null) {
+	    controlCompiler = new Control(null, null);
+	}
+	
 	try {
-	    controlCompiler.compile(src);
+	    app = controlCompiler.compile(src);
 	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
 	    //	    // FIXME: oikeanlainen palaute, kun
 	    // k‰‰nnˆs ep‰onnistuu
+	} catch (NullPointerException ne) {
+	    throw new RuntimeException("*TTK91Analyser.getTeacherApplication():"+ne.getMessage());
 	}//catch
+	
 
 	this.teacherApplication = app;
 
@@ -236,12 +262,12 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	}
     } // parseSourceFromAnswer
 
-    private void getTTK91TaskOptions() {
+    //    private void getTTK91TaskOptions() {
 
 	//TOMPPA
 	//this.taskOptions = blah;
 
-    }//TTK91TaskOptions
+    //    }//TTK91TaskOptions
 
     /**
      * Apumetodi, suorittaa varsinaiset Titokone-simulaatiot

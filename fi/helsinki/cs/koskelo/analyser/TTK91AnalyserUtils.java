@@ -124,7 +124,7 @@ public class TTK91AnalyserUtils {
 		
 	// Jos tulos on "null"-merkkijono, palautetaan tyhjä-merkkijono.
 
-	if (result.equals("null")) { 
+	if (result == null || result.equals("null")) {  // oli if (result.equals("null")) / Lauri
 	    return "";
 	} else {
 	    return result;
@@ -190,7 +190,7 @@ public class TTK91AnalyserUtils {
 	String temp = cache.getAttribute("T", this.taskid, 
 					 name, this.language);
 		
-	if (temp.equals("null")) 
+	if (temp == null || temp.equals("null")) 
 	    return null;
 		
 	String[] stringResult = temp.split(";");
@@ -206,6 +206,11 @@ public class TTK91AnalyserUtils {
 	if (name.equals("screenOutput") || name.equals("fileOutput")) {
 	    for (int i = 0; i < result.length; ++i) {
 		result[i] = new TTK91TaskCriteria(stringResult[i], false);
+	    }
+	} 
+	else if (name.equals("memoryReferences")) {
+	    for (int i = 0; i < result.length; ++i) {
+		result[i] = new TTK91TaskCriteria("MemoryReference"+stringResult[i], true);
 	    }
 	}
 	else {
