@@ -1,19 +1,20 @@
 import javax.servlet.*;
+import javax.servlet.http.*;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import fi.helsinki.cs.koskelo.common.*;
 
-public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
+public class TTK91SyntaxChecker extends HttpServlet {
 
 	/** Kutsuu doPostia parametreillaan. Yhteensopivuuden vuoksi.
 	 *
 	 */
 	protected void doGet(
 			HttpServletRequest req,
-			HttpServletResponse resp
+			HttpServletResponse res
 			) throws ServletException, java.io.IOException {
 
-		doPost(req, resp);
+		doPost(req, res);
 	}// doGet
 
 	/** Toteuttaa keskeisen osan luokan toiminnoista, eli tarkistaa
@@ -25,7 +26,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 	protected void doPost(
 			HttpServletRequest req,
-			HttpServletResponse resp
+			HttpServletResponse res
 			) throws ServletException, java.io.IOException {
 
 
@@ -148,7 +149,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		} catch (Exception e) { 
 			// TODO lis‰‰ virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(req, resp);
+				.forward(req, res);
 			return;
 		}// catch
 
@@ -203,7 +204,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(req, resp);
+				.forward(req, res);
 			return;
 		}
 
@@ -232,7 +233,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 		} catch (Exception e) {
 			// TODO lis‰‰ virheen palauttaminen
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
-				.forward(req, resp);
+				.forward(req, res);
 		}
 	
 		try { // compareMethod
