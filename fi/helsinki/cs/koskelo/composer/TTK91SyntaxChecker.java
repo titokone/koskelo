@@ -261,12 +261,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { // compareMethod
-			// fixme: not like this
+			// FIXME: not like this
 			if(validParam(reqCompareMethod)) {
 				compareMethod = 1;
 			}
-
-
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -274,10 +272,8 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { //  acceptedSize
 			if(validParam(reqAcceptedSize)) {
-
 				acceptedSize = parsePostInt(reqAcceptedSize);
 				taskOptions.setAcceptedSize(acceptedSize);
-
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
@@ -287,7 +283,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // optimalSize
 			if(validParam(reqOptimalSize)) {
-
 				optimalSize = parsePostInt(reqOptimalSize);
 				taskOptions.setOptimalSize(optimalSize);
 			}
@@ -300,7 +295,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		try { // requiredCommands
 
 			if(validParam(reqRequiredCommands)) {
-
 				requiredCommands = validTTK91Commands(
 						reqRequiredCommands
 						);
@@ -308,25 +302,20 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						requiredCommands
 						);
 			}
-
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
 		}
 
 		try { // forbiddenCommands
-
 			if(validParam(reqForbiddenCommands)) {
-
 				forbiddenCommands = validTTK91Commands(
 						reqForbiddenCommands
 						);
-
 				taskOptions.setForbiddenCommands(
 						forbiddenCommands
 						);
 			}
-
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -343,7 +332,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 						memoryCriteria
 						);
 			}
-
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
@@ -361,35 +349,32 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
-
 		}
 
 		try { // screenOutput
-
 			if(validParam(reqScreenOutput)) {
 				screenOutput = parseOutputString(
 						reqScreenOutput
 						);
-				taskOptions.setScreenOutput(
-						screenOutput
-						);
+			// FIXME
+				//	taskOptions.setScreenOutput(
+			//			screenOutput
+			//			);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
 			return;
-
 		}
-
 
 		try { // fileOutput
 			if(validParam(reqFileOutput)) {
-
 				fileOutput = parseOutputString(
 						reqFileOutput
 						);
-				taskOptions.setFileOutput(
-						fileOutput
-						);
+		// FIXME
+			//	taskOptions.setFileOutput(
+			//			fileOutput
+			//			);
 			}
 		} catch (Exception e) {
 			returnError(this.staticResponse, "foo");
