@@ -1,4 +1,7 @@
-//TODO: Kommentit ym. sössö
+/**
+* @author     Harri Tuomikoski, Koskelo-projekti.
+* @version    0.1
+*/
 
 package fi.helsinki.cs.koskelo.common;
 
@@ -10,6 +13,11 @@ public class InvalidTTK91CriteriaException extends Exception {
 
  }//InvalidCriteriaException
 
+ /**
+ * @param Ilmoittaa syyn poikkeukseen.
+ * @see java.lang.String
+ */
+
  public InvalidTTK91CriteriaException(String msg) {
 
   super(msg);
@@ -17,3 +25,4 @@ public class InvalidTTK91CriteriaException extends Exception {
  }//InvalidCriteriaException()
 
 }//class
+
