@@ -17,7 +17,7 @@ public class TTK91TaskFeedback {
 
 	private String requiredComPositive;
 	private String requiredComNegative;
-	private String optimalSizeQuality;
+	private String requiredComQuality;
 
 	private String forbiddenComPositive;
   private String forbiddenComNegative;
@@ -29,7 +29,7 @@ public class TTK91TaskFeedback {
 
 	private String memoryPositive;
 	private String memoryNegative;
-	private String memoryQuality
+	private String memoryQuality;
 
 	private String memoryRefPositive;
 	private String memoryRefNegative;
@@ -153,8 +153,8 @@ public class TTK91TaskFeedback {
 	 * @param negative kriteeriin liittyvä negatiivinen palaute
 	 * @param quality  kriteeriin liittyvä laadullinen palaute
 	 */
-	public void setMemoryReferencesFeedback(String positive
-																					String negative
+	public void setMemoryReferencesFeedback(String positive,
+																					String negative,
 																					String quality) {
 		this.memoryRefPositive = positive;
 		this.memoryRefNegative = negative;
