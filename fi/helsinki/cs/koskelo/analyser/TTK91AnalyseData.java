@@ -358,10 +358,11 @@ public class TTK91AnalyseData{
 	public TTK91Application getTeacherAppHid() {
 		return this.teacherApplicationHidden;
 	}
-	public TTK91Cpu getStudentCpuPub(){
+
+	public TTK91Cpu getStudentCpuPublic(){
 		return controlPublicInputStudent.getCpu();
 	}
-	public TTK91Cpu getStudentCpuHid(){
+	public TTK91Cpu getStudentCpuHidden(){
 		
 		if(controlHiddenInputStudent != null) {
 			return controlHiddenInputStudent.getCpu();
@@ -370,11 +371,11 @@ public class TTK91AnalyseData{
 		}
 	}
 
-	public TTK91Cpu getTeacherCpuPub(){
+	public TTK91Cpu getTeacherCpuPublic(){
 		return controlPublicInputTeacher.getCpu();
 	}
 	
-	public TTK91Cpu getTeacherCpuHid(){
+	public TTK91Cpu getTeacherCpuHidden(){
 		
 		if(controlHiddenInputTeacher != null) {
 			return controlHiddenInputTeacher.getCpu();
