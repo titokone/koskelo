@@ -228,7 +228,7 @@ public class TTK91AnalyserUtils {
 	    return null;
 
 	// virheilmoitus
-	System.err.println("AnalyserUtils.getTaskCriteriaFromCache" +temp); 
+	System.err.println("AnalyserUtils.getTaskCriteriaFromCache("+name+"): "+temp); 
 
 	String[] stringResult = temp.split(";");
 	TTK91TaskCriteria[] result = new TTK91TaskCriteria[stringResult.length];

@@ -258,6 +258,7 @@ public class TTK91AnalyseData{
 		this.publicInput = parseInputString(
 				this.taskOptions.getPublicInput()
 				);
+		System.err.println("TTK91AnalyseData.getTaskData:public_inputin_parsimista:"+this.publicInput);
 		this.hiddenInput = parseInputString(
 				this.taskOptions.getHiddenInput()
 				);
@@ -282,12 +283,13 @@ public class TTK91AnalyseData{
 		 */
 
 		if(publicInput != null) {
-
+		    System.err.println("Asetetaan studentApplicationille keyboard inputti");
 			this.studentApplicationPublic.setKbd(publicInput);
-			if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
-				this.teacherApplicationPublic.setKbd(
-						publicInput
-						);
+			if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+			    System.err.println("Asetetaan teacherApplicationille keyboard inputti");
+			    this.teacherApplicationPublic.setKbd(
+								 publicInput
+								 );
 			}
 		}
 
@@ -306,7 +308,7 @@ public class TTK91AnalyseData{
 		    return;
 		}
 
-		if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
+		if (compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
 			// 1. simulointi malliratkaisua
 			System.err.println("Simuloituvertailu");
 			
@@ -383,8 +385,11 @@ public class TTK91AnalyseData{
 	    }
 		String input = "";
 		
-		for(int i = 0; i < inputTable.length; i++) {
-			input = input + inputTable[i];
+		for(int i = 0; i < inputTable.length-1; i++) {
+			input = input + inputTable[i] +",";
+		}
+		if (inputTable.length > 0) {
+		    input = input + inputTable[inputTable.length-1];
 		}
 
 		if(input.equals("")){
@@ -590,7 +595,11 @@ public class TTK91AnalyseData{
     }
     
     public String getTeacherScreenOutputPublic(){
+	if (teacherApplicationPublic == null) {
+	    System.err.println("TTK91AnalyseData.getTeacherScreenOutputPublic(): teacherApplicationPublic == null !!! ");
+	}
 	if (teacherApplicationPublic != null && controlPublicInputStudent != null) {
+	    System.err.println("TTK91AnalyseData.getTeacherScreenOutputPublic(): Yritet‰‰n lukea teacherApplicationPublic.readCrt()");
 	    return teacherApplicationPublic.readCrt();
 	} else {
 	    return null;
