@@ -338,22 +338,24 @@ public class TTK91FeedbackComposer{
 		/************************************************
 		 * Rekisterien sisällön lisääminen
 		 ************************************************/
+
 		
-		String registervaluesLabel = cache.getAttribute // rekisterien otsikko
-	    ("A", "ttk91feedbackcomposer", "registervaluesLabel", language);
-	
-		
-		feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
-												 +"cellpadding=\"3\">"
-												 +"<tr align=\"center\">" 
-												 +"<td class=\"tableHeader\" align =\"left\">" 
-												 +registervaluesLabel +"</td>"
-												 +"</tr>");
-		
-		// Haetaan rekisterien arvot int-taulukkoon.
+		// Haetaan rekisterien arvot int-taulukkoon ja tarkistetaan ettei ole null.
 
 		int[] registers = analyseResults.getRegisterValues();
 		if (registers != null) { 
+		
+			String registervaluesLabel = cache.getAttribute // rekisterien otsikko
+				("A", "ttk91feedbackcomposer", "registervaluesLabel", language);
+	
+		
+			feedbackTable.append("<table width=\"30%\" border=\"1\" cellspacing=\"0\"" 
+													 +"cellpadding=\"3\">"
+													 +"<tr align=\"center\">" 
+													 +"<td class=\"tableHeader\" align =\"left\">" 
+													 +registervaluesLabel +"</td>"
+													 +"</tr>");
+		
 	    for(int i = 0; i < registers.length; ++i) {
 				feedbackTable.append("<tr><td>R" +i +": "
 														 +registers[i] +"</td>"
