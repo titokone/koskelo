@@ -223,6 +223,7 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			req.getRequestDispatcher("StaticTTK91Composer.jsp")
 				.forward(req, resp);
 		}
+	
 		try { // compareMethod
 
 			if(reqCompareMethod != null) {
@@ -232,6 +233,8 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			
 		} catch (Exception e) {
 
+			// TODO virheen palautus. Tälle metodinsa kun se on näissä
+			// kkaikissa?
 		}
 
 		try { //  acceptedSize
@@ -289,10 +292,37 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 
 
+		try { // memoryCriteria
 
+		} catch (Exception e) {
+
+		}
+
+		try { // registerCriteria
+
+		} catch (Exception e) {
+
+		}
+	
+		try { // screenOutput
+
+		} catch (Exception e) {
+
+		}
+		
+		
+		try { // fileOutput
+
+		} catch (Exception e) {
+
+		}
+		
 		session.setAttribute("TTK91TaskOptions", taskOptions);
 
+		
+		
 
+		
 	} // doPost
 
 	/** Not yet sure what for. 
