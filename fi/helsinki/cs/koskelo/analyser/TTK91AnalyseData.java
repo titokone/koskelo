@@ -176,7 +176,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = "Teacher compile error" + 
+			this.teacherCompileError = "Teacher compile error:" + 
 				e.getMessage();
 			this.errors = true;
 			return;
@@ -187,7 +187,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.teacherCompileError = "Teacher compile error" + 
+			this.teacherCompileError = "Teacher compile error:" + 
 				e.getMessage();
 			this.errors = true;
 			return;
@@ -230,7 +230,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = "Student compile error" + 
+			this.studentCompileError = "Student compile error:" + 
 				e.getMessage();
 			this.errors = true;
 			return;
@@ -241,7 +241,7 @@ public class TTK91AnalyseData{
 		try {
 			app = controlCompiler.compile(src);
 		} catch (TTK91Exception e) {
-			this.studentCompileError = "Student compile error" + 
+			this.studentCompileError = "Student compile error:" + 
 				e.getMessage();
 			this.errors = true;
 			return;
@@ -300,10 +300,10 @@ public class TTK91AnalyseData{
 					);
 			// 1. simulointi
 		} catch (TTK91Exception e) {
-			this.studentRunError = "Student run error" + 
-				e.getMessage();
-			this.errors = true;
-			return;
+		    this.studentRunError = "Student run error:"+ 
+			e.getMessage();
+		    this.errors = true;
+		    return;
 		}
 
 		if(compareMethod == TTK91Constant.COMPARE_TO_SIMULATED) {
@@ -318,7 +318,7 @@ public class TTK91AnalyseData{
 						steps
 						);
 			} catch (TTK91Exception e) {
-				this.teacherRunError = "Teacher run error" +
+				this.teacherRunError = "Teacher run error:" +
 					e.getMessage();
 				this.errors = true;
 				return;
@@ -339,7 +339,7 @@ public class TTK91AnalyseData{
 						);
 
 			} catch (TTK91Exception e) {
-				this.studentRunError = "Student run error" + 
+				this.studentRunError = "Student run error:" + 
 					e.getMessage();
 				this.errors = true;
 				return;
@@ -359,7 +359,7 @@ public class TTK91AnalyseData{
 							steps
 							);
 				} catch (TTK91Exception e) {
-					teacherRunError = "Teacher run error" +
+					teacherRunError = "Teacher run error:" +
 						e.getMessage();
 					this.errors = true;
 					return;
