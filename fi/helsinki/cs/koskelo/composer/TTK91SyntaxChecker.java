@@ -9,7 +9,7 @@ import fi.helsinki.cs.koskelo.common.*;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
-	private String staticResponse = "../../StaticTTK91Composer.jsp";
+	private String staticResponse = "http://db.cs.helsinki.fi/tomcat/tkt_kos/assari/jsp/StaticTTK91Composer.jsp";
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 	private HttpSession session;
@@ -431,7 +431,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		// FIXME assuming eassari in ../eassari
 		page = page.concat(
 				"<form method=\"post\" action=\""+
-				"../eassari/taskdefinition/TaskDefintionController"+
+				"../../eAssari/taskDefinition/controller"+
 				"\">\n"
 				);
 
