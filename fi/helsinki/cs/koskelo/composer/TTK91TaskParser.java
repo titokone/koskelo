@@ -136,6 +136,7 @@ public class TTK91TaskParser {
   newTask.set( FILE_OUTPUT, concatCriterias(foc) );
 
   String code = options.getExampleCode();
+  if(code == null) {code = "";}
   newTask.set( EXAMPLE_CODE, code );
 
   String taskdesc = options.getTaskDescription();
