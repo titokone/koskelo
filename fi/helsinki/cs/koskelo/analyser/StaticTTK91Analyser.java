@@ -274,12 +274,14 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		 *MUISTIPAIKKOJEN JA MUUTTUJIEN SISÄLTÖ
 		 */
 
+		//results.setBLAAH(boolean)
 	} //analyseMemory
 
 	private void analyseRegisters() {
 
 		//REKISTERIT
 
+		//results.setBLAAH(boolean)
 	} //analyseRegisters
 
 	private void analyseOutput() {
@@ -290,6 +292,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		//NÄYTÖN TULOSTEET
 		//TIEDOSTON TULOSTEET
 
+		//results.setBLAAH(boolean)
 	}//analyseOutput
 
 	/** Tehdään int[]-taulukosta merkkijono 1,2,3,4. Tämä siksi,
