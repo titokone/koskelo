@@ -43,7 +43,7 @@ public class TTK91TaskCriteria{
 
 
  /******************************************************************
- * Luo kriteerin saamastaan merkkijonoesityksestä. 
+ * Luo kriteerin saamastaan merkkijonoesityksestä.
  * @throws InvalidTTK91CriteriaException
  * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
  * @param isComparable true ilmoittaa että kriteeri sisältää loogisen operaation,
@@ -69,7 +69,7 @@ public class TTK91TaskCriteria{
 
 
  /******************************************************************
- * Luo kriteerin saamastaan merkkijonoesityksestä. 
+ * Luo kriteerin saamastaan merkkijonoesityksestä.
  * @throws InvalidTTK91CriteriaException
  * @param criteria TTK91-tehtävän kriteeri muodossa: vertailtava_1 looginen_operaatio vertailtava_2.
  * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
@@ -86,7 +86,7 @@ public class TTK91TaskCriteria{
  * Alustaa kriteerin annetuilla parametreilla.
  * @throws InvalidTTK91CriteriaException
  * @param firstComparable TTK91-tehtävän ensimmäinen vertailtava.
- * @param comparator 
+ * @param comparator
  * @see fi.helsinki.cs.koskelo.common.InvalidTTK91CriteriaException
  ******************************************************************/
 
@@ -120,7 +120,7 @@ public class TTK91TaskCriteria{
  *Asettaa kriteerin vertailuoperaattorin.
  * @param quality true jos kriteeri on laadullinen.
  ******************************************************************/
- 
+
  public void setQuality(boolean quality) {
 
   this.quality = quality;
@@ -148,7 +148,7 @@ public class TTK91TaskCriteria{
  /******************************************************************
  * Asettaa vasemmanpuoleisen vertailtavan. Heittää poikkeuksen jos
  * parametrina on null, tyhjä tai pelkkiä sulkuja sisältävä merkkijono.
- * @param comparable Merkkijonoesitys vertailtavasta. 
+ * @param comparable Merkkijonoesitys vertailtavasta.
  ******************************************************************/
 
  public void setFirstComparable(String comparable)
@@ -157,7 +157,9 @@ public class TTK91TaskCriteria{
      String cleanedString = cleanString(comparable);
 
      if(cleanedString == null || cleanedString.length() == 0) {
-	 throw new InvalidTTK91CriteriaException("Invalid comparator");
+
+	  throw new InvalidTTK91CriteriaException("Invalid comparator");
+
      }//if
 
   this.firstComparable = comparable;
@@ -169,7 +171,7 @@ public class TTK91TaskCriteria{
  /******************************************************************
  * Asettaa oikeanpuoleisen vertailtavan. Heittää poikkeuksen jos
  * parametrina on null, tyhjä tai pelkkiä sulkuja sisältävä merkkijono.
- * @param comparable Merkkijonoesitys vertailtavasta. 
+ * @param comparable Merkkijonoesitys vertailtavasta.
  ******************************************************************/
 
 
@@ -179,7 +181,9 @@ public class TTK91TaskCriteria{
   String cleanedString = cleanString(comparable);
 
   if(cleanedString == null || cleanedString.length() == 0) {
+
       throw new InvalidTTK91CriteriaException("Invalid comparator");
+
   }//if
 
   this.secondComparable = comparable;
@@ -192,10 +196,12 @@ public class TTK91TaskCriteria{
  * Palauttaa kriteerin laadullisuusttypin.
  * @return true jos kriteeri on laadullinen, muuten false.
  ******************************************************************/
- 
+
  public boolean getQuality() {
+
 	 return this.quality;
- }
+
+ }//getQuality
 
 
 
@@ -206,10 +212,24 @@ public class TTK91TaskCriteria{
  ******************************************************************/
 
  public int getComparator() {
+
 	 return this.comparator;
- }
+
+ }//getComparator
+
+ /******************************************************************
+ * Palauttaa vertailuoperaattorin symbolin.
+ * @return Vertailuoperaattorin symboli String-oliona.
+ ******************************************************************/
 
 
+
+ public String getComparatorSymbol()
+	 throws InvalidTTK91CriteriaException {
+
+	 return comparatorSymbol();
+
+ }//getComparatorSymbol
 
  /******************************************************************
  * Palauttaa vasemmanpuoleisen vertailtavan.
@@ -217,8 +237,10 @@ public class TTK91TaskCriteria{
  ******************************************************************/
 
   public String getFirstComparable() {
+
 	 return this.firstComparable;
- }
+
+  }//getFirstComparable
 
 
 
@@ -228,8 +250,10 @@ public class TTK91TaskCriteria{
  ******************************************************************/
 
  public String getSecondComparable() {
+
 	 return this.firstComparable;
- }
+
+ }//getSecondComparable
 
 
 
@@ -358,7 +382,7 @@ public class TTK91TaskCriteria{
 
  }//parseIncomparableCriteria
 
-  
+
 
  private String cleanString(String dirty) {
 
@@ -367,9 +391,9 @@ public class TTK91TaskCriteria{
   dirty = dirty.replaceAll("\\(", "");
   dirty = dirty.replaceAll("\\)", "");
   dirty = dirty.replaceAll(";", "");
-  
+
   clean = dirty;
-  
+
   return clean;
 
  }//cleanString
@@ -404,7 +428,7 @@ public class TTK91TaskCriteria{
    setComparator(this.LESS);
    return;
   }//if
- 
+
   parameters = cleanCriteria.split(">=");
   if(parameters.length == 2) {
    setFirstComparable(parameters[0]);
