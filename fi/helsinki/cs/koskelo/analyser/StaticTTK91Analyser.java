@@ -11,6 +11,7 @@ import fi.hu.cs.titokone.Source;
 import fi.hu.cs.titokone.Control;
 import fi.hu.cs.titokone.Processor;
 import fi.hu.cs.titokone.RandomAccessMemory;
+import fi.hu.cs.titokone.MemoryLine;
 
 import fi.hy.eassari.showtask.trainer.Feedback;
 import fi.hy.eassari.showtask.trainer.ParameterString;
@@ -40,40 +41,39 @@ import java.util.HashMap;
 
 public class StaticTTK91Analyser extends CommonAnalyser {
 
-  private AttributeCache cache; // k‰yt‰nnˆss‰ ilmeisesti TaskBase?
-  private String taskID;
-  private String language;
-  private ParameterString initP;
-  // k‰yt‰nnˆn toteutus Control.java
-  private TTK91Core controlCompiler;           // k‰‰nt‰j‰ -> saadaan mahdolliset k‰‰nnˆsvirheet n‰timmin (kunhan ajetaan malli ensin... 
-  // Jos se ei k‰‰nny, ei varmaan ole tarvetta k‰‰nt‰‰ opiskelijankaan ratkaisua...
-  private TTK91Core controlPublicInputStudent; // publicinputeilla tai ilman unputteja opiskelijan vastaus
-  private TTK91Core controlPublicInputTeacher; // publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
-  private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
-  private TTK91Core controlHiddenInputTeacher; // hiddeninputeilla jos ovat m‰‰ritelty malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
-  private TTK91TaskOptions taskOptions;        // taskoptions
-  private TTK91Application studentApplication; // opiskelijan vastaus
-  private TTK91Application teacherApplication; // malliratkaisu
-  private TTK91AnalyseResults results; //Uusi luokka.
-  private TTK91FeedbackComposer fbcomposer;
-  private Feedback feedback;
+    private AttributeCache cache; // k‰yt‰nnˆss‰ ilmeisesti TaskBase?
+    private String taskID;
+    private String language;
+    private ParameterString initP;
+    // k‰yt‰nnˆn toteutus Control.java
+    private TTK91Core controlCompiler;           // k‰‰nt‰j‰ -> saadaan mahdolliset k‰‰nnˆsvirheet n‰timmin (kunhan ajetaan malli ensin... 
+    // Jos se ei k‰‰nny, ei varmaan ole tarvetta k‰‰nt‰‰ opiskelijankaan ratkaisua...
+    private TTK91Core controlPublicInputStudent; // publicinputeilla tai ilman unputteja opiskelijan vastaus
+    private TTK91Core controlPublicInputTeacher; // publicinputeilla tai ilman inputteja malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+    private TTK91Core controlHiddenInputStudent; // hiddeninputeilla jos ovat m‰‰ritelty opiskelijan vastaus
+    private TTK91Core controlHiddenInputTeacher; // hiddeninputeilla jos ovat m‰‰ritelty malliratkaisu jos vertailu on m‰‰ritelty simuloitavaksi
+    private TTK91TaskOptions taskOptions;        // taskoptions
+    private TTK91Application studentApplication; // opiskelijan vastaus
+    private TTK91Application teacherApplication; // malliratkaisu
+    private TTK91AnalyseResults results; //Uusi luokka.
+    private TTK91FeedbackComposer fbcomposer;
+    private Feedback feedback;
 
-  /**
-   * Konstruktori, joka luo uuden alustamattoman
-   * StaticTTK91Analyserin, alustettava init-metodilla.
-   *
-   */
-
-  public StaticTTK91Analyser() {
-    this.cache = null;
-    this.taskID = null;
-    this.language = "FI";
-    this.initP = null;
-    //	this.control = null;  // ei tarvittane en‰‰
-    this.results = null;
-    this.fbcomposer = new TTK91FeedbackComposer();
-    this.feedback = null;
-  } // StaticTTK91Analyser()
+    /**
+     * Konstruktori, joka luo uuden alustamattoman
+     * StaticTTK91Analyserin, alustettava init-metodilla.
+     *
+     */
+    public StaticTTK91Analyser() {
+	this.cache = null;
+	this.taskID = null;
+	this.language = "FI";
+	this.initP = null;
+	//	this.control = null;  // ei tarvittane en‰‰
+	this.results = null;
+	this.fbcomposer = new TTK91FeedbackComposer();
+	this.feedback = null;
+    } // StaticTTK91Analyser()
 
 
     /**
@@ -82,14 +82,13 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param language kielikoodi
      * @param initparams FIXME: kuvaus
      */
-
-  public void init(String taskid, String language, String initparams) {
-    this.taskID = taskid;
-    this.language = language;
-    this.initP = new ParameterString(initparams);
-    //	this.control = new Control(null, null); // ei tarvittane en‰‰
-    this.results = new TTK91AnalyseResults(); //Oletuksena kaikki tulokset false
-  } // init
+    public void init(String taskid, String language, String initparams) {
+	this.taskID = taskid;
+	this.language = language;
+	this.initP = new ParameterString(initparams);
+	//	this.control = new Control(null, null); // ei tarvittane en‰‰
+	this.results = new TTK91AnalyseResults(); //Oletuksena kaikki tulokset false
+    } // init
 
 
     /**
@@ -98,60 +97,59 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param params 
      * @return palaute
      */
+    public Feedback analyse(String[] answer, String params) { // FIXME:
+	// varsinainen
+	// toiminnallisuus
+	// kesken
 
-  public Feedback analyse(String[] answer, String params) { // FIXME:
-    // varsinainen
-    // toiminnallisuus
-    // kesken
+	getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu 
+	// FIXME: v‰‰r‰ parametri
+	getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
+	getTTK91TaskOptions();
 
-    getTeacherApplication(answer); // k‰‰nnet‰‰n mahdollinen malliratkaisu 
-    // FIXME: v‰‰r‰ parametri
-    getStudentApplication(answer); // k‰‰nnet‰‰n opiskelijan ratkaisu
-    getTTK91TaskOptions();
-
-    boolean runnedOK = false;
-    runnedOK = run(); // varsinainen ratkaisu(je)n simulointi
-    if (!runnedOK) { // jos true, ajo(t) meniv‰t ok -> jatketaan. Virheist‰ generoidaan palaute ja lopetetaan.
+	boolean runnedOK = false;
+	runnedOK = run(); // varsinainen ratkaisu(je)n simulointi
+	if (!runnedOK) { // jos true, ajo(t) meniv‰t ok -> jatketaan. Virheist‰ generoidaan palaute ja lopetetaan.
 	    return feedback;
-    }
+	}
 
-    //Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
+	//Seuraavat metodit asettavat TTK91AnalyseResultsiin tulokset
 
-    generalAnalysis(answer); // "valmis"
+	generalAnalysis(answer); // "valmis"
 
-    //analyseMemory() Lauri
-    //analyseRegisters()
-    //analyseOutput()
+	analyseMemory(); // Lauri "valmis" ?
+	//analyseRegisters()
+	//analyseOutput()
     
-    //Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
+	//Aseta statistiikat resultsiin TKK91Memorysta ja CPU:sta
     
-    try {
+	try {
 	    feedback = 
-        TTK91FeedbackComposer.formFeedback(results, 
-                                           taskOptions.getTaskFeedback(), 
-                                           cache, 
-                                           taskID, 
-                                           language);
-    }
-    catch (CacheException e) {
+		TTK91FeedbackComposer.formFeedback(results, 
+						   taskOptions.getTaskFeedback(), 
+						   cache, 
+						   taskID, 
+						   language);
+	}
+	catch (CacheException e) {
 	    feedback = 
-        TTK91FeedbackComposer.formFeedback("Error while retrieving "+
-                                           "error message :( "+
-                                           e.getMessage() );
-    }
+		TTK91FeedbackComposer.formFeedback("Error while retrieving "+
+						   "error message :( "+
+						   e.getMessage() );
+	}
     
-    return feedback;
+	return feedback;
 
-  } // analyse
+    } // analyse
 
     /**
      * Ilmoitetaan StaticTTK91Analyserille tietokanta-cache. 
      * @param AttributeCache
      */
 
-  public void registerCache(AttributeCache c) {
-    this.cache = c;
-  } // registerCache
+    public void registerCache(AttributeCache c) {
+	this.cache = c;
+    } // registerCache
 
 
     /**
@@ -159,145 +157,148 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param answer
      */
 
-  private void getStudentApplication(String[] answer) {
+    private void getStudentApplication(String[] answer) {
 
-    TTK91CompileSource src = parseSourceFromAnswer(answer);
+	TTK91CompileSource src = parseSourceFromAnswer(answer);
 
-    if (src == null) {
+	if (src == null) {
 	    // return new Feedback(); 
 	    // FIXME: oikeanlainen palaute kun sorsa
 	    // ei suostu menem‰‰n edes
 	    // TTK91CompileSource-muotoon - voiko
 	    // n‰in edes k‰yd‰?
-    }//if
+	}//if
 
 
-    TTK91Application app = null;
+	TTK91Application app = null;
 
-    try {
+	try {
 	    controlCompiler.compile(src);
-    } catch (TTK91Exception e) {
+	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
 	    //	    // FIXME: oikeanlainen palaute, kun
 	    // k‰‰nnˆs ep‰onnistuu
-    }//catch
+	}//catch
 
-    this.studentApplication = app;
+	this.studentApplication = app;
 
-  }//getStudentApplication
-
-
-  /**
-   * Apumetodi, jolla kaivetaan malliratkaisun l‰hdekoodi vastauksesta
-   * ja k‰‰nnet‰‰n siit‰ TTK91Application
-   * @param answer
-   */
-
-  private void getTeacherApplication(String[] answer) {
+    }//getStudentApplication
 
 
-    TTK91CompileSource src = parseSourceFromAnswer(answer);
+    /**
+     * Apumetodi, jolla kaivetaan malliratkaisun l‰hdekoodi vastauksesta
+     * ja k‰‰nnet‰‰n siit‰ TTK91Application
+     * @param answer
+     */
 
-    if (src == null) {
+    private void getTeacherApplication(String[] answer) {
+
+
+	TTK91CompileSource src = parseSourceFromAnswer(answer);
+
+	if (src == null) {
 	    //	    return new Feedback(); 
 	    // FIXME: oikeanlainen palaute kun sorsa
 	    // ei suostu menem‰‰n edes
 	    // TTK91CompileSource-muotoon - voiko
 	    // n‰in edes k‰yd‰?
-    }//if
+	}//if
 
-    TTK91Application app = null;
+	TTK91Application app = null;
 
-    try {
+	try {
 	    controlCompiler.compile(src);
-    } catch (TTK91Exception e) {
+	} catch (TTK91Exception e) {
 	    //	    return new Feedback(); 
 	    //	    // FIXME: oikeanlainen palaute, kun
 	    // k‰‰nnˆs ep‰onnistuu
-    }//catch
+	}//catch
 
-    this.teacherApplication = app;
+	this.teacherApplication = app;
 
-  }//getTTK91Application
+    }//getTTK91Application
 
-  /**
-   * Apumetodi, joka suorittaa varsinaisen l‰hdekoodin kaivamisen
-   * vastauksesta
-   * @param answer
-   */
+    /**
+     * Apumetodi, joka suorittaa varsinaisen l‰hdekoodin kaivamisen
+     * vastauksesta
+     * @param answer
+     */
 
-  private void TTK91CompileSource parseSourceFromAnswer(String[] answer) {
-    if (answer != null) {
+    private TTK91CompileSource parseSourceFromAnswer(String[] answer) {
+	if (answer != null) {
 	    String ans = answer[0];
 	    ans = ans + "\n SVC SP, =HALT;";
 	    return (TTK91CompileSource) new Source(answer[0]);
 	    // FIXME: toimiiko tosiaan n‰in helposti?
-    }
-    else {
+	}
+	else {
 	    return null;
-    }
-  } // parseSourceFromAnswer
+	}
+    } // parseSourceFromAnswer
 
-  private void getTTK91TaskOptions() {
+    private void getTTK91TaskOptions() {
 
-    //TOMPPA
-    //this.taskOptions = blah;
+	//TOMPPA
+	//this.taskOptions = blah;
 
-  }//TTK91TaskOptions
+    }//TTK91TaskOptions
 
-  private boolean run() { // false jos virheit‰, true muuten
-
-    int[] publicInputTable = taskOptions.getPublicInput();
-    int[] hiddenInputTable = taskOptions.getHiddenInput();
-
-    String publicInput = null; 
-    String hiddenInput = null;
-
-    int steps = taskOptions.getMaxCommands();
-    int compareMethod = taskOptions.getCompareMethod();
-
-    /* Koska titokoneesta metodilla .getCPU() saadaan
-     * vain viite controlin sis‰iseen prosessiin k‰ytet‰‰n
-     * yhteens‰ maksissaan nelj‰‰ controlia, kuitenkin
-     * siten, ett‰ kullekin simulointikierrokselle
-     * luodaan oma controlinsa.
+    /**
+     * Apumetodi, suorittaa varsinaiset Titokone-simulaatiot
      */
-    if(publicInputTable != null) {
+    private boolean run() { // false jos virheit‰, true muuten
+
+	int[] publicInputTable = taskOptions.getPublicInput();
+	int[] hiddenInputTable = taskOptions.getHiddenInput();
+
+	String publicInput = null; 
+	String hiddenInput = null;
+
+	int steps = taskOptions.getMaxCommands();
+	int compareMethod = taskOptions.getCompareMethod();
+
+	/* Koska titokoneesta metodilla .getCPU() saadaan
+	 * vain viite controlin sis‰iseen prosessiin k‰ytet‰‰n
+	 * yhteens‰ maksissaan nelj‰‰ controlia, kuitenkin
+	 * siten, ett‰ kullekin simulointikierrokselle
+	 * luodaan oma controlinsa.
+	 */
+	if(publicInputTable != null) {
 
 	    publicInput = parseInputString(publicInputTable);
 	    this.studentApplication.setKbd(publicInput);
 
 	    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
-        this.teacherApplication.setKbd(publicInput);
+		this.teacherApplication.setKbd(publicInput);
 	    }
-    }
+	}
 
-    this.controlPublicInputStudent = new Control(null, null);
+	this.controlPublicInputStudent = new Control(null, null);
 
-    try {
+	try {
 	    this.controlPublicInputStudent.run(this.studentApplication, steps);
 	    // 1. simulointi
-    }
-    catch (TTK91Exception e) {
+	}
+	catch (TTK91Exception e) {
 	    feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
 	    return false;
-    }
+	}
 
-    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
+	if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
 	    // 1. simulointi malliratkaisua
 	    this.controlPublicInputTeacher = new Control(null, null);
 	    try {
-        this.controlPublicInputTeacher.run(this.teacherApplication, steps);
+		this.controlPublicInputTeacher.run(this.teacherApplication, steps);
 	    }
 	    catch (TTK91Exception e) {
-        feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
-                                                      e.getMessage());
-        return false;
+		feedback = TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
+							      e.getMessage());
+		return false;
 	    }
-    }
+	}
 
 
-    if (hiddenInputTable != null) {
+	if (hiddenInputTable != null) {
 	    // mahdollinen 2. simulointi opiskelijan ratkaisusta
 	    hiddenInput = parseInputString(hiddenInputTable);
 
@@ -305,85 +306,84 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    this.studentApplication.setKbd(hiddenInput);
 
 	    try {
-        this.controlHiddenInputStudent.run(this.studentApplication, steps);
+		this.controlHiddenInputStudent.run(this.studentApplication, steps);
 	    }
 	    catch (TTK91Exception e) {
-        feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
-        return false;
+		feedback = TTK91FeedbackComposer.formFeedback(e.getMessage());
+		return false;
 	    }
 
 	    if(compareMethod == taskOptions.COMPARE_TO_SIMULATED) {
-        // simuloidaa malliratkaisu
-        // 2. simulointi malliratkaisua
+		// simuloidaa malliratkaisu
+		// 2. simulointi malliratkaisua
 
-        this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput m‰‰ritelty --> "optimointia"
-        this.teacherApplication.setKbd(hiddenInput);
-        try {
-          this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
-        }
-        catch (TTK91Exception e) {
-          feedback = 
-            TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
-                                               e.getMessage());
-          return false;
-        }
+		this.controlHiddenInputTeacher = new Control(null, null); // luodaan control vain jos hiddeninput m‰‰ritelty --> "optimointia"
+		this.teacherApplication.setKbd(hiddenInput);
+		try {
+		    this.controlHiddenInputTeacher.run(this.teacherApplication, steps);
+		}
+		catch (TTK91Exception e) {
+		    feedback = 
+			TTK91FeedbackComposer.formFeedback("Virhe malliratkaisussa: "+
+							   e.getMessage());
+		    return false;
+		}
 	    }
-    } 
+	} 
 	
-    return true;
+	return true;
 
-  }//run
+    }//run
 
-  /**
-   * Yksityinen apumetodi, joka suorittaa yleisanalyysin.
-   * - konek‰skyjen maksimim‰‰r‰ (oikeellisuus)
-   * - konek‰skyjen ihannem‰‰r‰  (laatu)
-   * - muistiviitteiden m‰‰r‰
-   * - vaaditut k‰skyt
-   * - kielletyt k‰skyt
-   */
+    /**
+     * Yksityinen apumetodi, joka suorittaa yleisanalyysin.
+     * - konek‰skyjen maksimim‰‰r‰ (oikeellisuus)
+     * - konek‰skyjen ihannem‰‰r‰  (laatu)
+     * - muistiviitteiden m‰‰r‰
+     * - vaaditut k‰skyt
+     * - kielletyt k‰skyt
+     */
+    private void generalAnalysis(String[] answer) { // Laurin heini‰ - "valmis"
 
-  private void generalAnalysis(String[] answer) { // Laurin heini‰ - "valmis"
-
-    //  -Suoritettujen konek‰skyjen m‰‰r‰ (oikeellisuus)
-    TTK91Cpu cpu = controlPublicInputStudent.getCpu();
-    int size = ((Processor)cpu).giveCommAmount(); // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
-    int sizeLimit = taskOptions.getMaxCommands();
-    results.setAcceptedSize(size <= sizeLimit);
-
-
-    //	  -Ihannekoko (laatu)
-    results.setOptimalSize(size <= taskOptions.getOptimalSize());
+	//  -Suoritettujen konek‰skyjen m‰‰r‰ (oikeellisuus)
+	TTK91Cpu cpu = controlPublicInputStudent.getCpu();
+	int size = ((Processor)cpu).giveCommAmount(); // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
+	int sizeLimit = taskOptions.getMaxCommands();
+	results.setAcceptedSize(size <= sizeLimit);
 
 
-    //	  -Muistiviitteiden m‰‰r‰
-    TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
-    if (memRefCriteria == null) {
-	results.setRequiredCommands(true);
-	results.setForbiddenCommands(true);
-    } // if
-    else {
-	TTK91Memory mem = controlPublicInputStudent.getMemory();
-	int memrefs = ((RandomAccessMemory)mem).getMemoryReferences();  // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
-	boolean memrefsok = 
-	    checkMemRefCriteria(memrefs, 
-				memRefCriteria.getComparator(),
-				memRefCriteria.getSecondComparable());
-	results.setMemoryReferences(memrefsok);
+	//	  -Ihannekoko (laatu)
+	results.setOptimalSize(size <= taskOptions.getOptimalSize());
+
+
+	//	  -Muistiviitteiden m‰‰r‰
+	TTK91TaskCriteria memRefCriteria = taskOptions.getMemRefCriteria();
+	if (memRefCriteria == null) {
+	    results.setRequiredCommands(true);
+	    results.setForbiddenCommands(true);
+	} // if
+	else {
+	    TTK91Memory mem = controlPublicInputStudent.getMemory();
+	    int memrefs = ((RandomAccessMemory)mem).getMemoryReferences();  // FIXME: UGLY hack (rajapintaongelma, IMO [LL])
+	    boolean memrefsok = 
+		checkMemRefCriteria(memrefs, 
+				    memRefCriteria.getComparator(),
+				    memRefCriteria.getSecondComparable());
+	    results.setMemoryReferences(memrefsok);
 	
-	//      -Vaaditut k‰skyt
-	boolean requiredCommandFound = 
-	    isCommandFound(answer, taskOptions.getRequiredCommands());
+	    //      -Vaaditut k‰skyt
+	    boolean requiredCommandFound = 
+		isCommandFound(answer, taskOptions.getRequiredCommands());
 	
-	results.setRequiredCommands(requiredCommandFound);
+	    results.setRequiredCommands(requiredCommandFound);
 	
-	//      -Kielletyt k‰skyt
-	boolean forbiddenCommandFound = 
-	    isCommandFound(answer, taskOptions.getForbiddenCommands());
+	    //      -Kielletyt k‰skyt
+	    boolean forbiddenCommandFound = 
+		isCommandFound(answer, taskOptions.getForbiddenCommands());
 	
-	results.setForbiddenCommands(!forbiddenCommandFound);
-    } // else
-  }//generalAnalysis
+	    results.setForbiddenCommands(!forbiddenCommandFound);
+	} // else
+    }//generalAnalysis
 
     /**
      * Tutkitaan muistipaikkojen ja muuttujien sis‰ltˆˆn liittyv‰t
@@ -403,7 +403,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 	    RandomAccessMemory mem = 
 		(RandomAccessMemory) controlPublicInputStudent.getMemory();
 	    HashMap symboltable = mem.getSymbolTable();
-	    int[] memlines = mem.getMemory();
+	    MemoryLine[] memlines = mem.getMemoryLines();
 	    
 	    boolean critvalue = true;
 	    boolean qualitycritvalue = true;
@@ -422,7 +422,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 		int memvalue = -1;
 		try {
 		    memvalue = 
-			Integer.parseInt(memcrits.getSecondComparable());
+			Integer.parseInt(memcrits[i].getSecondComparable());
 		} // try
 		catch (NumberFormatException e) {
 		    // rikkin‰inen kriteeri - ei pit‰isi tapahtua
@@ -431,7 +431,7 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 					 "Broken criteria, String to int "+
 					 "conversion failed");
 		} // catch
-		int comparator = memcrits.getComparatorSymbol();
+		int comparator = memcrits[i].getComparator();
 		if (isqualitycrit) {
 		    qualitycritvalue = 
 			checkMemoryCriteria(memlines, 
@@ -455,101 +455,83 @@ public class StaticTTK91Analyser extends CommonAnalyser {
 
 	} // else
 	
-  } //analyseMemory
+    } //analyseMemory
 
-  private void analyseRegisters() {
+    private void analyseRegisters() {
 
-    //REKISTERIT
+	//REKISTERIT
 
-    //results.setBLAAH(boolean)
-  } //analyseRegisters
+	//results.setBLAAH(boolean)
+    } //analyseRegisters
 
-  private void analyseOutput() {
+    private void analyseOutput() {
 
-    //TULOSTEET SAI JOLLAIN TITOKONEEN METODILLA, 
-    //EN NYT MUISTA MIKƒ TAI MISTƒ [HT]
-    //getCrt() [EN]
-    //NƒYT÷N TULOSTEET
-    //TIEDOSTON TULOSTEET
+	//TULOSTEET SAI JOLLAIN TITOKONEEN METODILLA, 
+	//EN NYT MUISTA MIKƒ TAI MISTƒ [HT]
+	//getCrt() [EN]
+	//NƒYT÷N TULOSTEET
+	//TIEDOSTON TULOSTEET
 
-    //results.setBLAAH(boolean)
-  }//analyseOutput
+	//results.setBLAAH(boolean)
+    }//analyseOutput
 
-  /** Tehd‰‰n int[]-taulukosta merkkijono 1,2,3,4. T‰m‰ siksi,
-   * koska titokoneen setKbd ei osaa lukea int[]-taulua.
-   */
-  private String parseInputString(int[] inputTable) {
+    /** Tehd‰‰n int[]-taulukosta merkkijono 1,2,3,4. T‰m‰ siksi,
+     * koska titokoneen setKbd ei osaa lukea int[]-taulua.
+     */
+    private String parseInputString(int[] inputTable) {
 
-    String input = "";
+	String input = "";
 
-    for(int i = 0; i < inputTable.length; i++) {
+	for(int i = 0; i < inputTable.length; i++) {
 	    input = input + inputTable[i];
+	}
+
+	return input;
     }
 
-    return input;
-  }
 
-  /**
-   * Tarkistaa muistiviitekriteerin
-   * @param memrefs
-   * @param comparator
-   * @param secondcomparable
-   */
-  private boolean checkMemRefCriteria(int memrefs, int comparator, String secondcomparable) {
-    boolean ret = false;
-    int checkAgainstMe = -1;
-    try {
+    /**
+     * Tarkistaa muistiviitekriteerin
+     * @param memrefs
+     * @param comparator
+     * @param secondcomparable
+     */
+    private boolean checkMemRefCriteria(int memrefs, int comparator, String secondcomparable) {
+	boolean ret = false;
+	int checkAgainstMe = -1;
+	try {
 	    checkAgainstMe = Integer.parseInt(secondcomparable);
-    }
-    catch (NumberFormatException e) {
+	}
+	catch (NumberFormatException e) {
 	    // rikkin‰inen kriteeri - ei pit‰isi tapahtua
 	    throw new RuntimeException("TTK91Analyser.checkMemRefCriteria(): Broken criteria, String to int conversion failed");
-    }
-    switch (comparator) { 
-	    
-    case TTK91Constant.LESS:
-      ret = (memrefs < checkAgainstMe);
-      break;
-    case TTK91Constant.LESSEQ:
-      ret = (memrefs <= checkAgainstMe);
-      break;
-    case TTK91Constant.GREATER: 
-      ret = (memrefs > checkAgainstMe);
-      break;
-    case TTK91Constant.GREATEREQ: 
-      ret = (memrefs >= checkAgainstMe);
-      break;
-    case TTK91Constant.EQUAL: 
-      ret = (memrefs == checkAgainstMe);
-      break;
-    case TTK91Constant.NOTEQUAL: 
-      ret = (memrefs != checkAgainstMe);
-      break;
-    default:
-      // tanne ei pitaisi paasta koskaan
-    }
-    return ret;
-  } // checkMemRefCriteria
-
-  /**
-   * Tarkistaa lˆytyykˆ vastauksesta toisen parametrin osoittamia k‰skyj‰
-   * @param answer
-   * @param cmds
-   */
-  private boolean isCommandFound(String[] answer, String[] cmds) {
-    if ((answer != null) && (answer[0] != null) && (cmds != null)) {
-      String src = answer[0].toLowerCase();
-      for (int i=0; i < cmds.length; ++i) {
-        String pat = "\\s"+cmds[0].toLowerCase()+"\\s";
-        if ( Pattern.matches(pat, src) ) {
-          // sis‰lt‰‰kˆ src merkkijonoa "whitespace+komento+whitespace" ?
-          return true;
-        }
-      }
-    }
-    return false;
-  } // isCommandFound
-
+	}
+	
+	ret = compare(memrefs, comparator, checkAgainstMe);
+	
+	return ret;
+    } // checkMemRefCriteria
+    
+    
+    /**
+     * Tarkistaa lˆytyykˆ vastauksesta toisen parametrin osoittamia k‰skyj‰
+     * @param answer
+     * @param cmds
+     */
+    private boolean isCommandFound(String[] answer, String[] cmds) {
+	if ((answer != null) && (answer[0] != null) && (cmds != null)) {
+	    String src = answer[0].toLowerCase();
+	    for (int i=0; i < cmds.length; ++i) {
+		String pat = "\\s"+cmds[0].toLowerCase()+"\\s";
+		if ( Pattern.matches(pat, src) ) {
+		    // sis‰lt‰‰kˆ src merkkijonoa "whitespace+komento+whitespace" ?
+		    return true;
+		}
+	    }
+	}
+	return false;
+    } // isCommandFound
+    
     /**
      * Apumetodi muistipaikkaan tai muuttujaan liittyvan kriteerin
      * tarkastamiseen
@@ -559,14 +541,69 @@ public class StaticTTK91Analyser extends CommonAnalyser {
      * @param comparator
      * @param memvalue
      */
-    private boolean checkMemoryCriteria(int[] memlines, 
+    private boolean checkMemoryCriteria(MemoryLine[] memlines, 
 					HashMap symboltable, 
 					String memsymbol, 
 					int comparator, 
 					int memvalue) {
-	
-	
 
+	int index = -1;
+	MemoryLine memline = null;
+	Integer indexI = (Integer) symboltable.get(memsymbol);
+	
+	if (indexI != null) {
+	    index = indexI.intValue();
+	    if ( (index >= 0) && (index < memlines.length) ) {
+		memline = memlines[index];
+	    }
+	}
+	else {
+	    // avaimella 'memsymbol' ei lˆytynyt alkiota symbolitaulusta FIXME: k‰sittele
+	}
+	
+	int memlinevalue = memline.getBinary();
+
+	return compare(memlinevalue, comparator, memvalue);
     } // checkMemoryCriteria
 
+
+    /**
+     * Apumetodi, palauttaa first <op> second, miss‰ <op> sis‰lt‰‰
+     * normaalit aritmeettiset vertailuoperaatiot
+     * @param first - ensimm‰inen vertailtava
+     * @param comparator - vertailuoperaattori, m‰‰ritykset TTK91Constant-luokassa
+     * @param second - toinen vertailtava
+     */
+    private boolean compare(int first, int comparator, int second) {
+	
+	boolean ret = false;
+	
+	switch (comparator) { 
+	    
+	case TTK91Constant.LESS:
+	    ret = (first < second);
+	    break;
+	case TTK91Constant.LESSEQ:
+	    ret = (first <= second);
+	    break;
+	case TTK91Constant.GREATER: 
+	    ret = (first > second);
+	    break;
+	case TTK91Constant.GREATEREQ: 
+	    ret = (first >= second);
+	    break;
+	case TTK91Constant.EQUAL: 
+	    ret = (first == second);
+	    break;
+	case TTK91Constant.NOTEQUAL: 
+	    ret = (first != second);
+	    break;
+	default:
+	    // tanne ei pitaisi paasta koskaan
+	}
+	
+	return ret;
+	
+    } // compare
+    
 } // StaticTTK91Analyser
