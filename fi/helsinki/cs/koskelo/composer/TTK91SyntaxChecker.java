@@ -23,27 +23,46 @@ public class TTK91SyntaxChecker extends HttpServlet {
 	private boolean editTask = false;
 	private boolean fillIn = false;
 
-        //FIXME: PASKAA KOODIA
+	// FIXME näikö?
+	private ServletConfig config;
+	//FIXME: PASKAA KOODIA
 	public void init (ServletConfig config) throws ServletException  {
-	   super.init(config);
-	   if (cache == null) {
-		 // Only created by first servlet to call
-		 String conFile = config.getServletContext().getInitParameter("confile");
-		 conFile = config.getServletContext().getRealPath(conFile);
-		 	 
-		 try {
-			Properties p = new Properties();
-			p.load(new FileInputStream(conFile));
-			String dbDriver   = (String) p.get("dbDriver");
-			String dbServer   = (String) p.get("dbServer");
-			String dbUser     = (String) p.get("dbUser");
-			String dbPassword = (String) p.get("dbPassword");
-						
-			cache = new TaskBase(dbDriver,dbServer,dbUser,dbPassword);
-		 } catch (Exception e) {
-			 throw new ServletException("Problems with configuration file " + conFile + ": " + e.getMessage());
-		 }//catch
-	   }//if
+		
+		this.config = config;   
+		super.init(this.config);
+		
+		if (cache == null) {
+			// Only created by first servlet to call
+			String conFile = this.config
+				.getServletContext()
+				.getInitParameter("confile");
+			conFile = this.config
+				.getServletContext()
+				.getRealPath(conFile);
+
+			try {
+				Properties p = new Properties();
+				p.load(new FileInputStream(conFile));
+				String dbDriver   = (String)p.get("dbDriver");
+				String dbServer   = (String)p.get("dbServer");
+				String dbUser     = (String)p.get("dbUser");
+				String dbPassword = (String)p.get("dbPassword");
+
+				cache = new TaskBase(
+						dbDriver,
+						dbServer,
+						dbUser,
+						dbPassword
+						);
+			} catch (Exception e) {
+				throw new ServletException(
+						"Problems with configuration"+
+						" file " + 
+						conFile + 
+						": " + 
+						e.getMessage());
+			}//catch
+		}//if
 	}//init
 
 	/** Kutsuu doPostia parametreillaan. Yhteensopivuuden vuoksi.
@@ -72,15 +91,6 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.req = req;
 		this.res = res;
-
-		/*FIXME
-		this.cache = (TaskBase) this.req.getAttribute(
-				"fi.hy.eassari.showtask.trainer.TaskBase"
-				);
-		*/
-
-		String conFile = config.getServletContext().getInitParameter("confile");
-		conFile = config.getServletContext().getRealPath(conFile);
 
 		String exampleCode; //TODO tarkista koodin kääntyminen
 		String taskDescription; // tarviiko tarkistaa?
@@ -184,11 +194,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.session = this.req.getSession(false);
 
-		//FIXME: res.sendRedirect("http://www.helsinki.fi/cgi-bin/dump-all");
-		
 		if(this.session == null) { // Sessio vanhentunut
-		    req.getRequestDispatcher("/jsp/login.jsp").forward(req,res);
-		    return;
+			req.getRequestDispatcher(
+					"/jsp/login.jsp"
+					).forward(req,res);
+			return;
 		}//if
 
 		settings = (TeacherSession)
@@ -219,7 +229,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
 			fillIn = true;
 			// FIXME
-			staticResponse = "fillinaddress";
+			staticResponse = "/jsp/FillInTTK91Composer.jsp";
 		}
 
 		try {
@@ -234,8 +244,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			taskOptions.setMaxCommands(maxCommands);
 
 		} catch (Exception e) {
+			
 			returnError(this.staticResponse, "foo");
 			return;
+		
 		}// catch
 
 		try { // exampleCode
