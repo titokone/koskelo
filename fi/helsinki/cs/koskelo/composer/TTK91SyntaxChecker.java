@@ -535,6 +535,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 				memoryReferences = new TTK91TaskCriteria(
 						tmp
 						);
+
+				// tarkistetaam ett‰ vertailun oikea puoli on
+				// kokonaisluku. T‰st‰ lent‰‰ poikkeus, jos
+				// niin ei ole, joten p‰‰dyt‰‰n virheilmotukseen.
+				// Analyser olettaa ett‰ t‰m‰ tarkastus on tehty.
+				parsePostInt(memoryReferences.getSecondComparable());
+				
 				taskOptions.setMemRefCriteria(
 						memoryReferences
 						);
@@ -900,6 +907,10 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		
 		tmp = cleanString.split(";");
 
+		for( int i = 0; i < tmp.length; i++) {
+			tmp[i] = tmp[i]+";";
+		}
+		
 		return tmp;
 
 	}// validTTK91Commands
