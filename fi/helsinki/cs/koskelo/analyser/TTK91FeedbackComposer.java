@@ -131,7 +131,7 @@ public class TTK91FeedbackComposer{
 																										 correct.booleanValue()));
 		}//if
 
-		// Muistiin viittaukset
+		// Muistiin viittaukset, kriteeriin ei liity laadullista palautetta
 
 		correct = analyseResults.getMemoryReferences();
 		if (correct != null) {
@@ -146,12 +146,6 @@ public class TTK91FeedbackComposer{
 				feedback = taskFeedback.getMemoryReferencesFeedbackNegative();
 				evaluation = 0;
 			} 
-			// tutkitaan onko laadullinen kriteeri oikein
-			if ((analyseResults.getMemoryReferencesQuality()).booleanValue()){
-				quality = taskFeedback.getMemoryReferencesFeedbackQuality();
-			} else {
-				quality = "";
-			}
 		
 			feedbackTable.append(getHTMLElementFeedbackRow(criteriaHeader, feedback, 
 																										 quality, 
@@ -173,6 +167,7 @@ public class TTK91FeedbackComposer{
 				feedback = taskFeedback.getRequiredCommandsFeedbackNegative();
 				evaluation = 0;
 			} 
+			// tutkitaan onko laadullinen kriteeri oikein
 			if ((analyseResults.getRequiredCommandsQuality()).booleanValue()){
 				quality = taskFeedback.getRequiredCommandsFeedbackQuality();
 			} else {
