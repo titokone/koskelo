@@ -237,7 +237,6 @@ public class TTK91AnalyseData{
 
 		if (this.answer != null) {
 			String ans = this.answer;
-			ans = ans + "\n SVC SP, =HALT";
 			src = (TTK91CompileSource) new Source(ans);
 			// FIXME: toimiiko tosiaan näin helposti?
 		} else {
