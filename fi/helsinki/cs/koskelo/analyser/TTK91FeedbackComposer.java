@@ -494,7 +494,7 @@ public class TTK91FeedbackComposer{
 
 		// Virhekoodi 2 on fataalivirhe.
 
-		return new Feedback(TTK91Constant.FATAL_ERROR, errorMessage);
+		return new Feedback(TTK91Constant.ERROR, errorMessage);
 	}//formFeedback
 
 	/**
