@@ -7,6 +7,7 @@ import fi.helsinki.cs.koskelo.common.*;
 import fi.hy.eassari.taskdefinition.util.*;
 import fi.hy.eassari.taskdefinition.util.datastructures.*;
 import fi.hy.eassari.showtask.trainer.TaskBase;
+import fi.hy.eassari.showtask.trainer.*;
 
 public class TTK91SyntaxChecker extends HttpServlet {
 
@@ -183,7 +184,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		} else if(event == Events.FILLIN_TTK91_COMPOSE) {
 			fillIn = true;
 		// FIXME
-			response = "fillinaddress";
+			staticResponse = "fillinaddress";
 		}
 		
 		try {
@@ -209,7 +210,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 			if(validParam(reqExampleCode)){
 				exampleCode = reqExampleCode;
-				if(fillin) {
+				if(fillIn) {
 					fillInValidate(exampleCode);	
 				}
 			
@@ -394,8 +395,13 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		this.res.setContentType ("text/html");
 		ServletOutputStream out = this.res.getOutputStream();
+		try{
 		out.print(feedbackForm());
 
+		} catch (CacheException e) {
+			//FIXME
+			out.print("CacheException");
+		}
 
 	} // doPost
 
@@ -525,7 +531,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		return (s != null && !(s.trim()).equals(""));
 	}//validParam
 
-	private String feedbackForm() {
+	private String feedbackForm() throws CacheException{
 
 		String page = "<html>";
 
