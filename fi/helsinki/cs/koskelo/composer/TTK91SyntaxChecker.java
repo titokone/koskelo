@@ -151,7 +151,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// maxCommands ei voi olla null
 			// TODO konffattava oletusarvo
 
-			if(reqMaxCommands != null) {
+			if(validParam(reqMaxCommands)) {
 				maxCommands = parsePostInt(reqMaxCommands);
 			} else {
 				maxCommands = 10000;
@@ -170,7 +170,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen koodin syntaksin tarkistaminen
 			// TODO dynaamisen koodin vaatiminen
 
-		if(reqExampleCode != null){
+		if(validParam(reqExampleCode)){
 			exampleCode = reqExampleCode;
 			taskOptions.setExampleCode(exampleCode);
 			}
@@ -186,7 +186,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 			// TODO dynaamisen tehtävän syntaksin tarkistaminen
 			// TODO dynaamisen tehtävän vertailu mallikoodiin
 			
-		if(reqTaskDescription != null) {
+		if(validParam(reqTaskDescription)) {
 			taskDescription = reqTaskDescription;
 			taskOptions.setTaskDescription(taskDescription);
 
@@ -198,7 +198,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // publicInput
 
-			if(reqPublicInput != null) {
+			if(validParam(reqPublicInput)) {
 				publicInput = parseInputString(reqPublicInput);
 				taskOptions.setPublicInput(publicInput);
 			}
@@ -210,7 +210,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // hiddenInput
 
-			if(reqHiddenInput != null) {
+			if(validParam(reqHiddenInput)) {
 				hiddenInput = parseInputString(reqHiddenInput);
 				taskOptions.setHiddenInput(hiddenInput);
 			}
@@ -222,7 +222,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // compareMethod
 
-			if(reqCompareMethod != null) {
+			if(validParam(reqCompareMethod)) {
 				compareMethod = parsePostInt(reqCompareMethod);
 			}
 
@@ -233,7 +233,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 		}
 
 		try { //  acceptedSize
-			if(reqAcceptedSize != null) {
+			if(validParam(reqAcceptedSize)) {
 
 				acceptedSize = parsePostInt(reqAcceptedSize);
 				taskOptions.setAcceptedSize(acceptedSize);
@@ -246,7 +246,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 
 		try { // optimalSize
-			if(reqOptimalSize != null) {
+			if(validParam(reqOptimalSize)) {
 
 				optimalSize = parsePostInt(reqOptimalSize);
 				taskOptions.setOptimalSize(optimalSize);
@@ -259,7 +259,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // requiredCommands
 
-			if( reqRequiredCommands != null) {
+			if(validParam(reqRequiredCommands)) {
 
 				requiredCommands = validTTK91Commands(
 						reqRequiredCommands
@@ -276,7 +276,7 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 		try { // forbiddenCommands
 
-			if( reqForbiddenCommands != null) {
+			if(validParam(reqForbiddenCommands)) {
 
 				forbiddenCommands = validTTK91Commands(
 						reqForbiddenCommands
@@ -401,6 +401,11 @@ public class TTK91SyntaxChecker extends HttpServlet {
 
 	}// validTTK91Commands
 
+
+	private boolean validParam(String s){
+		return (s != null && !s.equals(""));
+	}
+	
 	private String feedbackForm() {
 
 		// TODO language!!
