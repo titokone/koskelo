@@ -533,5 +533,24 @@ public class TTK91AnalyseData{
 	}
 
 
+	boolean compareToHidden = this.taskData.compareToHidden();
+	boolean compareToStatic = (compareMethod == TTK91Constant.COMPARE_TO_STATIC);
+	int compareCase = -1;
+
+	if ( compareToStatic && compareToHidden ) {
+	    compareCase = TTK91Constant.COMPARE_TO_STATIC_HIDDEN;
+	}
+	else if ( compareToStatic && (!compareToHidden) ) {
+	    compareCase = TTK91Constant.COMPARE_TO_STATIC_PUBLIC;
+	}
+	else if ( (!compareToStatic) && compareToHidden ) {
+	    compareCase = TTK91Constant.COMPARE_TO_SIMULATED_HIDDEN;
+	}
+	else if ( (!compareToStatic) && (!compareToHidden) ) {
+	    compareCase = TTK91Constant.COMPARE_TO_SIMULATED_PUBLIC;
+	}
+
+
+
 
 }// class

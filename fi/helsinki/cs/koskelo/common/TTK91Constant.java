@@ -6,9 +6,16 @@ package fi.helsinki.cs.koskelo.common;
 
 public final class TTK91Constant {
 
-    // common.TTK91TaskOptions
-    public final static int COMPARE_TO_SIMULATED = 0; 
-    public final static int COMPARE_TO_STATIC = 1;
+    // common.TTK91TaskOptions/compareMethod:
+    public final static int COMPARE_TO_SIMULATED = 1; 
+    public final static int COMPARE_TO_STATIC = 0;
+    // analyser.TTK91RealAnalyser
+    public final static int COMPARE_TO_SIMULATED_PUBLIC = 3;
+    public final static int COMPARE_TO_SIMULATED_HIDDEN = 5;
+    public final static int COMPARE_TO_STATIC_PUBLIC = 7;
+    public final static int COMPARE_TO_STATIC_HIDDEN = 11;
+
+    // maksimissaan ajettavien k‰skyjen m‰‰r‰; "ikuisen silmukan esto"
     public final static int MAX_COMMANDS = 10000; 
 
     // common.TTK91TaskCriteria
