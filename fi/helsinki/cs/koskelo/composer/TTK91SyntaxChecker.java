@@ -341,12 +341,12 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 
 		res.setContentType ("text/html");
 		ServletOutputStream out = res.getOutputStream();
-		out.print(feedbackForm(req.getContextPath()));
+		out.print(feedbackForm());
 
 		
 	} // doPost
 
-	private String feedbackForm(String context) {
+	private String feedbackForm() {
 
 		// TODO language!!
 		
@@ -373,10 +373,10 @@ public class TTK91SyntaxChecker extends javax.servlet.HttpServlet{
 			   );
 
 		// form
+		// FIXME assuming eassari in ../eassari
 		page.concat(
 				"<form method=\"post\" action=\""+
-				context+
-				"/eassari/taskdefinition/TaskDefintionController"+
+				"../eassari/taskdefinition/TaskDefintionController"+
 				"\">\n"
 			   );
 
