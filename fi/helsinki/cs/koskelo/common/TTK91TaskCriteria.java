@@ -250,7 +250,7 @@ public class TTK91TaskCriteria{
 
  public String getSecondComparable() {
 
-	 return this.firstComparable;
+	 return this.secondComparable;
 
  }//getSecondComparable
 
