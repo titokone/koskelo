@@ -194,9 +194,18 @@ public final class TTK91AnalyserExtraUtils {
 
 	/** Tarkistaa staattisen muistikriteerin. Ottaa parametrina
 	 * kaikki mahdolliset tiedot opiskelijan suorituksen lopputilasta,
-	 * vaikka piilosyötteillä ei olisikaan simuloitu.
+	 * vaikka piilosyötteillä ei olisikaan simuloitu. Julkiset/syötteettömät
+	 * muisti ja symbolitaulu vertaillaan yhdessä kuten piilosyötteelliset.
 	 *
 	 * @param criteria Ei saa olla null
+	 * @param studentPublicSymbolTable Opiskelijan julkisten syötteiden
+	 * tai syötteetön symbolitaulu
+	 * @param studentHiddenSymbolTable Opiskelijan piilosyötteiden
+	 * symbolitaulu
+	 *
+	 * @param studentPublicMemoryLines Opiskelijan julkisten syötteiden
+	 * muisti tai syötteetön muisti
+	 * @param studentHiddenMemoryLines Opiskelijan piilosyötteiden muisti
 	 */
 
 	
@@ -231,8 +240,13 @@ public final class TTK91AnalyserExtraUtils {
 	 * suorituksen lopputilasta.
 	 *
 	 * @param criteria Vertailukriteeri, ei null
-	 * @param symboltable Vertailun avuksi symbolitaulu
-	 * @param memoryLines Vertailtava muisti
+	 * @param studentSymboltable Vertailun avuksi kriteerin vasemman puolen
+	 * symbolitaulu
+	 * @param teacherSymboltable Vertailun avuksi kriteerin oikean
+	 * puolen symbolitaulu
+	 * @param studentMemoryLines Vertailtava muisti, kriteerin vasen
+	 * puoli
+	 * @param teacherMemoryLines Vertailtava muisti, kriteerin oikea puoli
 	 */
 
 
@@ -365,7 +379,8 @@ public final class TTK91AnalyserExtraUtils {
 	 * TTK91Cpu:ta parametrinaan.
 	 *
 	 * @param criteria Ei saa olla null
-	 * @param studentCpu Ei saa olla null
+	 * @param studentCpu Ei saa olla null, kriteerin vasen puoli
+	 * @param compareCpu Ei saa olla null, kriteerin oikea puoli
 	 */
 	
 	public static boolean checkRegisterCriteria(
@@ -534,14 +549,6 @@ public final class TTK91AnalyserExtraUtils {
 		return false; // output ei voi olla oikea, jos sitä ei ole!
 	    }
 
-	    //	    System.err.println("crit == null: "+(crit==null));
-	    
-	    // FIXME: EEVA, onko korjaukseni järkevä? Aiemmin lensi
-	    // nullPointerExceptionia, jos output[] oli null...
-	    // Lisäksi pitäisi varmaan tarkastaa etukäteen, ettei
-	    // indeksoidan output-taulukkoa liian
-	    // pitkälle/negatiiviselle? Olenko yhtään jäljillä? [LL]
-
 	    try{
 		    slot = Integer.parseInt(crit.getFirstComparable());
 		    value = Integer.parseInt(crit.getSecondComparable());
@@ -551,10 +558,6 @@ public final class TTK91AnalyserExtraUtils {
 		    return false;
 	    }
 	    
-	    //	    System.err.println("output==null"+(output==null));
-	    //	    System.err.println("slot: "+slot);
-	    //	    System.err.println("value: "+value);
-
 	    if( slot >= output.length || slot < 0) {
 		    return false;
 	    }
@@ -572,6 +575,9 @@ public final class TTK91AnalyserExtraUtils {
      * kutsu on sama kuin checkOutputCriteria (crit, output)
      *
      * @param crit ei saa olla null
+     * @param output kriteerin vasen puoli
+     * @param compareOutput kriteerin oikea puoli, jos null, oletetaan
+     * staattiseksi vertailuksi
      */
     
     public static boolean checkOutputCriteria(
