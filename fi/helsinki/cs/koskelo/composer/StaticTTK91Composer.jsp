@@ -60,7 +60,7 @@ task = (TaskDTO)
 
 <html>
 <head>
-<title>Täydennystehtävän määrittely</title>
+<title>Ohjelmointitehtävän määrittely</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
@@ -187,7 +187,7 @@ task = (TaskDTO)
   <p>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "maxCommandsHeader", lang)%>
-   <input type="text" name="maxCommands" size="10" maxlength="4"
+   <input type="text" name="maxCommands" size="10"
     value="<%
 
      if(syntaxError == true) {
@@ -207,7 +207,7 @@ task = (TaskDTO)
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "acceptedSizeHeader", lang)%> 
-   <input type="text" name="acceptedSize" size="10" maxlength="4"
+   <input type="text" name="acceptedSize" size="10"
     value="<%
 
       if(syntaxError == true) {
@@ -226,7 +226,7 @@ task = (TaskDTO)
    <br>
    <%=cache.getAttribute("D", "staticttk91taskcomposer",
     "optimalSizeHeader", lang)%>
-   <input type="text" name="optimalSize" size="10" maxlength="4"
+   <input type="text" name="optimalSize" size="10"
     value="<%
 
       if(syntaxError == true) {
@@ -338,7 +338,7 @@ task = (TaskDTO)
     <br>
     <%=cache.getAttribute("D", "staticttk91taskcomposer",
      "memoryReferencesHeader", lang)%>
-    <input type="text" name="memoryReferences" size="10" maxlength="8"
+    <input type="text" name="memoryReferences" size="10"
      value="<%
 
        if(syntaxError == true) {
