@@ -9,7 +9,7 @@ import fi.hy.eassari.showtask.trainer.AttributeCache;
 import fi.hy.eassari.showtask.trainer.CacheException;
 
 /**
- * Luokka sis‰lt‰‰ TTK91Analyser-luokille yhteisi‰ apumetodeita.
+ * Luokka sis‰lt‰‰ TTK91Analyser-luokille yhteisi‰ apumetodeita eAssarin cachen (AttributeCache) k‰sittelyyn.
  */
 
 public class TTK91AnalyserUtils {
