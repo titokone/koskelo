@@ -3,26 +3,36 @@ package fi.helsinki.cs.koskelo.analyser;
 public class TTK91AnalyseResults{
 
     // Peruskriteerit
-    private Boolean registers;
-    private Boolean memory;
-    private Boolean screenOutput;
-    private Boolean fileOutput;
-    private Boolean requiredCommands;
-    private Boolean forbiddenCommands;
-    private Boolean acceptedSize;
-    private Boolean memoryReferences;
+    private Boolean registersCriteria;
+    private Boolean memoryCriteria;
+    private Boolean screenOutputCriteria;
+    private Boolean fileOutputCriteria;
+    private Boolean requiredCommandsCriteria;
+    private Boolean forbiddenCommandsCriteria;
+    private Boolean acceptedSizeCriteria;
+    private Boolean memoryReferencesCriteria;
 
     // laatukriteerit
-    private Boolean registersQuality;
-    private Boolean memoryQuality;
-    private Boolean screenOutputQuality;
-    private Boolean fileOutputQuality;
-    private Boolean requiredCommandsQuality;
-    private Boolean forbiddenCommandsQuality;
-    private Boolean optimalSize;
-    private Boolean memoryReferencesQuality;
+    private Boolean registersQualityCriteria;
+    private Boolean memoryQualityCriteria;
+    private Boolean screenOutputQualityCriteria;
+    private Boolean fileOutputQualityCriteria;
+    private Boolean requiredCommandsQualityCriteria;
+    private Boolean forbiddenCommandsQualityCriteria;
+    private Boolean optimalSizeCriteria;
+    private Boolean memoryReferencesQualityCriteria;
 
     // Statistiikkatiedot
+
+    private int[] registers;
+    private int[] memory;
+    private int[] crt;
+    private int memoryReferences;
+    private int stackSize;
+    private int codeSegmentSize;
+    private int dataSegmentSize;
+    private int executedCommands;
+    
     /** Luo TTK91AnalyseResults olion, jonka kaikki Booleanmuuttujat on
      * asetettu falseksi. False tarkoittaa, etteivät kyseisen ryhmän
      * kriteerit täyty, ja true vastaavasti että kriteerit täyttyvät.
@@ -31,178 +41,256 @@ public class TTK91AnalyseResults{
 	
     public TTK91AnalyseResults() {
 
-	registers = null;
-	memory = null;
-	screenOutput = null;
-	fileOutput = null;
-	requiredCommands = null;
-	forbiddenCommands = null;
-	acceptedSize = null;
-	memoryReferences = null;
+	registersCriteria = null;
+	memoryCriteria = null;
+	screenOutputCriteria = null;
+	fileOutputCriteria = null;
+	requiredCommandsCriteria = null;
+	forbiddenCommandsCriteria = null;
+	acceptedSizeCriteria = null;
+	memoryReferencesCriteria = null;
 
 	// laatukriteerit
-	registersQuality = null;
-	memoryQuality = null;
-	screenOutputQuality = null;
-	fileOutputQuality = null;
-	requiredCommandsQuality = null;
-	forbiddenCommandsQuality = null;
-	optimalSize = null;
-	memoryReferencesQuality = null;
+	registersQualityCriteria = null;
+	memoryQualityCriteria = null;
+	screenOutputQualityCriteria = null;
+	fileOutputQualityCriteria = null;
+	requiredCommandsQualityCriteria = null;
+	forbiddenCommandsQualityCriteria = null;
+	optimalSizeCriteria = null;
+	memoryReferencesQualityCriteria = null;
 
+	int[] registers = null;
+	int[] memory = null;
+	int[] crt = null;
+	int memoryReferences = -1;
+	int stackSize = -1;
+	int codeSegmentSize = -1;
+	int dataSegmentSize = -1;
+	int executedCommands = -1;
     }
     /** Asetetaan rekisterikriteereihin liittyvä Boolean. */
     public void setRegisters(boolean b) {
-	this.registers = new Boolean(b);
+	    this.registersCriteria = new Boolean(b);
     }
 
     /** Asetetaan muistikriteereihin liittyvä Boolean. */
     public void setMemory(boolean b) {
-	this.memory = new Boolean(b);
+	    this.memoryCriteria = new Boolean(b);
     }
 
     /** Asetetaan näyttötulostekriteereihin liittyvä Boolean. */
     public void setScreenOutput(boolean b) {
-	this.screenOutput = new Boolean(b);
+	    this.screenOutputCriteria = new Boolean(b);
     }
     /** Asetetaan tiedostotulostekriteereihin liittyvä Boolean. */
     public void setFileOutput(boolean b) {
-	this.fileOutput = new Boolean(b);
+	    this.fileOutputCriteria = new Boolean(b);
     }
     /** Asetetaan vaadittuihin konekäskyihin liittyvä Boolean. */
     public void setRequiredCommands(boolean b) {
-	this.requiredCommands = new Boolean(b);
+	    this.requiredCommandsCriteria = new Boolean(b);
     }
     /** Asetetaan kiellettyihin konekäskyihin liittyvä Boolean. */
     public void setForbiddenCommands(boolean b) {
-	this.forbiddenCommands = new Boolean(b);
+	    this.forbiddenCommandsCriteria = new Boolean(b);
     }
 
     /** Asetetaan hyväksyttävään kokoon liittyvä Boolean. */
     public void setAcceptedSize(boolean b) {
-	this.acceptedSize = new Boolean(b);
+	    this.acceptedSizeCriteria = new Boolean(b);
     }
 
     /** Asetetaan muistiviitteiden määrään liittyvä Boolean. */
     public void setMemoryReferences(boolean b) {
-	this.memoryReferences = new Boolean(b);
+	    this.memoryReferencesCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin rekisterikriteereihin liittyvä Boolean. */
     public void setRegistersQuality(boolean b) {
-	this.registersQuality = new Boolean(b);
+	    this.registersQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin muistikriteereihin liittyvä Boolean. */
     public void setMemoryQuality(boolean b) {
-	this.memoryQuality = new Boolean(b);
+	    this.memoryQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin näyttötuloste kriteereihin liittyvä Boolean. */
     public void setScreenOutputQuality(boolean b) {
-	this.screenOutputQuality = new Boolean(b);
+	    this.screenOutputQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin tiedostotuloste kriteereihin liittyvä Boolean. */
     public void setFileOutputQuality(boolean b) {
-	this.fileOutputQuality = new Boolean(b);
+	    this.fileOutputQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin vaadittuihin konekäskyihin liittyvä Boolean. */
     public void setRequiredCommandsQuality(boolean b) {
-	this.requiredCommandsQuality = new Boolean(b);
+	    this.requiredCommandsQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan laadullisiin kiellettyihin konekäskyihin liittyvä Boolean. */
     public void setForbiddenCommandsQuality(boolean b) {
-	this.forbiddenCommandsQuality = new Boolean(b);
+	    this.forbiddenCommandsQualityCriteria = new Boolean(b);
     }
 
     /** Asetetaan optimikokoon  liittyvä Boolean. */
 
     public void setOptimalSize(boolean b) {
-	this.optimalSize = new Boolean(b);
+	    this.optimalSizeCriteria = new Boolean(b);
     }
-	
+
     /** Asetetaan laadulliseen muistiviitekriteeriin liittyvä Boolean. Tällaista
      * muistiviitettä ei voi määritellä tehtävänannossa, mutta palaute voidaan
      */
+
     public void setMemoryReferencesQuality(boolean b) {
-	this.memoryReferencesQuality = new Boolean(b);
+	    this.memoryReferencesQualityCriteria = new Boolean(b);
     }
+
+    public void setRegisterValues(int[] registers) {
+	    this.registers = registers;
+    }
+
+    public void setMemoryValues(int[] memory) {
+	    this.memory = memory;
+    }
+
+    public void setCrt(int[] crt) {
+	    this.crt = crt;
+    }
+
+    public void setMemoryReferenceCount(int memoryReferences) {
+	    this.memoryReferences = memoryReferences;
+    }
+
+    public void setStackSize(int stackSize) {
+	    this.stackSize = stackSize;
+    }
+
+    public void setCodeSegmentSize(int codeSegmentSize) {
+	    this.codeSegmentSize = codeSegmentSize;
+    }
+
+    public void setDataSegmentSize(int dataSegmentSize) {
+	    this.dataSegmentSize = dataSegmentSize;
+    }
+
+    public void setExecutedCommandsCount(int excecutedCommands) {
+	    this.executedCommands = executedCommands;
+    }
+
+
     /** Rekisterikriteerien täyttyminen.*/
     public Boolean getRegisters() {
-	return this.registers;
+	    return this.registersCriteria;
     }
     /** Muistikriteerien täyttyminen. */
     public Boolean getMemory() {
-	return this.memory;
+	    return this.memoryCriteria;
     }
 
     /** Näyttötulostekriteerien täyttyminen. */
     public Boolean getScreenOutput() {
-	return this.screenOutput;
+	    return this.screenOutputCriteria;
     }
     /** Tiedostotulostekriteerien täyttyminen.*/
     public Boolean getFileOutput() {
-	return this.fileOutput;
+	    return this.fileOutputCriteria;
     }
     /** Vaadittujen konekäskyjen esiintyminen.*/
     public Boolean getRequiredCommands() {
-	return this.requiredCommands;
+	    return this.requiredCommandsCriteria;
     }
     /** Kiellettyjen konekäskyjen esiintyminen. */
     public Boolean getForbiddenCommands() {
-	return this.forbiddenCommands;
+	    return this.forbiddenCommandsCriteria;
     }
 
     /** Hyväksytyn koon täyttyminen. */
     public Boolean getAcceptedSize() {
-	return this.acceptedSize;
+	    return this.acceptedSizeCriteria;
     }
 
     /** Vaaditun muistiviitemäärän täyttymienn.*/
     public Boolean getMemoryReferences() {
-	return this.memoryReferences;
+	    return this.memoryReferencesCriteria;
     }
 
     /** Rekisterien laatukriteerien täyttyminen. */
     public Boolean getRegistersQuality() {
-	return this.registersQuality;
+	    return this.registersQualityCriteria;
     }
 
     /** Laadullisten muistikriteerien täyttyminen. */
     public Boolean getMemoryQuality() {
-	return this.memoryQuality;
+	    return this.memoryQualityCriteria;
     }
 
     /** Laadullisten näyttötulosteiden täyttyminen. */
     public Boolean getScreenOutputQuality() {
-	return this.screenOutputQuality;
+	    return this.screenOutputQualityCriteria;
     }
     /** Laadullisten tiedostotulosteiden täyttyminen. */
 
     public Boolean getFileOutputQuality() {
-	return this.fileOutputQuality;
+	    return this.fileOutputQualityCriteria;
     }
 
     /** Laadullisten vaadittujen konekäskyjen täyttyminen.*/
     public Boolean getRequiredCommandsQuality() {
-	return this.requiredCommandsQuality;
+	    return this.requiredCommandsQualityCriteria;
     }
     /** Laadullisten kiellettyjen konekäskyjen täyttyminen.*/
 
     public Boolean getForbiddenCommandsQuality() {
-	return this.forbiddenCommandsQuality;
+	    return this.forbiddenCommandsQualityCriteria;
     }
     /** Optimikoon saavuttaminen. */
 
     public Boolean getOptimalSize() {
-	return this.optimalSize;
+	    return this.optimalSizeCriteria;
     }
-	
+
     /** Mahdollinen laadullinen muistiiviitepalaute. */
     public Boolean getMemoryReferencesQuality() {
-	return this.memoryReferencesQuality;
+	    return this.memoryReferencesQualityCriteria;
     }
+
+	
+    public int[] getRegisterValues() {
+	   return this.registers;
+    }
+
+    public int[] getMemoryValues() {
+	    return this.memory;
+    }
+
+    public int[] getCrt() {
+	    return this.crt;
+    }
+
+    public int getMemoryReferenceCount() {
+	   return this.memoryReferences;
+    }
+
+    public int setStackSize() {
+	    return this.stackSize;
+    }
+
+    public int getCodeSegmentSize() {
+	    return this.codeSegmentSize;
+    }
+
+    public int getDataSegmentSize() {
+	    return this.dataSegmentSize;
+    }
+
+    public int getExecutedCommandsCount() {
+	   return this.executedCommands;
+    }
+
+
 }
