@@ -122,7 +122,7 @@ public class TTK91TaskOptions {
    * Lisää näytön tulosteeseen liittyvät kriteerit kokoelmaan.
    * @param crit Kokoelmaan lisättävä kriteeritaulukko
    */
-  public void setScreenOutputCriteria(int[][] crit) {
+  public void setScreenOutputCriterias(int[][] crit) {
     this.screenoutput = crit;
   } // addScreenOutputCriteria(TTK91TaskCriteria[] crit)
 
